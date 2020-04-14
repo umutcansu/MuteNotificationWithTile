@@ -1,7 +1,6 @@
 package com.thell.mutenotification.helper.mutestate
 
 import android.content.Context
-import com.thell.mutenotification.MainActivity
 import com.thell.mutenotification.helper.Global
 
 class MuteStateSharedPrefAction(context: Context): MuteStateAction(context)

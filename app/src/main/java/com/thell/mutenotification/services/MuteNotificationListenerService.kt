@@ -5,6 +5,7 @@ import android.os.IBinder
 import android.service.notification.NotificationListenerService
 import android.service.notification.StatusBarNotification
 import android.widget.Toast
+import com.thell.mutenotification.helper.Global
 
 class MuteNotificationListenerService : NotificationListenerService() {
 
@@ -15,7 +16,11 @@ class MuteNotificationListenerService : NotificationListenerService() {
 
     override fun onNotificationPosted(sbn: StatusBarNotification)
     {
-
+        if(Global.getMuteStateAction(this).getMuteState())
+        {
+            cancelAllNotifications()
+            Toast.makeText(this, "Push Notification", Toast.LENGTH_LONG).show()
+        }
 
     }
 

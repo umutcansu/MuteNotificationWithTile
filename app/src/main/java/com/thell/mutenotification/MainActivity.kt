@@ -6,22 +6,35 @@ import android.content.IntentFilter
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.CompoundButton
-import com.thell.mutenotification.broadcastreciever.NotificationServiceBroadcastReceiver
+import com.thell.mutenotification.broadcastreceiver.NotificationServiceBroadcastReceiver
 import com.thell.mutenotification.helper.Global
-import com.thell.mutenotification.helper.Global.*
+import com.thell.mutenotification.helper.mutestate.IMuteStateAction
 import kotlinx.android.synthetic.main.activity_main.*
 
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity()
+{
 
-    val switchChange = object : CompoundButton.OnCheckedChangeListener{
+    private lateinit var MuteStateAction : IMuteStateAction
+
+    private val switchChange = object : CompoundButton.OnCheckedChangeListener{
         override fun onCheckedChanged(p0: CompoundButton?, p1: Boolean)
         {
+            if (::MuteStateAction.isInitialized)
+                MuteStateAction.switchMuteState()
 
+            if(p1)
+            {
+                init()
+            }
+            else
+            {
+
+            }
         }
     }
 
-    val reciever = object : NotificationServiceBroadcastReceiver()
+    private val receiver = object : NotificationServiceBroadcastReceiver()
     {
         override fun onReceive(p0: Context?, p1: Intent?)
         {
@@ -39,8 +52,8 @@ class MainActivity : AppCompatActivity() {
     private fun initUI()
     {
         val filter = IntentFilter(Global.NotificationServiceBroadcastReceiver)
-        registerReceiver(reciever, filter)
-
+        registerReceiver(receiver, filter)
+        mainActivityMuteSwitch.isChecked = Global.getMuteStateAction(this).getMuteState()
         mainActivityMuteSwitch.setOnCheckedChangeListener(switchChange)
     }
 
@@ -48,7 +61,13 @@ class MainActivity : AppCompatActivity() {
 
     override fun onPause() {
         super.onPause()
-        unregisterReceiver(reciever)
+
+    }
+
+    override fun onDestroy() {
+        unregisterReceiver(receiver)
+        super.onDestroy()
+
     }
 
     override fun onResume() {
@@ -75,8 +94,7 @@ class MainActivity : AppCompatActivity() {
     {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
-
+        MuteStateAction = Global.getMuteStateAction(this)
         if(intent.getBooleanExtra(Global.PERMISSION_STATE_KEY,false))
         {
             initUI()
