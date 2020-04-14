@@ -3,6 +3,7 @@ package com.thell.mutenotification.helper
 import android.content.Context
 import com.thell.mutenotification.helper.mutestate.IMuteStateAction
 import com.thell.mutenotification.helper.mutestate.MuteStateMemoryAction
+import com.thell.mutenotification.helper.mutestate.MuteStateSharedPrefAction
 
 class Global
 {
@@ -21,7 +22,7 @@ class Global
         {
             if(MuteStateAction == null)
             {
-                MuteStateAction = MuteStateMemoryAction(context)
+                MuteStateAction = MuteStateSharedPrefAction(context)
             }
             return MuteStateAction!!
         }
