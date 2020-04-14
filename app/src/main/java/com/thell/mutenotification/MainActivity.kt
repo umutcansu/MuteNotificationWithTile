@@ -8,9 +8,7 @@ import android.os.Bundle
 import android.widget.CompoundButton
 import com.thell.mutenotification.broadcastreceiver.NotificationServiceBroadcastReceiver
 import com.thell.mutenotification.helper.Global
-import com.thell.mutenotification.helper.NotificationServiceHelper
 import com.thell.mutenotification.helper.mutestate.IMuteStateAction
-import com.thell.mutenotification.services.MuteNotificationListenerService
 import kotlinx.android.synthetic.main.activity_main.*
 
 
@@ -31,7 +29,7 @@ class MainActivity : AppCompatActivity()
             }
             else
             {
-                NotificationServiceHelper.stopNotificationListenerService(this@MainActivity)
+
             }
         }
     }
@@ -48,7 +46,7 @@ class MainActivity : AppCompatActivity()
 
     private fun init()
     {
-        NotificationServiceHelper.start(this)
+
     }
 
     private fun initUI()
@@ -95,11 +93,8 @@ class MainActivity : AppCompatActivity()
     override fun onCreate(savedInstanceState: Bundle?)
     {
         super.onCreate(savedInstanceState)
-
-        NotificationServiceHelper.muteNotificationService = Intent(this, MuteNotificationListenerService::class.java)
         setContentView(R.layout.activity_main)
         MuteStateAction = Global.getMuteStateAction(this)
-
         if(intent.getBooleanExtra(Global.PERMISSION_STATE_KEY,false))
         {
             initUI()

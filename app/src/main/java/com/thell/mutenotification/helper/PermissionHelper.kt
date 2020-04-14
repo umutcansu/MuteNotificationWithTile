@@ -12,6 +12,8 @@ class PermissionHelper {
 
     companion object
     {
+
+        var muteNotificationService:Intent? = null
         private const val ENABLED_NOTIFICATION_LISTENERS = "enabled_notification_listeners"
         private const  val  ACTION_NOTIFICATION_LISTENER_SETTINGS = "android.settings.ACTION_NOTIFICATION_LISTENER_SETTINGS"
 
