@@ -11,6 +11,7 @@ import com.thell.mutenotification.broadcastreceiver.NotificationServiceBroadcast
 import com.thell.mutenotification.helper.Global
 import com.thell.mutenotification.helper.NotificationServiceHelper
 import com.thell.mutenotification.helper.PermissionHelper
+import com.thell.mutenotification.helper.bootreceiver.BootReceiverHelper
 import com.thell.mutenotification.helper.bootreceiver.BootReceiverPrefHelper
 import com.thell.mutenotification.helper.mutestate.IMuteStateAction
 import com.thell.mutenotification.services.MuteNotificationListenerService
@@ -59,6 +60,7 @@ class MainActivity : AppCompatActivity()
 
     private fun initUI()
     {
+
         val filter = IntentFilter(Global.NotificationServiceBroadcastReceiver)
         registerReceiver(receiver, filter)
         mainActivityMuteSwitch.isChecked = Global.getMuteStateAction(this).getMuteState()
@@ -143,15 +145,24 @@ class MainActivity : AppCompatActivity()
     {
         try
         {
-            if(!BootReceiverPrefHelper.readBoolean(this))
+
+            if(BootReceiverHelper.ınstance.checkPrePermission())
             {
-                isPermission = false
-               PermissionHelper.buildBootReceiverAlertDialog(this)
+                if(!BootReceiverPrefHelper.readBoolean(this)  )
+                {
+                    isPermission = false
+                    PermissionHelper.buildBootReceiverAlertDialog(this)
+                }
+                else
+                {
+                    initUI()
+                }
             }
             else
             {
                 initUI()
             }
+
         }
         catch (e: Exception)
         {

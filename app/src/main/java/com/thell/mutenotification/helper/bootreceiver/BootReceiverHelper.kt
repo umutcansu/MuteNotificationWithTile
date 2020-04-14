@@ -94,6 +94,22 @@ class BootReceiverHelper private constructor() {
         }
     }
 
+    fun checkPrePermission():Boolean
+    {
+        val build_info = Build.BRAND.toLowerCase()
+        var result = when (build_info) {
+            BRAND_ASUS -> true
+            BRAND_XIAOMI -> true
+            BRAND_LETV -> true
+            BRAND_HONOR -> true
+            BRAND_OPPO -> true
+            BRAND_VIVO -> true
+            BRAND_NOKIA -> true
+            else -> false
+        }
+        return result
+    }
+
     private fun autoStartAsus(activity: Activity) {
         if (isPackageExists(activity, PACKAGE_ASUS_MAIN)) {
             showAlert(activity, DialogInterface.OnClickListener { dialog, which ->
