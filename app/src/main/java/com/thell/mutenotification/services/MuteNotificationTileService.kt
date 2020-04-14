@@ -22,7 +22,10 @@ class MuteNotificationTileService: TileService()
     override fun onCreate() {
         super.onCreate()
         MuteStateAction = Global.getMuteStateAction(this)
+        registerReceiver()
     }
+
+
 
     override fun onClick() {
         Log.i("tile","onClick")
@@ -42,6 +45,7 @@ class MuteNotificationTileService: TileService()
     override fun onDestroy() {
 
         super.onDestroy()
+        unregisterReceiver(receiver)
     }
 
     override fun onTileAdded() {
@@ -57,14 +61,14 @@ class MuteNotificationTileService: TileService()
 
     override fun onStartListening() {
         Log.i("tile","onStartListening")
-        registerReceiver()
+
         setTile()
         super.onStartListening()
     }
 
     override fun onStopListening() {
         Log.i("tile","onStopListening")
-        unregisterReceiver(receiver)
+
         super.onStopListening()
     }
 
