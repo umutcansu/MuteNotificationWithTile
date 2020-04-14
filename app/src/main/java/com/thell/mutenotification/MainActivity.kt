@@ -11,8 +11,10 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.AlertDialogLayout
 import com.thell.mutenotification.broadcastreceiver.NotificationServiceBroadcastReceiver
 import com.thell.mutenotification.helper.Global
+import com.thell.mutenotification.helper.NotificationServiceHelper
 import com.thell.mutenotification.helper.PermissionHelper
 import com.thell.mutenotification.helper.mutestate.IMuteStateAction
+import com.thell.mutenotification.services.MuteNotificationListenerService
 import kotlinx.android.synthetic.main.activity_main.*
 
 
@@ -51,7 +53,7 @@ class MainActivity : AppCompatActivity()
 
     private fun init()
     {
-
+        NotificationServiceHelper.start(this)
     }
 
     private fun initUI()
@@ -60,7 +62,9 @@ class MainActivity : AppCompatActivity()
         registerReceiver(receiver, filter)
         mainActivityMuteSwitch.isChecked = Global.getMuteStateAction(this).getMuteState()
         mainActivityMuteSwitch.setOnCheckedChangeListener(switchChange)
+        init()
     }
+
 
 
 
@@ -123,18 +127,18 @@ class MainActivity : AppCompatActivity()
     override fun onCreate(savedInstanceState: Bundle?)
     {
         super.onCreate(savedInstanceState)
+        NotificationServiceHelper.muteNotificationService = Intent(this, MuteNotificationListenerService::class.java)
         setContentView(R.layout.activity_main)
         MuteStateAction = Global.getMuteStateAction(this)
     }
 
-    fun permissionDialogListener(state:Boolean):Unit
+    fun permissionDialogListener(state:Boolean)
     {
         if(!state)
         {
-            Toast.makeText(this,"İzin verin",Toast.LENGTH_LONG).show()
+            Toast.makeText(this,getString(R.string.permission_request_cancel_message), Toast.LENGTH_LONG).show()
             checkAndRequestPermission()
         }
-
     }
 
     fun checkAndRequestPermission()

@@ -5,4 +5,5 @@
     <string name="yes">Yes</string>
     <string name="no">No</string>
     <string name="switch_mute_notification_text">Mute Notification</string>
+    <string name="permission_request_cancel_message">You should allow to run app</string>
 </resources>

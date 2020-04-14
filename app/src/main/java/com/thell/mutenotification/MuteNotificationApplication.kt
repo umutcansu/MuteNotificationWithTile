@@ -3,6 +3,8 @@ package com.thell.mutenotification
 import android.app.Application
 import android.content.Intent
 import android.util.Log
+import com.thell.mutenotification.helper.NotificationServiceHelper
+import com.thell.mutenotification.services.MuteNotificationListenerService
 import com.thell.mutenotification.services.MuteNotificationTileService
 
 class MuteNotificationApplication : Application()
@@ -13,7 +15,7 @@ class MuteNotificationApplication : Application()
 
         val exceptionHandler = MuteNotificationUncaughtExceptionHandler()
         Thread.setDefaultUncaughtExceptionHandler(exceptionHandler)
-
+        NotificationServiceHelper.muteNotificationService = Intent(this, MuteNotificationListenerService::class.java)
         init()
 
     }

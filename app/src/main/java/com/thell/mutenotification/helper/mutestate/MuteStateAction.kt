@@ -19,6 +19,7 @@ abstract class MuteStateAction(val context: Context):IMuteStateAction
         context.sendBroadcast(intent)
     }
 
+
     override fun switchMuteState(): Boolean {
         val currentState = getMuteState()
         val newState = !currentState
