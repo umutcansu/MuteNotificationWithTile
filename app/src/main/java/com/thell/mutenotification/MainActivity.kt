@@ -6,8 +6,12 @@ import android.content.IntentFilter
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.CompoundButton
+import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.widget.AlertDialogLayout
 import com.thell.mutenotification.broadcastreceiver.NotificationServiceBroadcastReceiver
 import com.thell.mutenotification.helper.Global
+import com.thell.mutenotification.helper.PermissionHelper
 import com.thell.mutenotification.helper.mutestate.IMuteStateAction
 import kotlinx.android.synthetic.main.activity_main.*
 
@@ -16,6 +20,7 @@ class MainActivity : AppCompatActivity()
 {
 
     private lateinit var MuteStateAction : IMuteStateAction
+    lateinit var dialog:android.app.AlertDialog
 
     private val switchChange = object : CompoundButton.OnCheckedChangeListener{
         override fun onCheckedChanged(p0: CompoundButton?, p1: Boolean)
@@ -65,17 +70,34 @@ class MainActivity : AppCompatActivity()
     }
 
     override fun onDestroy() {
-        unregisterReceiver(receiver)
+
+        try
+        {
+            unregisterReceiver(receiver)
+
+        }
+        catch (e: Exception)
+        {
+
+        }
         super.onDestroy()
 
     }
 
-    override fun onResume() {
+    override fun onResume()
+    {
+        checkAndRequestPermission()
         super.onResume()
-        initUI()
     }
 
 
+
+    override fun onStop() {
+        super.onStop()
+
+        if(this::dialog.isInitialized)
+            dialog.dismiss()
+    }
 
     private fun checkNotificationState(state:Boolean)
     {
@@ -89,18 +111,51 @@ class MainActivity : AppCompatActivity()
         }
     }
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+
+        if(requestCode == Global.PERMISSION_REQUEST_CODE)
+        {
+            checkAndRequestPermission()
+        }
+        super.onActivityResult(requestCode, resultCode, data)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?)
     {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         MuteStateAction = Global.getMuteStateAction(this)
-        if(intent.getBooleanExtra(Global.PERMISSION_STATE_KEY,false))
+    }
+
+    fun permissionDialogListener(state:Boolean):Unit
+    {
+        if(!state)
         {
-            initUI()
-            init()
+            Toast.makeText(this,"İzin verin",Toast.LENGTH_LONG).show()
+            checkAndRequestPermission()
         }
 
+    }
+
+    fun checkAndRequestPermission()
+    {
+        try
+        {
+            if(!PermissionHelper.isNotificationServiceEnabled(this))
+            {
+
+                dialog = PermissionHelper.buildNotificationServiceAlertDialog(this,::permissionDialogListener)
+                dialog.show()
+            }
+            else
+            {
+                initUI()
+            }
+        }
+        catch (e: Exception)
+        {
+
+        }
     }
 
 }

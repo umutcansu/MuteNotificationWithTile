@@ -12,6 +12,7 @@ import com.thell.mutenotification.MainActivity
 import com.thell.mutenotification.R
 import com.thell.mutenotification.broadcastreceiver.NotificationServiceBroadcastReceiver
 import com.thell.mutenotification.helper.Global
+import com.thell.mutenotification.helper.PermissionHelper
 import com.thell.mutenotification.helper.mutestate.IMuteStateAction
 
 class MuteNotificationTileService: TileService()
@@ -27,10 +28,23 @@ class MuteNotificationTileService: TileService()
     override fun onClick() {
         Log.i("tile","onClick")
 
-        if (::MuteStateAction.isInitialized)
-            MuteStateAction.switchMuteState()
+        if(!PermissionHelper.isNotificationServiceEnabled(this))
+        {
+            val intent = Intent(this,MainActivity::class.java)
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            this.startActivity(intent)
+        }
+        else
+        {
+            if (::MuteStateAction.isInitialized)
+                MuteStateAction.switchMuteState()
 
-        super.onClick()
+            super.onClick()
+        }
+
+
+
+
 
     }
 

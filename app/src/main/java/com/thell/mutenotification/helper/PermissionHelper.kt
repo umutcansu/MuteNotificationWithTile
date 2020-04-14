@@ -1,5 +1,6 @@
 package com.thell.mutenotification.helper
 
+import android.app.Activity
 import android.app.AlertDialog
 import android.content.ComponentName
 import android.content.Context
@@ -13,9 +14,13 @@ class PermissionHelper {
     companion object
     {
 
+
+
         var muteNotificationService:Intent? = null
         private const val ENABLED_NOTIFICATION_LISTENERS = "enabled_notification_listeners"
         private const  val  ACTION_NOTIFICATION_LISTENER_SETTINGS = "android.settings.ACTION_NOTIFICATION_LISTENER_SETTINGS"
+
+
 
         fun isNotificationServiceEnabled(context: Context): Boolean {
 
@@ -38,24 +43,28 @@ class PermissionHelper {
 
 
 
-        fun buildNotificationServiceAlertDialog(context: Context): AlertDialog
+        fun buildNotificationServiceAlertDialog(activity: Activity,listener:(Boolean)->Unit): AlertDialog
         {
-            val alertDialogBuilder = AlertDialog.Builder(context)
+            val alertDialogBuilder = AlertDialog.Builder(activity)
             alertDialogBuilder.setTitle(R.string.notification_listener_service)
             alertDialogBuilder.setMessage(R.string.notification_listener_service_explanation)
             alertDialogBuilder.setPositiveButton(
                 R.string.yes,
                 DialogInterface.OnClickListener { dialog, id ->
-                    context.startActivity(
-                        Intent(ACTION_NOTIFICATION_LISTENER_SETTINGS)
+                    listener(true)
+                    activity.startActivityForResult(
+                        Intent(ACTION_NOTIFICATION_LISTENER_SETTINGS),Global.PERMISSION_REQUEST_CODE
                     )
                 })
             alertDialogBuilder.setNegativeButton(
                 R.string.no,
                 DialogInterface.OnClickListener { dialog, id ->
+                    listener(false)
                     dialog.dismiss()
                 })
             return alertDialogBuilder.create()
         }
+
+
     }
 }
