@@ -7,12 +7,11 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.CompoundButton
 import android.widget.Toast
-import androidx.appcompat.app.AlertDialog
-import androidx.appcompat.widget.AlertDialogLayout
 import com.thell.mutenotification.broadcastreceiver.NotificationServiceBroadcastReceiver
 import com.thell.mutenotification.helper.Global
 import com.thell.mutenotification.helper.NotificationServiceHelper
 import com.thell.mutenotification.helper.PermissionHelper
+import com.thell.mutenotification.helper.bootreceiver.BootReceiverPrefHelper
 import com.thell.mutenotification.helper.mutestate.IMuteStateAction
 import com.thell.mutenotification.services.MuteNotificationListenerService
 import kotlinx.android.synthetic.main.activity_main.*
@@ -23,8 +22,10 @@ class MainActivity : AppCompatActivity()
 
     private lateinit var MuteStateAction : IMuteStateAction
     lateinit var dialog:android.app.AlertDialog
+    var isPermission = true
 
-    private val switchChange = object : CompoundButton.OnCheckedChangeListener{
+    private val switchChange = object : CompoundButton.OnCheckedChangeListener
+    {
         override fun onCheckedChanged(p0: CompoundButton?, p1: Boolean)
         {
             if (::MuteStateAction.isInitialized)
@@ -66,13 +67,6 @@ class MainActivity : AppCompatActivity()
     }
 
 
-
-
-    override fun onPause() {
-        super.onPause()
-
-    }
-
     override fun onDestroy() {
 
         try
@@ -90,7 +84,9 @@ class MainActivity : AppCompatActivity()
 
     override fun onResume()
     {
-        checkAndRequestPermission()
+        if(isPermission)
+            checkAndRequestNotificationPermission()
+
         super.onResume()
     }
 
@@ -105,21 +101,23 @@ class MainActivity : AppCompatActivity()
 
     private fun checkNotificationState(state:Boolean)
     {
-
         if(state != mainActivityMuteSwitch.isChecked)
         {
             mainActivityMuteSwitch.setOnCheckedChangeListener(null)
             mainActivityMuteSwitch.isChecked = state
             mainActivityMuteSwitch.setOnCheckedChangeListener(switchChange)
-
         }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
 
-        if(requestCode == Global.PERMISSION_REQUEST_CODE)
+        if(requestCode == Global.NOTIFICATION_PERMISSION_REQUEST_CODE)
         {
-            checkAndRequestPermission()
+            checkAndRequestNotificationPermission()
+        }
+        else if(requestCode == Global.BOOT_PERMISSION_REQUEST_CODE)
+        {
+            checkAndRequestBootReceiverPermission()
         }
         super.onActivityResult(requestCode, resultCode, data)
     }
@@ -132,28 +130,48 @@ class MainActivity : AppCompatActivity()
         MuteStateAction = Global.getMuteStateAction(this)
     }
 
-    fun permissionDialogListener(state:Boolean)
+    fun notificationPermissionDialogListener(state:Boolean)
     {
         if(!state)
         {
             Toast.makeText(this,getString(R.string.permission_request_cancel_message), Toast.LENGTH_LONG).show()
-            checkAndRequestPermission()
+            checkAndRequestNotificationPermission()
         }
     }
 
-    fun checkAndRequestPermission()
+    fun checkAndRequestBootReceiverPermission()
+    {
+        try
+        {
+            if(!BootReceiverPrefHelper.readBoolean(this))
+            {
+                isPermission = false
+               PermissionHelper.buildBootReceiverAlertDialog(this)
+            }
+            else
+            {
+                initUI()
+            }
+        }
+        catch (e: Exception)
+        {
+
+        }
+    }
+
+    fun checkAndRequestNotificationPermission()
     {
         try
         {
             if(!PermissionHelper.isNotificationServiceEnabled(this))
             {
 
-                dialog = PermissionHelper.buildNotificationServiceAlertDialog(this,::permissionDialogListener)
+                dialog = PermissionHelper.buildNotificationServiceAlertDialog(this,::notificationPermissionDialogListener)
                 dialog.show()
             }
             else
             {
-                initUI()
+                checkAndRequestBootReceiverPermission()
             }
         }
         catch (e: Exception)

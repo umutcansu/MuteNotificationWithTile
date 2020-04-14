@@ -8,6 +8,7 @@ import android.content.DialogInterface
 import android.content.Intent
 import android.provider.Settings
 import com.thell.mutenotification.R
+import com.thell.mutenotification.helper.bootreceiver.BootReceiverHelper
 
 class PermissionHelper {
 
@@ -41,6 +42,10 @@ class PermissionHelper {
             return false
         }
 
+        fun buildBootReceiverAlertDialog(activity: Activity)
+        {
+            BootReceiverHelper.ınstance.getAutoStartPermission(activity)
+        }
 
 
         fun buildNotificationServiceAlertDialog(activity: Activity,listener:(Boolean)->Unit): AlertDialog
@@ -53,7 +58,7 @@ class PermissionHelper {
                 DialogInterface.OnClickListener { dialog, id ->
                     listener(true)
                     activity.startActivityForResult(
-                        Intent(ACTION_NOTIFICATION_LISTENER_SETTINGS),Global.PERMISSION_REQUEST_CODE
+                        Intent(ACTION_NOTIFICATION_LISTENER_SETTINGS),Global.NOTIFICATION_PERMISSION_REQUEST_CODE
                     )
                 })
             alertDialogBuilder.setNegativeButton(

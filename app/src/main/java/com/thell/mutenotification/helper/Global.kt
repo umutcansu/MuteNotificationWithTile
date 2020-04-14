@@ -9,7 +9,8 @@ class Global
     companion object
     {
         const  val  PERMISSION_STATE_KEY = "REQUEST_PERMISSION"
-        const  val  PERMISSION_REQUEST_CODE = 100
+        const  val  NOTIFICATION_PERMISSION_REQUEST_CODE = 100
+        const  val  BOOT_PERMISSION_REQUEST_CODE = 200
         const  val  NotificationServiceBroadcastReceiver = "broadcastreceiver.NotificationServiceBroadcastReceiver"
         const val   FILE_NAME = "PREF_FILE"
         const val   MUTE_STATE_KEY = "STATE"
