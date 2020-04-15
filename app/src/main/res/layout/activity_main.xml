@@ -4,17 +4,54 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="?attr/colorButtonNormal"
     tools:context=".MainActivity">
 
-    <Switch
+    <ToggleButton
         android:id="@+id/mainActivityMuteSwitch"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp"
-        android:text="@string/switch_mute_notification_text"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:layout_marginTop="64dp"
+        android:background="@drawable/toggle_selector"
+        android:checked="false"
+        android:text=""
+        android:textOff=""
+        android:textOn=""
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/mainActivityHeaderTextView" />
+
+    <TextView
+        android:id="@+id/mainActivityHeaderTextView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:checkMarkTintMode="screen"
+        android:gravity="center_horizontal"
+        android:text="@string/app_header"
+        android:textColor="@android:color/holo_orange_dark"
+        android:textSize="24sp"
+        android:textStyle="bold|italic"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/mainActivityMuteStateTextView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:checkMarkTintMode="screen"
+        android:gravity="center_horizontal"
+        android:text="@string/notification"
+        android:textColor="@color/colorNotificationSetState"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="@+id/mainActivityMuteSwitch"
+        app:layout_constraintStart_toStartOf="@+id/mainActivityMuteSwitch"
+        app:layout_constraintTop_toBottomOf="@+id/mainActivityMuteSwitch" />
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -5,8 +5,11 @@ import android.content.Intent
 import android.content.IntentFilter
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.Window
+import android.view.WindowManager
 import android.widget.CompoundButton
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import com.thell.mutenotification.broadcastreceiver.NotificationServiceBroadcastReceiver
 import com.thell.mutenotification.helper.Global
 import com.thell.mutenotification.helper.NotificationServiceHelper
@@ -21,6 +24,8 @@ import kotlinx.android.synthetic.main.activity_main.*
 class MainActivity : AppCompatActivity()
 {
 
+//-----------------------------------VARIABLES------------------------------------------------------
+
     private lateinit var MuteStateAction : IMuteStateAction
     lateinit var dialog:android.app.AlertDialog
     var isPermission = true
@@ -31,15 +36,6 @@ class MainActivity : AppCompatActivity()
         {
             if (::MuteStateAction.isInitialized)
                 MuteStateAction.switchMuteState()
-
-            if(p1)
-            {
-                init()
-            }
-            else
-            {
-
-            }
         }
     }
 
@@ -53,35 +49,16 @@ class MainActivity : AppCompatActivity()
         }
     }
 
-    private fun init()
+//-----------------------------------ANDROID--------------------------------------------------------
+
+    override fun onCreate(savedInstanceState: Bundle?)
     {
-        NotificationServiceHelper.start(this)
-    }
-
-    private fun initUI()
-    {
-
-        val filter = IntentFilter(Global.NotificationServiceBroadcastReceiver)
-        registerReceiver(receiver, filter)
-        mainActivityMuteSwitch.isChecked = Global.getMuteStateAction(this).getMuteState()
-        mainActivityMuteSwitch.setOnCheckedChangeListener(switchChange)
-        init()
-    }
-
-
-    override fun onDestroy() {
-
-        try
-        {
-            unregisterReceiver(receiver)
-
-        }
-        catch (e: Exception)
-        {
-
-        }
-        super.onDestroy()
-
+        super.onCreate(savedInstanceState)
+        NotificationServiceHelper.muteNotificationService = Intent(this, MuteNotificationListenerService::class.java)
+        requestWindowFeature(Window.FEATURE_NO_TITLE)
+        this.window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN)
+        setContentView(R.layout.activity_main)
+        MuteStateAction = Global.getMuteStateAction(this)
     }
 
     override fun onResume()
@@ -92,26 +69,31 @@ class MainActivity : AppCompatActivity()
         super.onResume()
     }
 
-
-
-    override fun onStop() {
+    override fun onStop()
+    {
         super.onStop()
 
         if(this::dialog.isInitialized)
             dialog.dismiss()
     }
 
-    private fun checkNotificationState(state:Boolean)
+    override fun onDestroy()
     {
-        if(state != mainActivityMuteSwitch.isChecked)
+
+        try
         {
-            mainActivityMuteSwitch.setOnCheckedChangeListener(null)
-            mainActivityMuteSwitch.isChecked = state
-            mainActivityMuteSwitch.setOnCheckedChangeListener(switchChange)
+            unregisterReceiver(receiver)
         }
+        catch (e: Exception)
+        {
+
+        }
+        super.onDestroy()
+
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?)
+    {
 
         if(requestCode == Global.NOTIFICATION_PERMISSION_REQUEST_CODE)
         {
@@ -124,15 +106,56 @@ class MainActivity : AppCompatActivity()
         super.onActivityResult(requestCode, resultCode, data)
     }
 
-    override fun onCreate(savedInstanceState: Bundle?)
+//-----------------------------------BUSINESS-------------------------------------------------------
+    private fun checkNotificationState(state:Boolean)
     {
-        super.onCreate(savedInstanceState)
-        NotificationServiceHelper.muteNotificationService = Intent(this, MuteNotificationListenerService::class.java)
-        setContentView(R.layout.activity_main)
-        MuteStateAction = Global.getMuteStateAction(this)
+
+        mainActivityMuteSwitch.setOnCheckedChangeListener(null)
+        mainActivityMuteSwitch.isChecked = state
+        mainActivityMuteSwitch.setOnCheckedChangeListener(switchChange)
+        setState(state)
     }
 
-    fun notificationPermissionDialogListener(state:Boolean)
+    private  fun setStateInit()
+    {
+        val state = Global.getMuteStateAction(this).getMuteState()
+        checkNotificationState(state)
+    }
+
+    private  fun setState(state:Boolean)
+    {
+        mainActivityMuteStateTextView.apply {
+            if(state)
+            {
+                text = getString(R.string.mute)
+                setTextColor(ContextCompat.getColor(this@MainActivity, R.color.colorMuteSetState))
+            }
+            else
+            {
+                text = getString(R.string.notification)
+                setTextColor(ContextCompat.getColor(this@MainActivity, R.color.colorNotificationSetState))
+            }
+
+        }
+
+
+    }
+
+    private fun init()
+    {
+        NotificationServiceHelper.start(this)
+    }
+
+    private fun initUI()
+    {
+        val filter = IntentFilter(Global.NotificationServiceBroadcastReceiver)
+        registerReceiver(receiver, filter)
+        setStateInit()
+        mainActivityMuteSwitch.setOnCheckedChangeListener(switchChange)
+        init()
+    }
+
+    private fun notificationPermissionDialogListener(state:Boolean)
     {
         if(!state)
         {
@@ -141,7 +164,7 @@ class MainActivity : AppCompatActivity()
         }
     }
 
-    fun checkAndRequestBootReceiverPermission()
+    private fun checkAndRequestBootReceiverPermission()
     {
         try
         {
@@ -170,7 +193,7 @@ class MainActivity : AppCompatActivity()
         }
     }
 
-    fun checkAndRequestNotificationPermission()
+    private fun checkAndRequestNotificationPermission()
     {
         try
         {

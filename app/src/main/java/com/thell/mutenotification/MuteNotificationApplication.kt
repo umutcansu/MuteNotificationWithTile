@@ -20,7 +20,7 @@ class MuteNotificationApplication : Application()
 
     }
 
-    fun init()
+    private fun init()
     {
         var muteNotificationTileService: Intent = Intent(this, MuteNotificationTileService::class.java)
         this.startService(muteNotificationTileService)

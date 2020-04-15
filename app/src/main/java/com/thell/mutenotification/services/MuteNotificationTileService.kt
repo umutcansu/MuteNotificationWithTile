@@ -33,7 +33,7 @@ class MuteNotificationTileService: TileService()
         {
             val intent = Intent(this,MainActivity::class.java)
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-            this.startActivity(intent)
+            this.startActivityAndCollapse(intent)
         }
         else
         {
@@ -109,14 +109,14 @@ class MuteNotificationTileService: TileService()
         val tile = qsTile
         if(Global.getMuteStateAction(this).getMuteState())
         {
-            tile.label = "Mute"
+            tile.label = getString(R.string.mute)
             tile.state = Tile.STATE_ACTIVE
             tile.icon = Icon.createWithResource(this, R.drawable.ic_notifications_off_black_24dp)
 
         }
         else
         {
-            tile.label = "Notification"
+            tile.label =  getString(R.string.notification)
             tile.state = Tile.STATE_INACTIVE
             tile.icon = Icon.createWithResource(this, R.drawable.ic_notifications_black_24dp)
         }

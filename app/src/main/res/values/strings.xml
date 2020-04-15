@@ -1,10 +1,13 @@
 <resources>
     <string name="app_name">Mute Notification</string>
     <string name="notification_listener_service">"Mute Notification"</string>
+    <string name="app_header">"focus."</string>
     <string name="notification_listener_service_explanation">"For the app , cancel all push notification"</string>
     <string name="notification_listener_boot_permission">"Enable auto start"</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
+    <string name="mute">Mute</string>
+    <string name="notification">Notification</string>
     <string name="switch_mute_notification_text">Mute Notification</string>
     <string name="permission_request_cancel_message">You should allow to run app</string>
 </resources>
