@@ -10,4 +10,6 @@
     <string name="notification">Notification</string>
     <string name="switch_mute_notification_text">Mute Notification</string>
     <string name="permission_request_cancel_message">You should allow to run app</string>
+    <string name="muteexp"><![CDATA[<p>Notifications are <strong>muted</strong> (in order to focus on your works).</p>]]></string>
+    <string name="notificationexp"><![CDATA[<p>Notifications are <strong>allowed.</strong></p>]]></string>
 </resources>

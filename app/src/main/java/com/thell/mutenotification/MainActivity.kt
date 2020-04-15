@@ -1,14 +1,20 @@
 package com.thell.mutenotification
 
+
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
-import androidx.appcompat.app.AppCompatActivity
+import android.graphics.BitmapFactory
+import android.graphics.BitmapShader
+import android.graphics.Shader
 import android.os.Bundle
+import android.text.Html
+import android.text.Spanned
 import android.view.Window
 import android.view.WindowManager
 import android.widget.CompoundButton
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import com.thell.mutenotification.broadcastreceiver.NotificationServiceBroadcastReceiver
 import com.thell.mutenotification.helper.Global
@@ -58,6 +64,7 @@ class MainActivity : AppCompatActivity()
         requestWindowFeature(Window.FEATURE_NO_TITLE)
         this.window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN)
         setContentView(R.layout.activity_main)
+        setTextViewPatternBackground()
         MuteStateAction = Global.getMuteStateAction(this)
     }
 
@@ -138,12 +145,30 @@ class MainActivity : AppCompatActivity()
 
         }
 
+        mainActivityMuteStateExpTextView.apply {
+
+            val sp : Spanned = when(state)
+            {
+                true -> Html.fromHtml(getString(R.string.muteexp))
+                else -> Html.fromHtml(getString(R.string.notificationexp))
+            }
+
+            text = sp
+
+        }
 
     }
 
     private fun init()
     {
         NotificationServiceHelper.start(this)
+    }
+
+    private fun setTextViewPatternBackground()
+    {
+        val bitmap = BitmapFactory.decodeResource(resources, R.drawable.pattern)
+        val shader: Shader = BitmapShader(bitmap, Shader.TileMode.CLAMP, Shader.TileMode.CLAMP)
+        mainActivityHeaderTextView.paint.shader = shader
     }
 
     private fun initUI()
