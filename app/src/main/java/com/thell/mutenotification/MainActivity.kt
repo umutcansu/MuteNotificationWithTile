@@ -1,7 +1,9 @@
 package com.thell.mutenotification
 
 
+import android.app.AlertDialog
 import android.content.Context
+import android.content.DialogInterface
 import android.content.Intent
 import android.content.IntentFilter
 import android.graphics.BitmapFactory
@@ -10,6 +12,7 @@ import android.graphics.Shader
 import android.os.Bundle
 import android.text.Html
 import android.text.Spanned
+import android.view.View
 import android.view.Window
 import android.view.WindowManager
 import android.widget.CompoundButton
@@ -53,6 +56,35 @@ class MainActivity : AppCompatActivity()
             val state = p1!!.getBooleanExtra(Global.MUTE_STATE_KEY,false)
             checkNotificationState(state)
         }
+    }
+
+    private val infoOnClick = object :View.OnClickListener
+    {
+
+        lateinit var dialog:AlertDialog
+        lateinit var alertDialogBuilder:AlertDialog.Builder
+        override fun onClick(p0: View?)
+        {
+            if(!::alertDialogBuilder.isInitialized)
+            {
+                alertDialogBuilder = AlertDialog.Builder(this@MainActivity)
+                alertDialogBuilder.setTitle(R.string.app_name)
+                alertDialogBuilder.setMessage(Html.fromHtml(getString(R.string.info)))
+                alertDialogBuilder.setPositiveButton(
+                    R.string.yes,
+                    DialogInterface.OnClickListener { dialog, id ->
+                        dialog.dismiss()
+                    })
+            }
+            if(!::dialog.isInitialized)
+            {
+                dialog = alertDialogBuilder.create()
+            }
+
+            dialog.show()
+
+        }
+
     }
 
 //-----------------------------------ANDROID--------------------------------------------------------
@@ -171,8 +203,11 @@ class MainActivity : AppCompatActivity()
         mainActivityHeaderTextView.paint.shader = shader
     }
 
+
+
     private fun initUI()
     {
+        mainActivityInfoButton.setOnClickListener(infoOnClick)
         val filter = IntentFilter(Global.NotificationServiceBroadcastReceiver)
         registerReceiver(receiver, filter)
         setStateInit()

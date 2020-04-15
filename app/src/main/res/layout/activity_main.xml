@@ -1,76 +1,114 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-
     tools:context=".MainActivity">
 
-    <ToggleButton
-        android:id="@+id/mainActivityMuteSwitch"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
-        android:layout_marginTop="32dp"
-        android:background="@drawable/toggle_selector"
-        android:checked="false"
-        android:text=""
-        android:textOff=""
-        android:textOn=""
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/mainActivityHeaderTextView" />
-
-    <TextView
-        android:id="@+id/mainActivityHeaderTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="32dp"
-        android:layout_marginEnd="16dp"
-        android:checkMarkTintMode="screen"
-        android:gravity="center_horizontal"
-        android:text="@string/app_header"
-        android:textColor="@android:color/holo_orange_dark"
-        android:textSize="72sp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="@+id/mainActivityMuteSwitch"
-        app:layout_constraintStart_toStartOf="@+id/mainActivityMuteSwitch"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/mainActivityMuteStateTextView"
-        android:layout_width="0dp"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:checkMarkTintMode="screen"
-        android:gravity="center_horizontal"
-        android:text="@string/notification"
-        android:textColor="@color/colorNotificationSetState"
-        android:textSize="24sp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="@+id/mainActivityMuteSwitch"
-        app:layout_constraintStart_toStartOf="@+id/mainActivityMuteSwitch"
-        app:layout_constraintTop_toBottomOf="@+id/mainActivityMuteSwitch" />
-
-
-    <TextView
-        android:id="@+id/mainActivityMuteStateExpTextView"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="64dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="64dp"
-        android:checkMarkTintMode="screen"
-        android:gravity="center_horizontal"
-        android:text="@string/notificationexp"
-        android:textColor="@color/colorNotificationSetState"
-        android:textSize="18sp"
+        app:layout_constraintBottom_toTopOf="@+id/constraintLayout2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/mainActivityMuteStateTextView" />
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageButton
+            android:id="@+id/mainActivityInfoButton"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="8dp"
+            android:background="@drawable/button_border"
+            android:scaleType="fitXY"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_info_black_24dp" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout2"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/constraintLayout">
+
+        <ToggleButton
+            android:id="@+id/mainActivityMuteSwitch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/toggle_selector"
+            android:checked="false"
+            android:text=""
+            android:textOff=""
+            android:textOn=""
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/mainActivityHeaderTextView" />
+
+        <TextView
+            android:id="@+id/mainActivityHeaderTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:checkMarkTintMode="screen"
+            android:gravity="center_horizontal"
+            android:text="@string/app_header"
+            android:textColor="@android:color/holo_orange_dark"
+            android:textSize="72sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="@+id/mainActivityMuteSwitch"
+            app:layout_constraintStart_toStartOf="@+id/mainActivityMuteSwitch"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/mainActivityMuteStateTextView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:checkMarkTintMode="screen"
+            android:gravity="center_horizontal"
+            android:textColor="@color/colorNotificationSetState"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="@+id/mainActivityMuteSwitch"
+            app:layout_constraintStart_toStartOf="@+id/mainActivityMuteSwitch"
+            app:layout_constraintTop_toBottomOf="@+id/mainActivityMuteSwitch"
+            tools:text="@string/notification" />
+
+
+        <TextView
+            android:id="@+id/mainActivityMuteStateExpTextView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="64dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="64dp"
+            android:checkMarkTintMode="screen"
+            android:gravity="center_horizontal"
+            android:textColor="@color/colorNotificationSetState"
+            android:textSize="18sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/mainActivityMuteStateTextView"
+            tools:text="@string/notificationexp" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
 
 
 
