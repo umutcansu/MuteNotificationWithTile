@@ -76,7 +76,7 @@ class PermissionHelper {
             val alertDialogBuilder = AlertDialog.Builder(activity)
             alertDialogBuilder.apply {
                 setTitle(R.string.notification_listener_service)
-                setMessage(R.string.notification_listener_service_explanation)
+                setMessage(R.string.system_alert_permission_explanation)
                 setCancelable(false)
                 setPositiveButton(
                     R.string.yes,
@@ -109,8 +109,10 @@ class PermissionHelper {
 
         private fun requestSystemAlertPermission(activity: Activity)
         {
+
+            //https://stackoverflow.com/questions/59214359/anyone-knows-where-is-start-in-background-permission-in-miui-11/59380516#59380516
             val intent = Intent(
-                Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
+                Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
                 Uri.parse("package:" + activity.packageName)
             )
             activity.startActivityForResult(intent, Global.SYSTEM_ALERT_REQUEST_CODE)

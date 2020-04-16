@@ -3,6 +3,7 @@
     <string name="notification_listener_service">"Mute Notification"</string>
     <string name="app_header">"focus."</string>
     <string name="notification_listener_service_explanation">"For the app , cancel all push notification"</string>
+    <string name="system_alert_permission_explanation">"For the app , show page"</string>
     <string name="notification_listener_boot_permission">"Enable auto start"</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
