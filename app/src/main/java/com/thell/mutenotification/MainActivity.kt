@@ -1,6 +1,5 @@
 package com.thell.mutenotification
 
-
 import android.app.AlertDialog
 import android.content.Context
 import android.content.DialogInterface
@@ -63,6 +62,7 @@ class MainActivity : AppCompatActivity()
 
         lateinit var dialog:AlertDialog
         lateinit var alertDialogBuilder:AlertDialog.Builder
+
         override fun onClick(p0: View?)
         {
             if(!::alertDialogBuilder.isInitialized)
@@ -224,6 +224,15 @@ class MainActivity : AppCompatActivity()
         }
     }
 
+    private fun systemAlertPermissionDialogListener(state:Boolean)
+    {
+        if(!state)
+        {
+            Toast.makeText(this,getString(R.string.permission_request_cancel_message), Toast.LENGTH_LONG).show()
+            checkAndRequestSystemAlertPermission()
+        }
+    }
+
     private fun checkAndRequestBootReceiverPermission()
     {
         try
@@ -240,6 +249,28 @@ class MainActivity : AppCompatActivity()
                 {
                     initUI()
                 }
+            }
+            else
+            {
+                initUI()
+            }
+
+        }
+        catch (e: Exception)
+        {
+
+        }
+    }
+
+    private fun checkAndRequestSystemAlertPermission()
+    {
+        try
+        {
+
+            if(PermissionHelper.checkSystemAlertPermission(this))
+            {
+                val dialog = PermissionHelper.buildSystemAlertPermissionAlertDialog(this,::systemAlertPermissionDialogListener)
+                dialog.show()
             }
             else
             {

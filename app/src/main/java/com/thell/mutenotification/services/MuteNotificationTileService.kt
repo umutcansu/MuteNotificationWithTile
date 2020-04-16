@@ -26,9 +26,10 @@ class MuteNotificationTileService: TileService()
         MuteStateAction = Global.getMuteStateAction(this)
     }
 
-    override fun onClick() {
+    override fun onClick()
+    {
         Log.i("tile","onClick")
-
+        super.onClick()
         if(!PermissionHelper.isNotificationServiceEnabled(this))
         {
             val intent = Intent(this,MainActivity::class.java)
@@ -50,7 +51,7 @@ class MuteNotificationTileService: TileService()
 
             setTile()
 
-            super.onClick()
+
         }
 
     }
@@ -78,14 +79,21 @@ class MuteNotificationTileService: TileService()
 
     override fun onStartListening() {
         Log.i("tile","onStartListening")
+        super.onStartListening()
         registerReceiver()
         setTile()
-        super.onStartListening()
     }
 
     override fun onStopListening() {
         Log.i("tile","onStopListening")
         unregisterReceiver(receiver)
+        val tile = qsTile
+        tile.apply {
+            label =  getString(R.string.loading)
+            state = Tile.STATE_UNAVAILABLE
+            icon = Icon.createWithResource(this@MuteNotificationTileService, R.drawable.ic_hourglass_full_black_24dp)
+            updateTile()
+        }
         super.onStopListening()
     }
 
@@ -107,21 +115,26 @@ class MuteNotificationTileService: TileService()
     fun setTile()
     {
         val tile = qsTile
-        if(Global.getMuteStateAction(this).getMuteState())
-        {
-            tile.label = getString(R.string.mute)
-            tile.state = Tile.STATE_ACTIVE
-            tile.icon = Icon.createWithResource(this, R.drawable.ic_notifications_off_black_24dp)
 
+        tile.apply {
+            if(Global.getMuteStateAction(this@MuteNotificationTileService).getMuteState())
+            {
+                label = getString(R.string.mute)
+                state = Tile.STATE_ACTIVE
+                icon = Icon.createWithResource(this@MuteNotificationTileService, R.drawable.ic_notifications_off_black_24dp)
+
+            }
+            else
+            {
+                label =  getString(R.string.notification)
+                state = Tile.STATE_INACTIVE
+                icon = Icon.createWithResource(this@MuteNotificationTileService, R.drawable.ic_notifications_black_24dp)
+            }
+
+            updateTile()
         }
-        else
-        {
-            tile.label =  getString(R.string.notification)
-            tile.state = Tile.STATE_INACTIVE
-            tile.icon = Icon.createWithResource(this, R.drawable.ic_notifications_black_24dp)
-        }
-        tile.state = tile.state
-        tile.updateTile()
+
+
     }
 
 
