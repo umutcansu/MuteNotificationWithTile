@@ -6,6 +6,7 @@
     <string name="system_alert_permission_explanation">"For the app , show page"</string>
     <string name="notification_listener_boot_permission">"Enable auto start"</string>
     <string name="yes">Yes</string>
+    <string name="ok">Ok</string>
     <string name="no">No</string>
     <string name="mute">Mute</string>
     <string name="notification">Notification</string>

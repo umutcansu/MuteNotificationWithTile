@@ -18,8 +18,10 @@ import android.widget.CompoundButton
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import androidx.core.text.HtmlCompat
 import com.thell.mutenotification.broadcastreceiver.NotificationServiceBroadcastReceiver
 import com.thell.mutenotification.helper.Global
+import com.thell.mutenotification.helper.GuiHelper
 import com.thell.mutenotification.helper.NotificationServiceHelper
 import com.thell.mutenotification.helper.PermissionHelper
 import com.thell.mutenotification.helper.bootreceiver.BootReceiverHelper
@@ -69,10 +71,10 @@ class MainActivity : AppCompatActivity()
             {
                 alertDialogBuilder = AlertDialog.Builder(this@MainActivity)
                 alertDialogBuilder.setTitle(R.string.app_name)
-                alertDialogBuilder.setMessage(Html.fromHtml(getString(R.string.info)))
+                alertDialogBuilder.setMessage(HtmlCompat.fromHtml(getString(R.string.info),HtmlCompat.FROM_HTML_MODE_LEGACY))
                 alertDialogBuilder.setPositiveButton(
-                    R.string.yes,
-                    DialogInterface.OnClickListener { dialog, id ->
+                    R.string.ok,
+                    DialogInterface.OnClickListener { dialog, _ ->
                         dialog.dismiss()
                     })
             }
@@ -96,7 +98,7 @@ class MainActivity : AppCompatActivity()
         requestWindowFeature(Window.FEATURE_NO_TITLE)
         this.window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN)
         setContentView(R.layout.activity_main)
-        setTextViewPatternBackground()
+        GuiHelper.setTextViewPatternBackground(resources,R.drawable.pattern,mainActivityHeaderTextView)
         MuteStateAction = Global.getMuteStateAction(this)
     }
 
@@ -181,8 +183,8 @@ class MainActivity : AppCompatActivity()
 
             val sp : Spanned = when(state)
             {
-                true -> Html.fromHtml(getString(R.string.muteexp))
-                else -> Html.fromHtml(getString(R.string.notificationexp))
+                true -> HtmlCompat.fromHtml(getString(R.string.muteexp),HtmlCompat.FROM_HTML_MODE_LEGACY)
+                else -> HtmlCompat.fromHtml(getString(R.string.notificationexp),HtmlCompat.FROM_HTML_MODE_LEGACY)
             }
 
             text = sp
@@ -196,12 +198,7 @@ class MainActivity : AppCompatActivity()
         NotificationServiceHelper.start(this)
     }
 
-    private fun setTextViewPatternBackground()
-    {
-        val bitmap = BitmapFactory.decodeResource(resources, R.drawable.pattern)
-        val shader: Shader = BitmapShader(bitmap, Shader.TileMode.CLAMP, Shader.TileMode.CLAMP)
-        mainActivityHeaderTextView.paint.shader = shader
-    }
+
 
 
 

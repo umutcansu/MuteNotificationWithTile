@@ -112,7 +112,7 @@ class BootReceiverHelper private constructor() {
 
     private fun autoStartAsus(activity: Activity) {
         if (isPackageExists(activity, PACKAGE_ASUS_MAIN)) {
-            showAlert(activity, DialogInterface.OnClickListener { dialog, which ->
+            showAlert(activity, DialogInterface.OnClickListener { dialog, _ ->
                 try {
                     BootReceiverPrefHelper.Companion.writeBoolean(activity, true)
                     startIntent(activity, PACKAGE_ASUS_MAIN, PACKAGE_ASUS_COMPONENT)
@@ -135,7 +135,7 @@ class BootReceiverHelper private constructor() {
 
     private fun autoStartXiaomi(activity: Activity) {
         if (isPackageExists(activity, PACKAGE_XIAOMI_MAIN)) {
-            showAlert(activity, DialogInterface.OnClickListener { dialog, which ->
+            showAlert(activity, DialogInterface.OnClickListener { _, _ ->
                 try {
                     BootReceiverPrefHelper.writeBoolean(activity, true)
                     startIntent(
@@ -152,7 +152,7 @@ class BootReceiverHelper private constructor() {
 
     private fun autoStartLetv(activity: Activity) {
         if (isPackageExists(activity, PACKAGE_LETV_MAIN)) {
-            showAlert(activity, DialogInterface.OnClickListener { dialog, which ->
+            showAlert(activity, DialogInterface.OnClickListener { _, _ ->
                 try {
                     BootReceiverPrefHelper.Companion.writeBoolean(activity, true)
                     startIntent(activity, PACKAGE_LETV_MAIN, PACKAGE_LETV_COMPONENT)
@@ -165,7 +165,7 @@ class BootReceiverHelper private constructor() {
 
     private fun autoStartHonor(activity: Activity) {
         if (isPackageExists(activity, PACKAGE_HONOR_MAIN)) {
-            showAlert(activity, DialogInterface.OnClickListener { dialog, which ->
+            showAlert(activity, DialogInterface.OnClickListener { _, _ ->
                 try {
                     BootReceiverPrefHelper.Companion.writeBoolean(activity, true)
                     startIntent(activity, PACKAGE_HONOR_MAIN, PACKAGE_HONOR_COMPONENT)
@@ -182,7 +182,7 @@ class BootReceiverHelper private constructor() {
                 PACKAGE_OPPO_FALLBACK
             )
         ) {
-            showAlert(activity, DialogInterface.OnClickListener { dialog, which ->
+            showAlert(activity, DialogInterface.OnClickListener { _, _ ->
                 try {
                     BootReceiverPrefHelper.Companion.writeBoolean(activity, true)
                     startIntent(activity, PACKAGE_OPPO_MAIN, PACKAGE_OPPO_COMPONENT)
@@ -219,7 +219,7 @@ class BootReceiverHelper private constructor() {
                 PACKAGE_VIVO_FALLBACK
             )
         ) {
-            showAlert(activity, DialogInterface.OnClickListener { dialog, which ->
+            showAlert(activity, DialogInterface.OnClickListener { _, _ ->
                 try {
                     BootReceiverPrefHelper.Companion.writeBoolean(activity, true)
                     startIntent(activity, PACKAGE_VIVO_MAIN, PACKAGE_VIVO_COMPONENT)
@@ -252,7 +252,7 @@ class BootReceiverHelper private constructor() {
 
     private fun autoStartNokia(activity: Activity) {
         if (isPackageExists(activity, PACKAGE_NOKIA_MAIN)) {
-            showAlert(activity, DialogInterface.OnClickListener { dialog, which ->
+            showAlert(activity, DialogInterface.OnClickListener { _, _ ->
                 try {
                     BootReceiverPrefHelper.Companion.writeBoolean(activity, true)
                     startIntent(activity, PACKAGE_NOKIA_MAIN, PACKAGE_NOKIA_COMPONENT)
