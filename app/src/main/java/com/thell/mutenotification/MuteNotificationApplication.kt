@@ -9,28 +9,26 @@ import com.thell.mutenotification.services.MuteNotificationTileService
 
 class MuteNotificationApplication : Application()
 {
+    private lateinit var uncaughtExceptionHandler:  Thread.UncaughtExceptionHandler
 
     override fun onCreate() {
         super.onCreate()
-
-        val exceptionHandler = MuteNotificationUncaughtExceptionHandler()
-        Thread.setDefaultUncaughtExceptionHandler(exceptionHandler)
-        NotificationServiceHelper.muteNotificationService = Intent(this, MuteNotificationListenerService::class.java)
+        Thread.setDefaultUncaughtExceptionHandler(handler)
         init()
-
     }
+
+    private var  handler = Thread.UncaughtExceptionHandler { p0, p1 ->
+        if(p1.message != null)
+            Log.e("UncaughtException",p1.message!!)
+
+        uncaughtExceptionHandler.uncaughtException(p0, p1);
+    };
 
     private fun init()
     {
-        var muteNotificationTileService: Intent = Intent(this, MuteNotificationTileService::class.java)
+        NotificationServiceHelper.muteNotificationService = Intent(this, MuteNotificationListenerService::class.java)
+        val muteNotificationTileService = Intent(this, MuteNotificationTileService::class.java)
         this.startService(muteNotificationTileService)
     }
 }
 
-class MuteNotificationUncaughtExceptionHandler : Thread.UncaughtExceptionHandler
-{
-    override fun uncaughtException(thread: Thread, exc: Throwable)
-    {
-        Log.e("UncaughtExceptionHandler",exc.message)
-    }
-}
