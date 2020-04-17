@@ -10,7 +10,7 @@ import android.os.Build
 import androidx.appcompat.app.AlertDialog
 import com.thell.mutenotification.helper.Global
 
-
+//https://en.dev4app.com/archives/44383983-how-to-programmatically-enable-auto-start-and-floating-window-permissions.html
 class BootReceiverHelper private constructor() {
     /***
      * Xiaomi

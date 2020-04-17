@@ -16,6 +16,8 @@ class Global
         const  val  NotificationServiceBroadcastReceiver = "broadcastreceiver.NotificationServiceBroadcastReceiver"
         const val   FILE_NAME = "PREF_FILE"
         const val   MUTE_STATE_KEY = "STATE"
+        const val   VERSION = "1.0.7"
+
 
         private var MuteStateAction : IMuteStateAction? = null
 
