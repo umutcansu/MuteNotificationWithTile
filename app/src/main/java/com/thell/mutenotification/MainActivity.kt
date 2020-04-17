@@ -71,8 +71,8 @@ class MainActivity : AppCompatActivity()
             {
                 val message =
                     "${HtmlCompat.fromHtml(getString(R.string.info),HtmlCompat.FROM_HTML_MODE_LEGACY)}" +
-//                     "${HtmlCompat.fromHtml("<br>",HtmlCompat.FROM_HTML_MODE_LEGACY)}"+
-                            "Version: ${Global.VERSION}"
+                    //"${HtmlCompat.fromHtml("<br>",HtmlCompat.FROM_HTML_MODE_LEGACY)}"+
+                    "Version: ${Global.VERSION}"
                 alertDialogBuilder = AlertDialog.Builder(this@MainActivity)
                 alertDialogBuilder.setTitle(R.string.app_name)
                 alertDialogBuilder.setMessage(message)
