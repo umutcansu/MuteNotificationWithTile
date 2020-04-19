@@ -17,6 +17,7 @@ class Global
         const val   FILE_NAME = "PREF_FILE"
         const val   MUTE_STATE_KEY = "STATE"
         const val   VERSION = "1.0.7"
+        const val   DATABASE_NAME = "AppDatabase"
 
 
 
