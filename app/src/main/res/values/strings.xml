@@ -16,4 +16,7 @@
     <string name="notificationexp"><![CDATA[<p>Notifications are <strong>allowed.</strong></p>]]></string>
     <string name="info"><![CDATA[<p>Coder by <strong>Umut Cansu</strong></p>]]></string>
     <string name="loading">Loading..</string>
+    <string name="copyright">giving unto caesar that which is caesar\'s</string>
+    <string name="toolbar_close">Close</string>
+    <string name="toolbar_open">Open</string>
 </resources>
