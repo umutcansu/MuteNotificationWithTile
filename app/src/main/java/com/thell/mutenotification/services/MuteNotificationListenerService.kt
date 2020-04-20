@@ -29,9 +29,16 @@ class MuteNotificationListenerService : NotificationListenerService()
 
         return NotificationEntity().apply {
             PackageName = sbn.packageName ?: ""
+
             IconId =  extras.getInt(Notification.EXTRA_SMALL_ICON).toString()
-            Ticket = notification.tickerText.toString()
-            Category = notification.category
+
+            Ticket = if(notification.tickerText == null)
+                ""
+            else
+                notification.tickerText.toString()
+
+
+            Category = notification.category ?: ""
             PostTime = sbn.postTime
             NotificationID = sbn.id
         }
