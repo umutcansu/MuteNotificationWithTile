@@ -6,47 +6,57 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.ActionBarDrawerToggle
-
+import androidx.appcompat.widget.Toolbar
+import androidx.drawerlayout.widget.DrawerLayout
 import com.thell.mutenotification.R
 import com.thell.mutenotification.adapter.NavigationDrawerAdapter
 import com.thell.mutenotification.model.NavigationDrawerItem
+import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.fragment_navigation_drawer.view.*
+import androidx.recyclerview.widget.LinearLayoutManager
 
 
-class NavigationDrawerFragment : Fragment() {
+class NavigationDrawerFragment() : Fragment()
+{
 
-    lateinit var mDrawerToogle: ActionBarDrawerToggle
-    var selected = ""
+    private lateinit var mDrawerToggle: ActionBarDrawerToggle
+    private lateinit var navigationDrawerRecyclerView: RecyclerView
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View?
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
+                              savedInstanceState: Bundle?): View?
     {
         val v = inflater.inflate(R.layout.fragment_navigation_drawer, container, false)
-        setupRecylerView(v.navigationDrawerRecyclerView)
-
+        navigationDrawerRecyclerView =  v.navigationDrawerRecyclerView
         return v
     }
 
-    fun setupDrawertoogle(drawerLayout: androidx.drawerlayout.widget.DrawerLayout, toolbar: androidx.appcompat.widget.Toolbar) {
-        mDrawerToogle = ActionBarDrawerToggle(activity, drawerLayout, toolbar,
+    fun setupDrawerToggle(drawerLayout: DrawerLayout, toolbar: Toolbar,
+                          menuChangeListener : (menu:NavigationDrawerItem) -> Unit ={}) {
+
+        mDrawerToggle = ActionBarDrawerToggle(activity, drawerLayout, toolbar,
             R.string.toolbar_open,
             R.string.toolbar_close
         )
+        setupRecyclerView()
+
         drawerLayout.post()
         {
-            //mDrawerToogle.syncState()
+            //mDrawerToggle.syncState()
         }
     }
 
-    private fun setupRecylerView(rc: androidx.recyclerview.widget.RecyclerView)
+    private fun setupRecyclerView(menuChangeListener : (menu:NavigationDrawerItem) -> Unit ={})
     {
-        val adapter = NavigationDrawerAdapter(rc.context,
-            NavigationDrawerItem.allMenuItem()
+        val adapter = NavigationDrawerAdapter(
+            navigationDrawerRecyclerView.context,
+            NavigationDrawerItem.allMenuItem(),
+            menuChangeListener
         )
-        rc.layoutManager = androidx.recyclerview.widget.LinearLayoutManager(
-            rc.context,
-            androidx.recyclerview.widget.LinearLayoutManager.VERTICAL,
+        navigationDrawerRecyclerView.layoutManager = LinearLayoutManager(
+            navigationDrawerRecyclerView.context,
+            LinearLayoutManager.VERTICAL,
             false
         )
-        rc.adapter =adapter
+        navigationDrawerRecyclerView.adapter =adapter
     }
 }

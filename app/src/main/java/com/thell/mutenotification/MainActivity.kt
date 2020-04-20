@@ -29,6 +29,7 @@ import com.thell.mutenotification.helper.PermissionHelper
 import com.thell.mutenotification.helper.bootreceiver.BootReceiverHelper
 import com.thell.mutenotification.helper.bootreceiver.BootReceiverPrefHelper
 import com.thell.mutenotification.helper.mutestate.IMuteStateAction
+import com.thell.mutenotification.model.NavigationDrawerItem
 import com.thell.mutenotification.services.MuteNotificationListenerService
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_navigation_drawer.*
@@ -198,8 +199,13 @@ class MainActivity : AppCompatActivity()
     private fun setupNavigationDrawer()
     {
         val navFrag = supportFragmentManager.findFragmentById(R.id.mainActivityDrawerLayoutFragment) as NavigationDrawerFragment
-        navFrag.setupDrawertoogle(mainActivityDrawerLayout,mainActivityToolbar as Toolbar)
+        navFrag.setupDrawerToggle(mainActivityDrawerLayout,mainActivityToolbar as Toolbar)
 
+    }
+
+    private fun menuChangeListener(menu:NavigationDrawerItem)
+    {
+        Log.e("","")
     }
 
     private fun setupToolbar()

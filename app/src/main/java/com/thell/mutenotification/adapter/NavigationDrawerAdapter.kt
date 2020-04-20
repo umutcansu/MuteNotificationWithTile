@@ -5,12 +5,13 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.thell.mutenotification.R
 import com.thell.mutenotification.model.NavigationDrawerItem
 import kotlinx.android.synthetic.main.navigation_drawer_item_layout.view.*
 
-class NavigationDrawerAdapter(val context: Context, val data: ArrayList<NavigationDrawerItem>) :
+class NavigationDrawerAdapter(val context: Context, val data: ArrayList<NavigationDrawerItem>,val menuChangeListener:(current:NavigationDrawerItem) -> Unit = {}) :
     RecyclerView.Adapter<NavigationDrawerAdapter.ViewHolder>() {
 
 
@@ -19,9 +20,7 @@ class NavigationDrawerAdapter(val context: Context, val data: ArrayList<Navigati
 
         val v = inflater.inflate(R.layout.navigation_drawer_item_layout, p0, false)
 
-        val holder = NavigationDrawerAdapter.ViewHolder(v)
-
-        return holder
+        return ViewHolder(v)
 
     }
 
@@ -35,21 +34,48 @@ class NavigationDrawerAdapter(val context: Context, val data: ArrayList<Navigati
         p0.setData(current)
     }
 
-    class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
+    inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
     {
 
-        fun setData(current: NavigationDrawerItem) {
+        fun setData(current: NavigationDrawerItem)
+        {
             itemView.navigationDrawerItemIcon.setImageResource(current.icon)
             itemView.navigationDrawerItemText.text = current.title
 
-            itemView.setOnClickListener{
+           setBackgroundColorMenuItem(current.selected)
 
-                when(current.title)
+            itemView.rootLayout.setOnClickListener{
+               /* when(current.title)
                 {
-                    NavigationDrawerItem.SETTING -> Log.e("","")
+                    NavigationDrawerItem.SETTING -> ""
+                    NavigationDrawerItem.HISTORY ->""
+                    NavigationDrawerItem.TIMER ->""
+                    else -> ""
+                }*/
+                setSelected(current)
+                menuChangeListener(current)
 
-                }
             }
+        }
+
+        private fun setBackgroundColorMenuItem(state:Boolean):Boolean
+        {
+            if(state)
+                itemView.rootLayout.setBackgroundColor(ContextCompat.getColor(itemView.context, R.color.colorSelectedMenuItem))
+            else
+                itemView.rootLayout.setBackgroundColor(ContextCompat.getColor(itemView.context,  R.color.colorMenuItem))
+
+            return state
+        }
+
+        private fun setSelected(current: NavigationDrawerItem)
+        {
+            for (i in data)
+            {
+               i.selected = setBackgroundColorMenuItem(i == current)
+            }
+            notifyDataSetChanged()
+
         }
     }
 }

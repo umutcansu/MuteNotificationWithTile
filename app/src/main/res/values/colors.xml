@@ -5,4 +5,6 @@
     <color name="colorAccent">#03DAC5</color>
     <color name="colorMuteSetState">#0091EA</color>
     <color name="colorNotificationSetState">#7E7E7E</color>
+    <color name="colorSelectedMenuItem">@android:color/tertiary_text_light</color>
+    <color name="colorMenuItem">@android:color/background_light</color>
 </resources>
