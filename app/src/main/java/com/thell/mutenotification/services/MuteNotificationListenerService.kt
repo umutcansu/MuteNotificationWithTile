@@ -12,6 +12,7 @@ import com.thell.mutenotification.database.AppDatabase
 import com.thell.mutenotification.database.entity.NotificationEntity
 import com.thell.mutenotification.helper.DatabaseHelper
 import com.thell.mutenotification.helper.Global
+import com.thell.mutenotification.helper.GuiHelper
 
 
 class MuteNotificationListenerService : NotificationListenerService()
@@ -37,6 +38,10 @@ class MuteNotificationListenerService : NotificationListenerService()
             else
                 notification.tickerText.toString()
 
+            ApplicationName = GuiHelper.getAppNameFromPackageName(
+                this@MuteNotificationListenerService,
+                PackageName
+            )
 
             Category = notification.category ?: ""
             PostTime = sbn.postTime
@@ -58,10 +63,11 @@ class MuteNotificationListenerService : NotificationListenerService()
         val notificationEntity = convertNotificationEntity(sbn)
         saveNotification(notificationEntity)
 
+
         if(Global.DEBUG)
             Toast.makeText(
                 this,
-                "Push Notification ${notificationEntity.PackageName}",
+                "Push Notification For ${notificationEntity.ApplicationName}",
                     Toast.LENGTH_SHORT
             ).show()
     }

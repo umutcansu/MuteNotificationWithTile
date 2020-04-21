@@ -21,7 +21,8 @@ data class NavigationDrawerItem(var title: String, var icon: Int,var selected : 
                 add(
                     NavigationDrawerItem(
                         HOME,
-                        R.drawable.ic_home_black_24dp
+                        R.drawable.ic_home_black_24dp,
+                        true
                     )
                 )
                 add(

@@ -19,4 +19,7 @@
     <string name="copyright">giving unto caesar that which is caesar\'s</string>
     <string name="toolbar_close">Close</string>
     <string name="toolbar_open">Open</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

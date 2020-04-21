@@ -28,6 +28,20 @@ class GuiHelper
             textview.paint.shader = shader
         }
 
+        fun getAppNameFromPackageName(context: Context, packageName: String): String
+        {
+            return try
+            {
+                val packageManager = context.packageManager
+                val info = packageManager.getApplicationInfo(packageName, PackageManager.GET_META_DATA)
+                packageManager.getApplicationLabel(info).toString()
+            }
+            catch (t:Throwable)
+            {
+                ""
+            }
+        }
+
         fun getIcon(context: Context, iconId:Int,pack:String):Drawable?
         {
             var result :Drawable? = null

@@ -42,18 +42,16 @@ class NavigationDrawerAdapter(val context: Context, val data: ArrayList<Navigati
             itemView.navigationDrawerItemIcon.setImageResource(current.icon)
             itemView.navigationDrawerItemText.text = current.title
 
-           setBackgroundColorMenuItem(current.selected)
+            setBackgroundColorMenuItem(current.selected)
 
             itemView.rootLayout.setOnClickListener{
-               /* when(current.title)
+
+                if(getSelected() != current)
                 {
-                    NavigationDrawerItem.SETTING -> ""
-                    NavigationDrawerItem.HISTORY ->""
-                    NavigationDrawerItem.TIMER ->""
-                    else -> ""
-                }*/
-                setSelected(current)
-                menuChangeListener(current)
+                    menuChangeListener(current)
+                    setSelected(current)
+                }
+
 
             }
         }
@@ -76,6 +74,11 @@ class NavigationDrawerAdapter(val context: Context, val data: ArrayList<Navigati
             }
             notifyDataSetChanged()
 
+        }
+
+        private fun getSelected():NavigationDrawerItem
+        {
+            return data.first { it.selected }
         }
     }
 }

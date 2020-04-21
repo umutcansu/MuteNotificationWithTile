@@ -11,6 +11,8 @@ data class NotificationEntity
     var ID: Int = 0,
     @ColumnInfo(name = "PackageName")
     var PackageName: String = "",
+    @ColumnInfo(name = "ApplicationName")
+    var ApplicationName: String = "",
     @ColumnInfo(name = "IconId")
     var IconId: String="",
     @ColumnInfo(name = "Ticket")

@@ -33,70 +33,17 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
 
-                <ToggleButton
-                    android:id="@+id/mainActivityMuteSwitch"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerHorizontal="true"
-                    android:layout_centerVertical="true"
-                    android:layout_marginTop="16dp"
-                    android:background="@drawable/toggle_selector"
-                    android:checked="false"
-                    android:text=""
-                    android:textOff=""
-                    android:textOn=""
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:id="@+id/mainActivityFragmentContainer"
+                    tools:showIn="@layout/fragment_main"
+                    app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/mainActivityHeaderTextView" />
+                    app:layout_constraintBottom_toBottomOf="parent">
 
-                <TextView
-                    android:id="@+id/mainActivityHeaderTextView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginTop="16dp"
-                    android:layout_marginEnd="16dp"
-                    android:checkMarkTintMode="screen"
-                    android:gravity="center_horizontal"
-                    android:text="@string/app_header"
-                    android:textColor="@android:color/holo_orange_dark"
-                    android:textSize="72sp"
-                    android:textStyle="bold"
-                    app:layout_constraintEnd_toEndOf="@+id/mainActivityMuteSwitch"
-                    app:layout_constraintStart_toStartOf="@+id/mainActivityMuteSwitch"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <TextView
-                    android:id="@+id/mainActivityMuteStateTextView"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:checkMarkTintMode="screen"
-                    android:gravity="center_horizontal"
-                    android:textColor="@color/colorNotificationSetState"
-                    android:textSize="24sp"
-                    android:textStyle="bold"
-                    app:layout_constraintEnd_toEndOf="@+id/mainActivityMuteSwitch"
-                    app:layout_constraintStart_toStartOf="@+id/mainActivityMuteSwitch"
-                    app:layout_constraintTop_toBottomOf="@+id/mainActivityMuteSwitch"
-                    tools:text="@string/notification" />
-
-
-                <TextView
-                    android:id="@+id/mainActivityMuteStateExpTextView"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="64dp"
-                    android:layout_marginTop="16dp"
-                    android:layout_marginEnd="64dp"
-                    android:checkMarkTintMode="screen"
-                    android:gravity="center_horizontal"
-                    android:textColor="@color/colorNotificationSetState"
-                    android:textSize="18sp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/mainActivityMuteStateTextView"
-                    tools:text="@string/notificationexp" />
+                </FrameLayout>
             </androidx.constraintlayout.widget.ConstraintLayout>
 
         </com.google.android.material.appbar.AppBarLayout>

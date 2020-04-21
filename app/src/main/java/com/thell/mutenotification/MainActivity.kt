@@ -9,6 +9,7 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.os.Bundle
 import android.text.Spanned
+import android.util.Log
 import android.view.Gravity
 import android.view.View
 import android.view.Window
@@ -20,7 +21,10 @@ import androidx.appcompat.widget.Toolbar
 import androidx.core.content.ContextCompat
 import androidx.core.text.HtmlCompat
 import androidx.drawerlayout.widget.DrawerLayout
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
 import com.thell.mutenotification.broadcastreceiver.NotificationServiceBroadcastReceiver
+import com.thell.mutenotification.fragment.MainFragment
 import com.thell.mutenotification.fragment.NavigationDrawerFragment
 import com.thell.mutenotification.helper.Global
 import com.thell.mutenotification.helper.GuiHelper
@@ -41,31 +45,11 @@ class MainActivity : AppCompatActivity()
 
 //-----------------------------------VARIABLES------------------------------------------------------
 
-    private lateinit var MuteStateAction : IMuteStateAction
     private lateinit var drawerLayout: DrawerLayout
+    lateinit var manager: FragmentManager
     private lateinit var dialog:AlertDialog
     private var isPermission = true
     private lateinit var toolbar: Toolbar
-
-
-    private val switchChange = object : CompoundButton.OnCheckedChangeListener
-    {
-        override fun onCheckedChanged(p0: CompoundButton?, p1: Boolean)
-        {
-            if (::MuteStateAction.isInitialized)
-                MuteStateAction.switchMuteState()
-        }
-    }
-
-    private val receiver = object : NotificationServiceBroadcastReceiver()
-    {
-        override fun onReceive(p0: Context?, p1: Intent?)
-        {
-            super.onReceive(p0, p1)
-            val state = p1!!.getBooleanExtra(Global.MUTE_STATE_KEY,false)
-            checkNotificationState(state)
-        }
-    }
 
     private val infoOnClick = object :View.OnClickListener
     {
@@ -141,26 +125,29 @@ class MainActivity : AppCompatActivity()
     override fun onCreate(savedInstanceState: Bundle?)
     {
         super.onCreate(savedInstanceState)
-        NotificationServiceHelper.muteNotificationService = Intent(this, MuteNotificationListenerService::class.java)
-        requestWindowFeature(Window.FEATURE_NO_TITLE)
-        this.window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN)
+        NotificationServiceHelper.muteNotificationService =
+            Intent(this, MuteNotificationListenerService::class.java)
+        setupFullScreen()
         setContentView(R.layout.activity_main)
-        GuiHelper.setTextViewPatternBackground(resources,R.drawable.pattern,mainActivityHeaderTextView)
-        GuiHelper.setTextViewPatternBackground(resources,R.drawable.pattern,fragment_navigation_drawer_header_textView)
-        MuteStateAction = Global.getMuteStateAction(this)
+        initUI()
+        init()
     }
 
 
     override fun onResume()
     {
+
         if(isPermission)
             checkAndRequestNotificationPermission()
 
         super.onResume()
     }
 
+
+
     override fun onStop()
     {
+        Log.e("mainActivity","onStop")
         super.onStop()
 
         if(this::dialog.isInitialized)
@@ -169,10 +156,9 @@ class MainActivity : AppCompatActivity()
 
     override fun onDestroy()
     {
-
         try
         {
-            unregisterReceiver(receiver)
+
         }
         catch (e: Exception)
         {
@@ -182,30 +168,18 @@ class MainActivity : AppCompatActivity()
 
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?)
-    {
-
-        if(requestCode == Global.NOTIFICATION_PERMISSION_REQUEST_CODE)
-        {
-            checkAndRequestNotificationPermission()
-        }
-        else if(requestCode == Global.BOOT_PERMISSION_REQUEST_CODE)
-        {
-            checkAndRequestBootReceiverPermission()
-        }
-        super.onActivityResult(requestCode, resultCode, data)
-    }
-
+//-------------------------------------------NAVIGATION---------------------------------------------
     private fun setupNavigationDrawer()
     {
         val navFrag = supportFragmentManager.findFragmentById(R.id.mainActivityDrawerLayoutFragment) as NavigationDrawerFragment
-        navFrag.setupDrawerToggle(mainActivityDrawerLayout,mainActivityToolbar as Toolbar)
-
+        navFrag.setupDrawerToggle(mainActivityDrawerLayout,mainActivityToolbar as Toolbar,::menuChangeListener)
+        GuiHelper.setTextViewPatternBackground(resources,R.drawable.pattern,fragment_navigation_drawer_header_textView)
     }
 
     private fun menuChangeListener(menu:NavigationDrawerItem)
     {
         Log.e("","")
+        closeDrawerLayout()
     }
 
     private fun setupToolbar()
@@ -213,63 +187,23 @@ class MainActivity : AppCompatActivity()
         toolbar = mainActivityToolbar as Toolbar
     }
 
-//-----------------------------------BUSINESS-------------------------------------------------------
-    private fun checkNotificationState(state:Boolean)
+    private fun changeFragment(fragment: Fragment)
     {
 
-        mainActivityMuteSwitch.setOnCheckedChangeListener(null)
-        mainActivityMuteSwitch.isChecked = state
-        mainActivityMuteSwitch.setOnCheckedChangeListener(switchChange)
-        setState(state)
+        var transaction = manager.beginTransaction()
+        transaction.replace(R.id.mainActivityFragmentContainer, fragment)
+        transaction.addToBackStack("addFrag")
+        transaction.commit()
+        Runtime.getRuntime().gc()
     }
 
-    private  fun setStateInit()
+    override fun onBackPressed()
     {
-        val state = Global.getMuteStateAction(this).getMuteState()
-        checkNotificationState(state)
-    }
 
-    private  fun setState(state:Boolean)
-    {
-        mainActivityMuteStateTextView.apply {
-            if(state)
-            {
-                text = getString(R.string.mute)
-                setTextColor(ContextCompat.getColor(this@MainActivity, R.color.colorMuteSetState))
-            }
-            else
-            {
-                text = getString(R.string.notification)
-                setTextColor(ContextCompat.getColor(this@MainActivity, R.color.colorNotificationSetState))
-            }
-
-        }
-
-        mainActivityMuteStateExpTextView.apply {
-
-            val sp : Spanned = when(state)
-            {
-                true -> HtmlCompat.fromHtml(getString(R.string.muteexp),HtmlCompat.FROM_HTML_MODE_LEGACY)
-                else -> HtmlCompat.fromHtml(getString(R.string.notificationexp),HtmlCompat.FROM_HTML_MODE_LEGACY)
-            }
-
-            text = sp
-
-        }
+        if(manager.backStackEntryCount > 1)
+            manager.popBackStack()
 
     }
-
-    private fun init()
-    {
-        NotificationServiceHelper.start(this)
-        setupNavigationDrawer()
-        setupToolbar()
-        drawerLayout = mainActivityDrawerLayout
-        mainActivityInfoButton.setOnClickListener(infoOnClick)
-        mainActivityMenuButton.setOnClickListener(menuOnClick)
-        fragment_navigation_drawer_close_button.setOnClickListener(closeMenuOnClick)
-    }
-
 
     @SuppressLint("WrongConstant")
     fun closeDrawerLayout()
@@ -291,15 +225,65 @@ class MainActivity : AppCompatActivity()
 
     }
 
+//-----------------------------------BUSINESS-------------------------------------------------------
+
+    private fun setupFullScreen()
+    {
+        requestWindowFeature(Window.FEATURE_NO_TITLE)
+        this.window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN)
+    }
+
+    private fun initToolbarAndDrawerLayout()
+    {
+        drawerLayout = mainActivityDrawerLayout
+        setupNavigationDrawer()
+        setupToolbar()
+    }
+
+    private fun initButtonClick()
+    {
+        mainActivityInfoButton.setOnClickListener(infoOnClick)
+        mainActivityMenuButton.setOnClickListener(menuOnClick)
+        fragment_navigation_drawer_close_button.setOnClickListener(closeMenuOnClick)
+    }
 
     private fun initUI()
     {
+        manager = supportFragmentManager
+        initToolbarAndDrawerLayout()
+        initButtonClick()
+    }
 
-        val filter = IntentFilter(Global.NotificationServiceBroadcastReceiver)
-        registerReceiver(receiver, filter)
-        setStateInit()
-        mainActivityMuteSwitch.setOnCheckedChangeListener(switchChange)
-        init()
+    private fun init()
+    {
+        changeFragment(MainFragment())
+    }
+
+    private fun start()
+    {
+        NotificationServiceHelper.start(this)
+    }
+
+    private fun stop()
+    {
+
+    }
+
+
+//-------------------------------PERMISSION---------------------------------------------------------
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?)
+    {
+
+        if(requestCode == Global.NOTIFICATION_PERMISSION_REQUEST_CODE)
+        {
+            checkAndRequestNotificationPermission()
+        }
+        else if(requestCode == Global.BOOT_PERMISSION_REQUEST_CODE)
+        {
+            checkAndRequestBootReceiverPermission()
+        }
+        super.onActivityResult(requestCode, resultCode, data)
     }
 
     private fun notificationPermissionDialogListener(state:Boolean)
@@ -317,57 +301,6 @@ class MainActivity : AppCompatActivity()
         {
             Toast.makeText(this,getString(R.string.permission_request_cancel_message), Toast.LENGTH_LONG).show()
             checkAndRequestSystemAlertPermission()
-        }
-    }
-
-    private fun checkAndRequestBootReceiverPermission()
-    {
-        try
-        {
-
-            if(BootReceiverHelper.ınstance.checkPrePermission())
-            {
-                if(!BootReceiverPrefHelper.readBoolean(this)  )
-                {
-                    isPermission = false
-                    PermissionHelper.buildBootReceiverAlertDialog(this)
-                }
-                else
-                {
-                    initUI()
-                }
-            }
-            else
-            {
-                initUI()
-            }
-
-        }
-        catch (e: Exception)
-        {
-
-        }
-    }
-
-    private fun checkAndRequestSystemAlertPermission()
-    {
-        try
-        {
-
-            if(PermissionHelper.checkSystemAlertPermission(this))
-            {
-                val dialog = PermissionHelper.buildSystemAlertPermissionAlertDialog(this,::systemAlertPermissionDialogListener)
-                dialog.show()
-            }
-            else
-            {
-                initUI()
-            }
-
-        }
-        catch (e: Exception)
-        {
-
         }
     }
 
@@ -392,4 +325,57 @@ class MainActivity : AppCompatActivity()
         }
     }
 
+    private fun checkAndRequestBootReceiverPermission()
+    {
+        try
+        {
+
+            if(BootReceiverHelper.ınstance.checkPrePermission())
+            {
+                if(!BootReceiverPrefHelper.readBoolean(this) )
+                {
+                    isPermission = false
+                    PermissionHelper.buildBootReceiverAlertDialog(this)
+                }
+                else
+                {
+                    start()
+                }
+            }
+            else
+            {
+                start()
+            }
+
+        }
+        catch (e: Exception)
+        {
+
+        }
+    }
+
+    private fun checkAndRequestSystemAlertPermission()
+    {
+        try
+        {
+
+            if(PermissionHelper.checkSystemAlertPermission(this))
+            {
+                val dialog = PermissionHelper.buildSystemAlertPermissionAlertDialog(this,::systemAlertPermissionDialogListener)
+                dialog.show()
+            }
+            else
+            {
+                //init()
+            }
+
+        }
+        catch (e: Exception)
+        {
+
+        }
+    }
+
+
+//--------------------------------------------------------------------------------------------------
 }

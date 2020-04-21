@@ -37,7 +37,7 @@ class NavigationDrawerFragment() : Fragment()
             R.string.toolbar_open,
             R.string.toolbar_close
         )
-        setupRecyclerView()
+        setupRecyclerView(menuChangeListener)
 
         drawerLayout.post()
         {

@@ -1,13 +1,8 @@
 package com.thell.mutenotification.helper
 
-import android.app.AlertDialog
-import android.content.ComponentName
 import android.content.Context
-import android.content.DialogInterface
 import android.content.Intent
-import android.provider.Settings
 import com.thell.mutenotification.MainActivity
-import com.thell.mutenotification.R
 
 class NotificationServiceHelper
 {
@@ -40,17 +35,16 @@ class NotificationServiceHelper
         {
             if(muteNotificationService != null)
             {
-
-                context.startService(muteNotificationService!!)
+                context.startService(muteNotificationService)
             }
 
         }
+
 
         fun stopNotificationListenerService(context: Context)
         {
             if(muteNotificationService != null)
             {
-
                 context.stopService(muteNotificationService)
             }
 
