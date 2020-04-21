@@ -31,6 +31,7 @@ class MuteNotificationListenerService : NotificationListenerService()
         return NotificationEntity().apply {
             PackageName = sbn.packageName ?: ""
 
+            @Suppress("DEPRECATION")
             IconId =  extras.getInt(Notification.EXTRA_SMALL_ICON).toString()
 
             Ticket = if(notification.tickerText == null)
@@ -41,8 +42,10 @@ class MuteNotificationListenerService : NotificationListenerService()
             ApplicationName = GuiHelper.getAppNameFromPackageName(
                 this@MuteNotificationListenerService,
                 PackageName
-            )
 
+
+            )
+            MuteState = Global.getMuteStateAction(this@MuteNotificationListenerService).getMuteState()
             Category = notification.category ?: ""
             PostTime = sbn.postTime
             NotificationID = sbn.id

@@ -3,27 +3,23 @@ package com.thell.mutenotification
 
 import android.annotation.SuppressLint
 import android.app.AlertDialog
-import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
-import android.content.IntentFilter
 import android.os.Bundle
-import android.text.Spanned
 import android.util.Log
 import android.view.Gravity
 import android.view.View
 import android.view.Window
 import android.view.WindowManager
-import android.widget.CompoundButton
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
-import androidx.core.content.ContextCompat
 import androidx.core.text.HtmlCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
-import com.thell.mutenotification.broadcastreceiver.NotificationServiceBroadcastReceiver
+import com.thell.mutenotification.fragment.HistoryFragment
 import com.thell.mutenotification.fragment.MainFragment
 import com.thell.mutenotification.fragment.NavigationDrawerFragment
 import com.thell.mutenotification.helper.Global
@@ -32,7 +28,7 @@ import com.thell.mutenotification.helper.NotificationServiceHelper
 import com.thell.mutenotification.helper.PermissionHelper
 import com.thell.mutenotification.helper.bootreceiver.BootReceiverHelper
 import com.thell.mutenotification.helper.bootreceiver.BootReceiverPrefHelper
-import com.thell.mutenotification.helper.mutestate.IMuteStateAction
+import com.thell.mutenotification.helper.callback.IFragmentCommunication
 import com.thell.mutenotification.model.NavigationDrawerItem
 import com.thell.mutenotification.services.MuteNotificationListenerService
 import kotlinx.android.synthetic.main.activity_main.*
@@ -45,11 +41,17 @@ class MainActivity : AppCompatActivity()
 
 //-----------------------------------VARIABLES------------------------------------------------------
 
+    private lateinit var navigationHeaderTextView:TextView
     private lateinit var drawerLayout: DrawerLayout
-    lateinit var manager: FragmentManager
+    private lateinit var  navFrag :NavigationDrawerFragment
+    private lateinit var manager: FragmentManager
     private lateinit var dialog:AlertDialog
     private var isPermission = true
     private lateinit var toolbar: Toolbar
+    private var backPressedTime = 0L
+    private var timeOut = 1000
+
+
 
     private val infoOnClick = object :View.OnClickListener
     {
@@ -171,15 +173,46 @@ class MainActivity : AppCompatActivity()
 //-------------------------------------------NAVIGATION---------------------------------------------
     private fun setupNavigationDrawer()
     {
-        val navFrag = supportFragmentManager.findFragmentById(R.id.mainActivityDrawerLayoutFragment) as NavigationDrawerFragment
+        navFrag = supportFragmentManager.findFragmentById(R.id.mainActivityDrawerLayoutFragment) as NavigationDrawerFragment
         navFrag.setupDrawerToggle(mainActivityDrawerLayout,mainActivityToolbar as Toolbar,::menuChangeListener)
         GuiHelper.setTextViewPatternBackground(resources,R.drawable.pattern,fragment_navigation_drawer_header_textView)
     }
 
     private fun menuChangeListener(menu:NavigationDrawerItem)
     {
-        Log.e("","")
+        when(menu.title)
+        {
+            NavigationDrawerItem.HOME -> mainFragmentOpen()
+            NavigationDrawerItem.HISTORY -> notificationHistoryFragmentOpen(menu.title)
+        }
         closeDrawerLayout()
+    }
+
+    private val fragmentCommunication = object :IFragmentCommunication
+    {
+        override fun changeHeader(header: String)
+        {
+            navigationHeaderTextView.visibility = View.VISIBLE
+            navigationHeaderTextView.text = header
+            for (menu in NavigationDrawerItem.allMenuItem())
+            {
+                menu.selected = menu.title == header
+            }
+
+            navFrag.setupRecyclerView(this@MainActivity::menuChangeListener)
+
+        }
+    }
+
+    private fun mainFragmentOpen()
+    {
+        changeFragment(MainFragment(fragmentCommunication))
+    }
+
+    private fun notificationHistoryFragmentOpen(headerText:String)
+    {
+        changeFragment(HistoryFragment(fragmentCommunication))
+
     }
 
     private fun setupToolbar()
@@ -200,8 +233,19 @@ class MainActivity : AppCompatActivity()
     override fun onBackPressed()
     {
 
-        if(manager.backStackEntryCount > 1)
-            manager.popBackStack()
+        if (backPressedTime + timeOut > System.currentTimeMillis())
+        {
+            finish()
+            return
+        }
+        else
+        {
+            if(manager.backStackEntryCount > 1)
+                manager.popBackStack()
+            else
+                Toast.makeText(this, R.string.quitAppContent, Toast.LENGTH_SHORT).show()
+        }
+        backPressedTime = System.currentTimeMillis()
 
     }
 
@@ -212,6 +256,8 @@ class MainActivity : AppCompatActivity()
             drawerLayout.post {
                 drawerLayout.closeDrawer(Gravity.START, true)
             }
+
+
 
     }
 
@@ -242,21 +288,22 @@ class MainActivity : AppCompatActivity()
 
     private fun initButtonClick()
     {
-        mainActivityInfoButton.setOnClickListener(infoOnClick)
-        mainActivityMenuButton.setOnClickListener(menuOnClick)
+        toolbar_InfoButton.setOnClickListener(infoOnClick)
+        toolbar_MenuButton.setOnClickListener(menuOnClick)
         fragment_navigation_drawer_close_button.setOnClickListener(closeMenuOnClick)
     }
 
     private fun initUI()
     {
         manager = supportFragmentManager
+        navigationHeaderTextView = toolbar_navigationHeaderTextView
         initToolbarAndDrawerLayout()
         initButtonClick()
     }
 
     private fun init()
     {
-        changeFragment(MainFragment())
+        mainFragmentOpen()
     }
 
     private fun start()
@@ -268,6 +315,8 @@ class MainActivity : AppCompatActivity()
     {
 
     }
+
+
 
 
 //-------------------------------PERMISSION---------------------------------------------------------

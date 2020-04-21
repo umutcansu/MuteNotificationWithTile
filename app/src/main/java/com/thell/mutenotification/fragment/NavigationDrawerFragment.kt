@@ -21,6 +21,7 @@ class NavigationDrawerFragment() : Fragment()
 
     private lateinit var mDrawerToggle: ActionBarDrawerToggle
     private lateinit var navigationDrawerRecyclerView: RecyclerView
+    private lateinit var adapter:NavigationDrawerAdapter
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View?
@@ -45,9 +46,11 @@ class NavigationDrawerFragment() : Fragment()
         }
     }
 
-    private fun setupRecyclerView(menuChangeListener : (menu:NavigationDrawerItem) -> Unit ={})
+
+
+    public fun setupRecyclerView(menuChangeListener : (menu:NavigationDrawerItem) -> Unit ={})
     {
-        val adapter = NavigationDrawerAdapter(
+        adapter = NavigationDrawerAdapter(
             navigationDrawerRecyclerView.context,
             NavigationDrawerItem.allMenuItem(),
             menuChangeListener
@@ -57,6 +60,8 @@ class NavigationDrawerFragment() : Fragment()
             LinearLayoutManager.VERTICAL,
             false
         )
-        navigationDrawerRecyclerView.adapter =adapter
+        navigationDrawerRecyclerView.adapter = adapter
     }
+
+
 }

@@ -3,7 +3,8 @@
 <androidx.appcompat.widget.Toolbar
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
-        app:popupTheme="@style/ToolBarPopupTheme"
+    xmlns:tools="http://schemas.android.com/tools"
+    app:popupTheme="@style/ToolBarPopupTheme"
         android:theme="@style/ToolBarTheme"
         app:contentInsetStart="0dp"
         app:layout_collapseMode="pin"
@@ -20,7 +21,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <ImageButton
-            android:id="@+id/mainActivityMenuButton"
+            android:id="@+id/toolbar_MenuButton"
             android:layout_width="45dp"
             android:layout_height="45dp"
             android:layout_marginStart="8dp"
@@ -33,8 +34,22 @@
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/ic_menu_black_24dp" />
 
+        <TextView
+            android:id="@+id/toolbar_navigationHeaderTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:textColor="@color/design_default_color_on_secondary"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/toolbar_InfoButton"
+            app:layout_constraintStart_toEndOf="@+id/toolbar_MenuButton"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Home" />
         <ImageButton
-            android:id="@+id/mainActivityInfoButton"
+            android:id="@+id/toolbar_InfoButton"
             android:layout_width="45dp"
             android:layout_height="45dp"
             android:layout_marginTop="8dp"
@@ -46,6 +61,8 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/ic_info_black_24dp" />
+
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

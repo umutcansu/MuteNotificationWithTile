@@ -22,5 +22,7 @@ data class NotificationEntity
     @ColumnInfo(name = "PostTime")
     var PostTime: Long=0,
     @ColumnInfo(name = "NotificationID")
-    var NotificationID: Int=0
+    var NotificationID: Int=0,
+    @ColumnInfo(name = "MuteState")
+    var MuteState: Boolean=false
 )

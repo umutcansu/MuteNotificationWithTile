@@ -1,6 +1,7 @@
 package com.thell.mutenotification.helper
 
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.pm.PackageManager
 import android.content.res.Resources
@@ -8,6 +9,7 @@ import android.graphics.BitmapFactory
 import android.graphics.BitmapShader
 import android.graphics.Shader
 import android.graphics.drawable.Drawable
+import android.os.Build
 import android.view.View
 import android.view.animation.Animation
 import android.view.animation.AnimationSet
@@ -15,10 +17,18 @@ import android.view.animation.DecelerateInterpolator
 import android.view.animation.RotateAnimation
 import android.widget.TextView
 import com.thell.mutenotification.database.entity.NotificationEntity
+import java.text.SimpleDateFormat
+import java.time.Instant
+import java.time.LocalDateTime
+import java.time.ZoneId
+import java.time.format.DateTimeFormatter
+import java.util.*
 
 
 class GuiHelper
 {
+
+
     companion object
     {
         fun setTextViewPatternBackground(resources: Resources,drawable:Int,textview:TextView)
@@ -42,14 +52,29 @@ class GuiHelper
             }
         }
 
-        fun getIcon(context: Context, iconId:Int,pack:String):Drawable?
+        @SuppressLint("SimpleDateFormat")
+        fun epochToDate(epoch:Long, format:String="yyyy-MM-dd HH:mm"):String
+        {
+            return try {
+                val date = Date(epoch)
+                val formatter = java.text.SimpleDateFormat(format)
+                return  formatter.format(date)
+            }
+            catch (t:Throwable)
+            {
+                ""
+            }
+
+        }
+
+
+        fun getIcon(context: Context,pack:String):Drawable?
         {
             var result :Drawable? = null
             try
             {
                 val manager: PackageManager = context.packageManager
-                val resources: Resources = manager.getResourcesForApplication(pack)
-                result =  resources.getDrawable(iconId)
+                result  = manager.getApplicationIcon(pack)
 
             }
             catch (e: PackageManager.NameNotFoundException)
@@ -60,7 +85,7 @@ class GuiHelper
         }
 
         fun getIcon(context: Context, notificationEntity: NotificationEntity) =
-                 getIcon(context,notificationEntity.IconId.toInt(),notificationEntity.PackageName)
+                 getIcon(context,notificationEntity.PackageName)
 
         fun startRotatingView(rotate: Boolean?, view: View, finishedAnimFunc: () -> Unit)
         {

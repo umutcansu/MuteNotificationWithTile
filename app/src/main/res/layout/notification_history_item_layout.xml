@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:cardBackgroundColor="@android:color/white"
+    app:cardCornerRadius="2dp"
+    app:cardElevation="2dp"
+    app:cardPreventCornerOverlap="true"
+    app:cardUseCompatPadding="true">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/notification_history_package_name_textview"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/notification_history_icon_imageview"
+            app:layout_constraintTop_toTopOf="@+id/notification_history_icon_imageview"
+            tools:text="Package Name" />
+
+        <ImageView
+            android:id="@+id/notification_history_icon_imageview"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:srcCompat="@drawable/ic_launcher" />
+
+        <TextView
+            android:id="@+id/notification_history_notification_context_textview"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:maxLines="1"
+            android:singleLine="true"
+            android:textSize="12sp"
+            app:layout_constrainedWidth="true"
+            app:layout_constraintBottom_toBottomOf="@+id/notification_history_icon_imageview"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/notification_history_icon_imageview"
+            app:layout_constraintTop_toBottomOf="@+id/notification_history_package_name_textview"
+            tools:text="Phasellus sagittis ante non mi mollis cursus. Vivamus nisi magna, pellentesque eleifend turpis id, blandit pulvinar metus. Fusce sagittis suscipit sapien sit amet mollis. Fusce sagittis mauris urna, eget congue tellus mattis sit amet. In vulputate mauris eu nulla convallis, quis condimentum augue facilisis. Etiam rhoncus augue a risus dignissim, ut feugiat ipsum porta. In a vehicula velit. Nullam non pulvinar mi. Aenean accumsan nulla ut dolor tristique finibus. Cras mattis iaculis velit at congue." />
+
+        <ImageView
+            android:id="@+id/notification_history_mutestate_imageview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:tint="@color/colorMuteSetState"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/notification_history_notification_context_textview"
+            app:layout_constraintTop_toBottomOf="@+id/notification_history_notification_context_textview"
+            tools:srcCompat="@drawable/ic_notifications_off_black_24dp" />
+
+        <TextView
+            android:id="@+id/notification_history_notification_posttime_textview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@+id/notification_history_mutestate_imageview"
+            app:layout_constraintEnd_toStartOf="@+id/notification_history_mutestate_imageview"
+            app:layout_constraintTop_toTopOf="@+id/notification_history_mutestate_imageview"
+            tools:text="2020.04.21 21.36" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.cardview.widget.CardView>

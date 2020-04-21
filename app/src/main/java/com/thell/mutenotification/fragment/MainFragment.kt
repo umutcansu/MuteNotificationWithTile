@@ -19,12 +19,21 @@ import com.thell.mutenotification.broadcastreceiver.NotificationServiceBroadcast
 import com.thell.mutenotification.helper.Global
 import com.thell.mutenotification.helper.GuiHelper
 import com.thell.mutenotification.helper.NotificationServiceHelper
+import com.thell.mutenotification.helper.callback.IFragmentCommunication
 import com.thell.mutenotification.helper.mutestate.IMuteStateAction
 import kotlinx.android.synthetic.main.fragment_main.view.*
 
 
-class MainFragment : Fragment()
+class MainFragment(val callback: IFragmentCommunication) : Fragment()
 {
+
+
+    private lateinit var mainFragmentHeaderTextView :TextView
+    private lateinit var mainFragmentMuteStateTextView :TextView
+    private lateinit var mainFragmentMuteStateExpTextView :TextView
+    private lateinit var mainFragmentMuteSwitch :ToggleButton
+
+    private lateinit var muteStateAction : IMuteStateAction
 
 //---------------------------------------------------------------------------------------------
 
@@ -51,7 +60,6 @@ class MainFragment : Fragment()
 
 //----------------------------------------------------------------------------------------------
 
-    private lateinit var muteStateAction : IMuteStateAction
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -64,6 +72,11 @@ class MainFragment : Fragment()
         return view
     }
 
+    override fun onDestroy() {
+        context!!.unregisterReceiver(receiver)
+        super.onDestroy()
+    }
+
 
     private fun init()
     {
@@ -72,10 +85,6 @@ class MainFragment : Fragment()
         muteStateAction = Global.getMuteStateAction(context!!)
     }
 
-    private lateinit var mainFragmentHeaderTextView :TextView
-    private lateinit var mainFragmentMuteStateTextView :TextView
-    private lateinit var mainFragmentMuteStateExpTextView :TextView
-    private lateinit var mainFragmentMuteSwitch :ToggleButton
 
     private fun initUI(view: View)
     {
@@ -83,7 +92,7 @@ class MainFragment : Fragment()
         mainFragmentMuteStateTextView = view.mainFragmentMuteStateTextView
         mainFragmentMuteStateExpTextView = view.mainFragmentMuteStateExpTextView
         mainFragmentMuteSwitch = view.mainFragmentMuteSwitch
-
+        callback.changeHeader("")
         GuiHelper.setTextViewPatternBackground(resources,R.drawable.pattern,mainFragmentHeaderTextView)
         setStateInit()
     }
@@ -122,8 +131,8 @@ class MainFragment : Fragment()
 
             val sp : Spanned = when(state)
             {
-                true -> HtmlCompat.fromHtml(getString(R.string.muteexp), HtmlCompat.FROM_HTML_MODE_LEGACY)
-                else -> HtmlCompat.fromHtml(getString(R.string.notificationexp), HtmlCompat.FROM_HTML_MODE_LEGACY)
+                true -> HtmlCompat.fromHtml(getString(R.string.muteExp), HtmlCompat.FROM_HTML_MODE_LEGACY)
+                else -> HtmlCompat.fromHtml(getString(R.string.notificationExp), HtmlCompat.FROM_HTML_MODE_LEGACY)
             }
 
             text = sp

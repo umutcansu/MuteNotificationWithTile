@@ -34,6 +34,7 @@ class NavigationDrawerAdapter(val context: Context, val data: ArrayList<Navigati
         p0.setData(current)
     }
 
+
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
     {
 
@@ -51,7 +52,6 @@ class NavigationDrawerAdapter(val context: Context, val data: ArrayList<Navigati
                     menuChangeListener(current)
                     setSelected(current)
                 }
-
 
             }
         }
