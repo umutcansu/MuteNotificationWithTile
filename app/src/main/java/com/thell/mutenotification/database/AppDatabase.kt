@@ -5,7 +5,7 @@ import androidx.room.RoomDatabase
 import com.thell.mutenotification.database.dao.NotificationDao
 import com.thell.mutenotification.database.entity.NotificationEntity
 
-@Database(entities = [NotificationEntity::class], version = 2)
+@Database(entities = [NotificationEntity::class], version = 3)
 abstract class AppDatabase: RoomDatabase() {
 
     abstract fun  getNotificationDao():NotificationDao
