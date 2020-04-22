@@ -52,7 +52,7 @@ class NavigationDrawerFragment() : Fragment()
     {
         adapter = NavigationDrawerAdapter(
             navigationDrawerRecyclerView.context,
-            NavigationDrawerItem.allMenuItem(),
+            NavigationDrawerItem.allMenuItem,
             menuChangeListener
         )
         navigationDrawerRecyclerView.layoutManager = LinearLayoutManager(

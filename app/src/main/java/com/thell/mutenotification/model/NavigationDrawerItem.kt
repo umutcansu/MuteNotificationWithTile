@@ -12,47 +12,28 @@ data class NavigationDrawerItem(var title: String, var icon: Int,var selected : 
         var TIMER = "Timer"
         var HOME = "Home"
 
-
-        fun allMenuItem(): ArrayList<NavigationDrawerItem> {
-            val list = ArrayList<NavigationDrawerItem>()
-
-            list.apply {
-
-                add(
-                    NavigationDrawerItem(
-                        HOME,
-                        R.drawable.ic_home_black_24dp,
-                        true
-                    )
-                )
-                add(
-                    NavigationDrawerItem(
-                        TIMER,
-                        R.drawable.ic_alarm_black_24dp
-                    )
-                )
-
-                add(
-                    NavigationDrawerItem(
-                        SETTING,
-                        R.drawable.ic_settings_black_24dp
-                    )
-                )
-
-                add(
-                    NavigationDrawerItem(
-                        HISTORY,
-                        R.drawable.ic_history_black_24dp
-                    )
-                )
-            }
+        val allMenuItem = arrayListOf(
+            NavigationDrawerItem(
+                HOME,
+                R.drawable.ic_home_black_24dp,
+                true
+            ),
+            NavigationDrawerItem(
+                TIMER,
+                R.drawable.ic_alarm_black_24dp
+            ),
+            NavigationDrawerItem(
+                SETTING,
+                R.drawable.ic_settings_black_24dp
+            ),
+            NavigationDrawerItem(
+                HISTORY,
+                R.drawable.ic_history_black_24dp
+            )
+        )
 
 
 
-
-
-            return  list
-        }
     }
 
 }

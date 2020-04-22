@@ -183,7 +183,7 @@ class MainActivity : AppCompatActivity()
         when(menu.title)
         {
             NavigationDrawerItem.HOME -> mainFragmentOpen()
-            NavigationDrawerItem.HISTORY -> notificationHistoryFragmentOpen(menu.title)
+            NavigationDrawerItem.HISTORY -> notificationHistoryFragmentOpen()
         }
         closeDrawerLayout()
     }
@@ -194,9 +194,12 @@ class MainActivity : AppCompatActivity()
         {
             navigationHeaderTextView.visibility = View.VISIBLE
             navigationHeaderTextView.text = header
-            for (menu in NavigationDrawerItem.allMenuItem())
+            if(header.isNotEmpty())
             {
-                menu.selected = menu.title == header
+                for (menu in NavigationDrawerItem.allMenuItem)
+                {
+                    menu.selected = menu.title == header
+                }
             }
 
             navFrag.setupRecyclerView(this@MainActivity::menuChangeListener)
@@ -209,7 +212,7 @@ class MainActivity : AppCompatActivity()
         changeFragment(MainFragment(fragmentCommunication))
     }
 
-    private fun notificationHistoryFragmentOpen(headerText:String)
+    private fun notificationHistoryFragmentOpen()
     {
         changeFragment(HistoryFragment(fragmentCommunication))
 
