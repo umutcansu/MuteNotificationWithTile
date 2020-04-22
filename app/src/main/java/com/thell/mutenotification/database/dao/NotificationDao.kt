@@ -11,7 +11,7 @@ interface NotificationDao {
     @Insert
     fun insert(value:NotificationEntity)
 
-    @Query("select * from Notification")
+    @Query("select * from Notification order by PostTime desc")
     fun getAll():List<NotificationEntity>
 
 }
