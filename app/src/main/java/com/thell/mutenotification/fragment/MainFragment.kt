@@ -21,6 +21,7 @@ import com.thell.mutenotification.helper.GuiHelper
 import com.thell.mutenotification.helper.NotificationServiceHelper
 import com.thell.mutenotification.helper.callback.IFragmentCommunication
 import com.thell.mutenotification.helper.mutestate.IMuteStateAction
+import com.thell.mutenotification.model.NavigationDrawerItem
 import kotlinx.android.synthetic.main.fragment_main.view.*
 
 
@@ -92,7 +93,7 @@ class MainFragment(val callback: IFragmentCommunication) : Fragment()
         mainFragmentMuteStateTextView = view.mainFragmentMuteStateTextView
         mainFragmentMuteStateExpTextView = view.mainFragmentMuteStateExpTextView
         mainFragmentMuteSwitch = view.mainFragmentMuteSwitch
-        callback.changeHeader("")
+        callback.changeHeader(NavigationDrawerItem.HOME)
         GuiHelper.setTextViewPatternBackground(resources,R.drawable.pattern,mainFragmentHeaderTextView)
         setStateInit()
     }

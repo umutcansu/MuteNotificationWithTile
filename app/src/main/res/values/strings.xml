@@ -20,9 +20,6 @@
     <string name="toolbar_close">Close</string>
     <string name="toolbar_open">Open</string>
     <string name="quitAppContent">Press once again to exit!</string>
-
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="search_hint">Application Name</string>
-
+    <string name="search_hint_history">Application Name</string>
+    <string name="search_hint_search">Settings Name</string>
 </resources>

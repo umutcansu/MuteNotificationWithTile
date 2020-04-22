@@ -10,47 +10,41 @@ import android.widget.SearchView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-import com.thell.mutenotification.MainActivity
 
 import com.thell.mutenotification.R
-import com.thell.mutenotification.adapter.NavigationDrawerAdapter
 import com.thell.mutenotification.adapter.NotificationHistoryAdapter
 import com.thell.mutenotification.database.entity.NotificationEntity
 import com.thell.mutenotification.helper.DatabaseHelper
 import com.thell.mutenotification.helper.callback.IFragmentCommunication
 import com.thell.mutenotification.model.NavigationDrawerItem
-import kotlinx.android.synthetic.main.fragment_history.*
-import kotlinx.android.synthetic.main.fragment_history.view.*
+import kotlinx.android.synthetic.main.fragment_settings.view.*
 
-class HistoryFragment(val callback:IFragmentCommunication) : Fragment() ,SwipeRefreshLayout.OnRefreshListener{
 
+class SettingsFragment(val callback: IFragmentCommunication) : Fragment() ,SwipeRefreshLayout.OnRefreshListener
+{
     private lateinit var notificationList:List<NotificationEntity>
-    private lateinit var adapter :NotificationHistoryAdapter
+    private lateinit var adapter : NotificationHistoryAdapter
     private lateinit var recycleView : RecyclerView
     private lateinit var searchBox: SearchView
     private lateinit var swipeRefresh: SwipeRefreshLayout
     private lateinit var filter: Filter
 
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
+    ): View? {
 
-
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState:
-    Bundle?): View? {
-
-        val view = inflater.inflate(R.layout.fragment_history, container, false)
-
+        var view = inflater.inflate(R.layout.fragment_settings, container, false)
         initUI(view)
         init()
-
         return view
     }
 
     private  fun initUI(view:View)
     {
-        recycleView = view.fragment_notification_history_RecycleView
-        searchBox = view.fragment_notification_history_SearchView
-        swipeRefresh = view.fragment_notification_history_SwipeRefresh
+        recycleView = view.fragment_settings_RecycleView
+        searchBox = view.fragment_settings_SearchView
+        swipeRefresh = view.fragment_settings_SwipeRefresh
         swipeRefresh.setOnRefreshListener(this)
-        callback.changeHeader(NavigationDrawerItem.HISTORY)
+        callback.changeHeader(NavigationDrawerItem.SETTING)
 
     }
 

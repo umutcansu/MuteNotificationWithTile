@@ -19,9 +19,7 @@ import androidx.core.text.HtmlCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
-import com.thell.mutenotification.fragment.HistoryFragment
-import com.thell.mutenotification.fragment.MainFragment
-import com.thell.mutenotification.fragment.NavigationDrawerFragment
+import com.thell.mutenotification.fragment.*
 import com.thell.mutenotification.helper.Global
 import com.thell.mutenotification.helper.GuiHelper
 import com.thell.mutenotification.helper.NotificationServiceHelper
@@ -184,6 +182,8 @@ class MainActivity : AppCompatActivity()
         {
             NavigationDrawerItem.HOME -> mainFragmentOpen()
             NavigationDrawerItem.HISTORY -> notificationHistoryFragmentOpen()
+            NavigationDrawerItem.SETTING -> settingsFragmentOpen()
+            NavigationDrawerItem.TIMER -> timerFragmentOpen()
         }
         closeDrawerLayout()
     }
@@ -215,6 +215,16 @@ class MainActivity : AppCompatActivity()
     private fun notificationHistoryFragmentOpen()
     {
         changeFragment(HistoryFragment(fragmentCommunication))
+
+    }
+    private fun settingsFragmentOpen()
+    {
+        changeFragment(SettingsFragment(fragmentCommunication))
+
+    }
+    private fun timerFragmentOpen()
+    {
+        changeFragment(TimerFragment(fragmentCommunication))
 
     }
 
