@@ -1,6 +1,7 @@
 package com.thell.mutenotification.database.dao
 
 import androidx.room.Dao
+import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
 import com.thell.mutenotification.database.entity.NotificationEntity
@@ -14,4 +15,6 @@ interface NotificationDao {
     @Query("select * from Notification order by PostTime desc")
     fun getAll():List<NotificationEntity>
 
+    @Query("delete from Notification")
+    fun clearAll()
 }

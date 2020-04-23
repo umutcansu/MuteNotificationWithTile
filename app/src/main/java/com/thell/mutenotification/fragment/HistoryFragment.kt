@@ -1,12 +1,16 @@
 package com.thell.mutenotification.fragment
 
+import android.app.AlertDialog
+import android.content.DialogInterface
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Filter
+import android.widget.ImageButton
 import android.widget.SearchView
+import androidx.core.text.HtmlCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
@@ -14,6 +18,8 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.thell.mutenotification.R
 import com.thell.mutenotification.adapter.NotificationHistoryAdapter
 import com.thell.mutenotification.database.entity.NotificationEntity
+import com.thell.mutenotification.helper.Global
+import com.thell.mutenotification.helper.GuiHelper
 import com.thell.mutenotification.helper.NavigationMenuHelper
 import com.thell.mutenotification.helper.database.DatabaseHelper
 import com.thell.mutenotification.helper.callback.IFragmentCommunication
@@ -27,8 +33,57 @@ class HistoryFragment(val callback:IFragmentCommunication) : Fragment() ,SwipeRe
     private lateinit var recycleView : RecyclerView
     private lateinit var searchBox: SearchView
     private lateinit var swipeRefresh: SwipeRefreshLayout
+    private lateinit var clearButton: ImageButton
     private lateinit var filter: Filter
 
+
+    private val clearOnClick = object :View.OnClickListener
+    {
+        lateinit var dialog: AlertDialog
+        lateinit var alertDialogBuilder: AlertDialog.Builder
+
+        override fun onClick(p0: View)
+        {
+            GuiHelper.startRotatingView(null,p0,::coreClick)
+        }
+
+        private fun coreClick()
+        {
+            if(!::alertDialogBuilder.isInitialized)
+            {
+                val message = getString(R.string.clearAllHistory)
+
+                alertDialogBuilder = AlertDialog.Builder(this@HistoryFragment.context!!)
+                alertDialogBuilder.setTitle(R.string.app_name)
+                alertDialogBuilder.setMessage(message)
+                alertDialogBuilder.setPositiveButton(
+                    R.string.ok,
+                    DialogInterface.OnClickListener { dialog, _ ->
+                        clearHistory()
+                        dialog.dismiss()
+                    })
+                alertDialogBuilder.setNegativeButton(
+                    R.string.no,
+                    DialogInterface.OnClickListener { dialog, _ ->
+                        dialog.dismiss()
+                    })
+            }
+            if(!::dialog.isInitialized)
+            {
+                dialog = alertDialogBuilder.create()
+            }
+
+            dialog.show()
+
+        }
+    }
+
+
+    private fun clearHistory()
+    {
+        DatabaseHelper.getInstance(context!!).getNotificationDao().clearAll()
+        init()
+    }
 
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState:
@@ -47,6 +102,8 @@ class HistoryFragment(val callback:IFragmentCommunication) : Fragment() ,SwipeRe
         recycleView = view.fragment_notification_history_RecycleView
         searchBox = view.fragment_notification_history_SearchView
         swipeRefresh = view.fragment_notification_history_SwipeRefresh
+        clearButton = view.fragment_notification_history_clear_button
+        clearButton.setOnClickListener(clearOnClick)
         swipeRefresh.setOnRefreshListener(this)
         callback.changeHeader(NavigationMenuHelper.HISTORY)
 

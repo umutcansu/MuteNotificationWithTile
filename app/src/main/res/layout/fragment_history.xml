@@ -21,15 +21,29 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
             android:focusable="false"
             android:iconifiedByDefault="false"
             android:queryHint="@string/search_hint_history"
-            ads:layout_constraintEnd_toEndOf="parent"
+            ads:layout_constraintEnd_toStartOf="@+id/fragment_notification_history_clear_button"
             ads:layout_constraintStart_toStartOf="parent"
             ads:layout_constraintTop_toTopOf="parent"
             app:defaultQueryHint="@string/search_hint_history"
             app:iconifiedByDefault="false" />
+
+        <ImageButton
+            android:id="@+id/fragment_notification_history_clear_button"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_marginEnd="8dp"
+            android:background="@drawable/button_border"
+            android:scaleType="fitXY"
+            android:tint="@android:color/holo_red_light"
+            ads:layout_constraintBottom_toBottomOf="@+id/fragment_notification_history_SearchView"
+            ads:layout_constraintEnd_toEndOf="parent"
+            ads:layout_constraintTop_toTopOf="@+id/fragment_notification_history_SearchView"
+            app:srcCompat="@drawable/ic_delete_forever_black_24dp" />
 
         <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
             android:id="@+id/fragment_notification_history_SwipeRefresh"

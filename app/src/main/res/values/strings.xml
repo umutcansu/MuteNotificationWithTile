@@ -22,4 +22,5 @@
     <string name="quitAppContent">Press once again to exit!</string>
     <string name="search_hint_history">Application Name</string>
     <string name="search_hint_search">Settings Name</string>
+    <string name="clearAllHistory">Clear All History?</string>
 </resources>
