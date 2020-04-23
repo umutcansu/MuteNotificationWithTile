@@ -100,8 +100,6 @@ class TimerFragment(private val callback: IFragmentCommunication) : Fragment()
         return view
     }
 
-
-
     private  fun initUI(view:View)
     {
         callback.changeHeader(NavigationMenuHelper.TIMER)
@@ -202,6 +200,7 @@ class TimerFragment(private val callback: IFragmentCommunication) : Fragment()
         else
         {
             updateTimer()
+            timerFragmentMuteSwitch.isEnabled = true
         }
     }
 
@@ -214,7 +213,8 @@ class TimerFragment(private val callback: IFragmentCommunication) : Fragment()
     {
         TimerHelper.updateTimer(context!!)
         controlSwitchEnable()
-        timer.cancel()
+        if(::timer.isInitialized)
+            timer.cancel()
         visibleStartTimerButton()
         visibleNumberPicker()
         setMaxMinNumberPickerValue()
@@ -256,7 +256,6 @@ class TimerFragment(private val callback: IFragmentCommunication) : Fragment()
 
         return milisecond
     }
-
 
     private fun setButtonState()
     {

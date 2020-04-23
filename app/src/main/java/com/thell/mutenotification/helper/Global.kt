@@ -22,8 +22,9 @@ class Global private constructor()
         const  val  NotificationServiceBroadcastReceiver = "broadcastreceiver.NotificationServiceBroadcastReceiver"
         const val   FILE_NAME = "PREF_FILE"
         const val   MUTE_STATE_KEY = "STATE"
-        const val   VERSION = "1.1.0"
+        const val   VERSION = "1.1.1"
         const val   DATABASE_NAME = "AppDatabase"
+        const val  DATABASE_VERSION = 13
         const val   DEBUG = true
 
         fun startApplication(context: Context)
