@@ -1,8 +1,7 @@
-package com.thell.mutenotification.helper
+package com.thell.mutenotification.helper.permission
 
 import android.app.Activity
 import android.app.AlertDialog
-import android.app.AppOpsManager
 import android.content.ComponentName
 import android.content.Context
 import android.content.DialogInterface
@@ -11,6 +10,7 @@ import android.net.Uri
 import android.os.Build
 import android.provider.Settings
 import com.thell.mutenotification.R
+import com.thell.mutenotification.helper.Global
 import com.thell.mutenotification.helper.bootreceiver.BootReceiverHelper
 
 class PermissionHelper {
@@ -22,7 +22,9 @@ class PermissionHelper {
 
         fun isNotificationServiceEnabled(context: Context): Boolean {
 
-            val flat = Settings.Secure.getString(context.contentResolver, ENABLED_NOTIFICATION_LISTENERS)
+            val flat = Settings.Secure.getString(context.contentResolver,
+                ENABLED_NOTIFICATION_LISTENERS
+            )
             if (flat.isNotEmpty()) {
                 val names = flat.split(":".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
                 for (i in names.indices)
@@ -57,7 +59,8 @@ class PermissionHelper {
                     DialogInterface.OnClickListener { _, _ ->
                         listener(true)
                         activity.startActivityForResult(
-                            Intent(ACTION_NOTIFICATION_LISTENER_SETTINGS),Global.NOTIFICATION_PERMISSION_REQUEST_CODE
+                            Intent(ACTION_NOTIFICATION_LISTENER_SETTINGS),
+                            Global.NOTIFICATION_PERMISSION_REQUEST_CODE
                         )
                     })
                 setNegativeButton(
@@ -82,7 +85,9 @@ class PermissionHelper {
                     R.string.yes,
                     DialogInterface.OnClickListener { _, _ ->
                         listener(true)
-                       requestSystemAlertPermission(activity)
+                        requestSystemAlertPermission(
+                            activity
+                        )
                     })
                 setNegativeButton(
                     R.string.no,
@@ -115,7 +120,9 @@ class PermissionHelper {
                 Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
                 Uri.parse("package:" + activity.packageName)
             )
-            activity.startActivityForResult(intent, Global.SYSTEM_ALERT_REQUEST_CODE)
+            activity.startActivityForResult(intent,
+                Global.SYSTEM_ALERT_REQUEST_CODE
+            )
 
         }
 

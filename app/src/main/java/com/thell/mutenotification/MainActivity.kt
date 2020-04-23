@@ -22,8 +22,9 @@ import androidx.fragment.app.FragmentManager
 import com.thell.mutenotification.fragment.*
 import com.thell.mutenotification.helper.Global
 import com.thell.mutenotification.helper.GuiHelper
-import com.thell.mutenotification.helper.NotificationServiceHelper
-import com.thell.mutenotification.helper.PermissionHelper
+import com.thell.mutenotification.helper.NavigationMenuHelper
+import com.thell.mutenotification.helper.notificationservice.NotificationServiceHelper
+import com.thell.mutenotification.helper.permission.PermissionHelper
 import com.thell.mutenotification.helper.bootreceiver.BootReceiverHelper
 import com.thell.mutenotification.helper.bootreceiver.BootReceiverPrefHelper
 import com.thell.mutenotification.helper.callback.IFragmentCommunication
@@ -180,10 +181,10 @@ class MainActivity : AppCompatActivity()
     {
         when(menu.title)
         {
-            NavigationDrawerItem.HOME -> mainFragmentOpen()
-            NavigationDrawerItem.HISTORY -> notificationHistoryFragmentOpen()
-            NavigationDrawerItem.SETTING -> settingsFragmentOpen()
-            NavigationDrawerItem.TIMER -> timerFragmentOpen()
+            NavigationMenuHelper.HOME -> mainFragmentOpen()
+            NavigationMenuHelper.HISTORY -> notificationHistoryFragmentOpen()
+            NavigationMenuHelper.SETTING -> settingsFragmentOpen()
+            NavigationMenuHelper.TIMER -> timerFragmentOpen()
         }
         closeDrawerLayout()
     }
@@ -196,7 +197,7 @@ class MainActivity : AppCompatActivity()
             navigationHeaderTextView.text = header
             if(header.isNotEmpty())
             {
-                for (menu in NavigationDrawerItem.allMenuItem)
+                for (menu in NavigationMenuHelper.allMenuItem)
                 {
                     menu.selected = menu.title == header
                 }
@@ -245,20 +246,24 @@ class MainActivity : AppCompatActivity()
 
     override fun onBackPressed()
     {
-
-        if (backPressedTime + timeOut > System.currentTimeMillis())
-        {
-            finish()
-            return
-        }
+        if(manager.backStackEntryCount > 1)
+            manager.popBackStack()
         else
         {
-            if(manager.backStackEntryCount > 1)
-                manager.popBackStack()
+            if (backPressedTime + timeOut > System.currentTimeMillis())
+            {
+                finish()
+                return
+            }
             else
-                Toast.makeText(this, R.string.quitAppContent, Toast.LENGTH_SHORT).show()
+            {
+                if(manager.backStackEntryCount > 1)
+                    manager.popBackStack()
+                else
+                    Toast.makeText(this, R.string.quitAppContent, Toast.LENGTH_SHORT).show()
+            }
+            backPressedTime = System.currentTimeMillis()
         }
-        backPressedTime = System.currentTimeMillis()
 
     }
 
@@ -336,7 +341,6 @@ class MainActivity : AppCompatActivity()
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?)
     {
-
         if(requestCode == Global.NOTIFICATION_PERMISSION_REQUEST_CODE)
         {
             checkAndRequestNotificationPermission()

@@ -10,16 +10,14 @@ import android.widget.SearchView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-import com.thell.mutenotification.MainActivity
 
 import com.thell.mutenotification.R
-import com.thell.mutenotification.adapter.NavigationDrawerAdapter
 import com.thell.mutenotification.adapter.NotificationHistoryAdapter
 import com.thell.mutenotification.database.entity.NotificationEntity
-import com.thell.mutenotification.helper.DatabaseHelper
+import com.thell.mutenotification.helper.NavigationMenuHelper
+import com.thell.mutenotification.helper.database.DatabaseHelper
 import com.thell.mutenotification.helper.callback.IFragmentCommunication
 import com.thell.mutenotification.model.NavigationDrawerItem
-import kotlinx.android.synthetic.main.fragment_history.*
 import kotlinx.android.synthetic.main.fragment_history.view.*
 
 class HistoryFragment(val callback:IFragmentCommunication) : Fragment() ,SwipeRefreshLayout.OnRefreshListener{
@@ -50,7 +48,7 @@ class HistoryFragment(val callback:IFragmentCommunication) : Fragment() ,SwipeRe
         searchBox = view.fragment_notification_history_SearchView
         swipeRefresh = view.fragment_notification_history_SwipeRefresh
         swipeRefresh.setOnRefreshListener(this)
-        callback.changeHeader(NavigationDrawerItem.HISTORY)
+        callback.changeHeader(NavigationMenuHelper.HISTORY)
 
     }
 

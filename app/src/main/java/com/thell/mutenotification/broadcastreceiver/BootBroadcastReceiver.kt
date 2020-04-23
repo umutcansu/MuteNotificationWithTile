@@ -3,7 +3,7 @@ package com.thell.mutenotification.broadcastreceiver
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
-import com.thell.mutenotification.helper.NotificationServiceHelper
+import com.thell.mutenotification.helper.notificationservice.NotificationServiceHelper
 import com.thell.mutenotification.services.MuteNotificationListenerService
 
 class BootBroadcastReceiver : BroadcastReceiver()

@@ -1,8 +1,9 @@
-package com.thell.mutenotification.helper
+package com.thell.mutenotification.helper.notificationservice
 
 import android.content.Context
 import android.content.Intent
 import com.thell.mutenotification.MainActivity
+import com.thell.mutenotification.helper.permission.PermissionHelper
 
 class NotificationServiceHelper
 {
@@ -21,13 +22,17 @@ class NotificationServiceHelper
             }
             else
             {
-                startNotificationListenerService(context)
+                startNotificationListenerService(
+                    context
+                )
             }
         }
 
         fun stop(context: Context)
         {
-            stopNotificationListenerService(context)
+            stopNotificationListenerService(
+                context
+            )
         }
 
 

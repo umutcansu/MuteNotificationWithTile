@@ -6,13 +6,14 @@ import android.os.Bundle
 import android.os.IBinder
 import android.service.notification.NotificationListenerService
 import android.service.notification.StatusBarNotification
-import android.util.Log
 import android.widget.Toast
-import com.thell.mutenotification.database.AppDatabase
 import com.thell.mutenotification.database.entity.NotificationEntity
-import com.thell.mutenotification.helper.DatabaseHelper
+import com.thell.mutenotification.database.entity.SettingsEntity
+import com.thell.mutenotification.helper.database.DatabaseHelper
 import com.thell.mutenotification.helper.Global
 import com.thell.mutenotification.helper.GuiHelper
+import com.thell.mutenotification.helper.settings.SettingsHelper
+import com.thell.mutenotification.helper.settings.SettingsStateType
 
 
 class MuteNotificationListenerService : NotificationListenerService()
@@ -55,6 +56,7 @@ class MuteNotificationListenerService : NotificationListenerService()
 
     private fun saveNotification(notificationEntity: NotificationEntity)
     {
+
         val db = DatabaseHelper.getInstance(applicationContext)
         db.getNotificationDao().insert(notificationEntity)
 
@@ -67,7 +69,7 @@ class MuteNotificationListenerService : NotificationListenerService()
         saveNotification(notificationEntity)
 
 
-        if(Global.DEBUG)
+        if(SettingsHelper.getMuteSettingsState().State == SettingsStateType.OK.state)
             Toast.makeText(
                 this,
                 "Push Notification For ${notificationEntity.ApplicationName}",
@@ -79,7 +81,11 @@ class MuteNotificationListenerService : NotificationListenerService()
 
     private fun notificationAction(sbn: StatusBarNotification)
     {
-
+        if(SettingsHelper.getSaveAlwaysSettingsState().State == SettingsStateType.OK.state)
+        {
+            val notificationEntity = convertNotificationEntity(sbn)
+            saveNotification(notificationEntity)
+        }
     }
 
     override fun onNotificationPosted(sbn: StatusBarNotification)

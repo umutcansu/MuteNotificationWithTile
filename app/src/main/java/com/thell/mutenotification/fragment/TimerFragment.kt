@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 
 import com.thell.mutenotification.R
+import com.thell.mutenotification.helper.NavigationMenuHelper
 import com.thell.mutenotification.helper.callback.IFragmentCommunication
 import com.thell.mutenotification.model.NavigationDrawerItem
 
@@ -24,7 +25,7 @@ class TimerFragment(val callback: IFragmentCommunication) : Fragment() {
 
     private  fun initUI(view:View)
     {
-        callback.changeHeader(NavigationDrawerItem.TIMER)
+        callback.changeHeader(NavigationMenuHelper.TIMER)
     }
 
     private  fun init()

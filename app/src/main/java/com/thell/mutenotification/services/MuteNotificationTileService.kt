@@ -12,8 +12,8 @@ import com.thell.mutenotification.MainActivity
 import com.thell.mutenotification.R
 import com.thell.mutenotification.broadcastreceiver.NotificationServiceBroadcastReceiver
 import com.thell.mutenotification.helper.Global
-import com.thell.mutenotification.helper.NotificationServiceHelper
-import com.thell.mutenotification.helper.PermissionHelper
+import com.thell.mutenotification.helper.notificationservice.NotificationServiceHelper
+import com.thell.mutenotification.helper.permission.PermissionHelper
 import com.thell.mutenotification.helper.mutestate.IMuteStateAction
 
 class MuteNotificationTileService: TileService()

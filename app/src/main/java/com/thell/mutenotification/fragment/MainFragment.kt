@@ -18,7 +18,7 @@ import com.thell.mutenotification.R
 import com.thell.mutenotification.broadcastreceiver.NotificationServiceBroadcastReceiver
 import com.thell.mutenotification.helper.Global
 import com.thell.mutenotification.helper.GuiHelper
-import com.thell.mutenotification.helper.NotificationServiceHelper
+import com.thell.mutenotification.helper.NavigationMenuHelper
 import com.thell.mutenotification.helper.callback.IFragmentCommunication
 import com.thell.mutenotification.helper.mutestate.IMuteStateAction
 import com.thell.mutenotification.model.NavigationDrawerItem
@@ -93,7 +93,7 @@ class MainFragment(val callback: IFragmentCommunication) : Fragment()
         mainFragmentMuteStateTextView = view.mainFragmentMuteStateTextView
         mainFragmentMuteStateExpTextView = view.mainFragmentMuteStateExpTextView
         mainFragmentMuteSwitch = view.mainFragmentMuteSwitch
-        callback.changeHeader(NavigationDrawerItem.HOME)
+        callback.changeHeader(NavigationMenuHelper.HOME)
         GuiHelper.setTextViewPatternBackground(resources,R.drawable.pattern,mainFragmentHeaderTextView)
         setStateInit()
     }

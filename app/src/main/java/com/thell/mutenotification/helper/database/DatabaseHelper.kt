@@ -1,8 +1,9 @@
-package com.thell.mutenotification.helper
+package com.thell.mutenotification.helper.database
 
 import android.content.Context
 import androidx.room.Room
 import com.thell.mutenotification.database.AppDatabase
+import com.thell.mutenotification.helper.Global
 
 class DatabaseHelper private constructor()
 {
@@ -11,8 +12,10 @@ class DatabaseHelper private constructor()
 
         fun getInstance(context:Context):AppDatabase
         {
-            if(!::instance.isInitialized){
-                instance = Room.databaseBuilder(context, AppDatabase::class.java, Global.DATABASE_NAME).allowMainThreadQueries().fallbackToDestructiveMigration().build()
+            if(!Companion::instance.isInitialized){
+                instance = Room.databaseBuilder(context, AppDatabase::class.java,
+                    Global.DATABASE_NAME
+                ).allowMainThreadQueries().fallbackToDestructiveMigration().build()
             }
             return instance
         }

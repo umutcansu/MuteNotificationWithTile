@@ -12,18 +12,21 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 
 import com.thell.mutenotification.R
-import com.thell.mutenotification.adapter.NotificationHistoryAdapter
-import com.thell.mutenotification.database.entity.NotificationEntity
-import com.thell.mutenotification.helper.DatabaseHelper
+import com.thell.mutenotification.adapter.SettingsAdapter
+import com.thell.mutenotification.database.entity.SettingsEntity
+import com.thell.mutenotification.helper.database.DatabaseHelper
+import com.thell.mutenotification.helper.Global
+import com.thell.mutenotification.helper.NavigationMenuHelper
 import com.thell.mutenotification.helper.callback.IFragmentCommunication
+import com.thell.mutenotification.helper.settings.SettingsHelper
 import com.thell.mutenotification.model.NavigationDrawerItem
 import kotlinx.android.synthetic.main.fragment_settings.view.*
 
 
 class SettingsFragment(val callback: IFragmentCommunication) : Fragment() ,SwipeRefreshLayout.OnRefreshListener
 {
-    private lateinit var notificationList:List<NotificationEntity>
-    private lateinit var adapter : NotificationHistoryAdapter
+    private lateinit var settingsList:List<SettingsEntity>
+    private lateinit var adapter : SettingsAdapter
     private lateinit var recycleView : RecyclerView
     private lateinit var searchBox: SearchView
     private lateinit var swipeRefresh: SwipeRefreshLayout
@@ -44,7 +47,7 @@ class SettingsFragment(val callback: IFragmentCommunication) : Fragment() ,Swipe
         searchBox = view.fragment_settings_SearchView
         swipeRefresh = view.fragment_settings_SwipeRefresh
         swipeRefresh.setOnRefreshListener(this)
-        callback.changeHeader(NavigationDrawerItem.SETTING)
+        callback.changeHeader(NavigationMenuHelper.SETTING)
 
     }
 
@@ -52,13 +55,14 @@ class SettingsFragment(val callback: IFragmentCommunication) : Fragment() ,Swipe
     {
         initFilter()
         initSearchBox()
-        notificationList = DatabaseHelper.getInstance(context!!).getNotificationDao().getAll()
+        settingsList = DatabaseHelper.getInstance(context!!).getSettingsDao().getAll()
         setupRecyclerView()
     }
 
-    private fun clickNotification(notificationEntity: NotificationEntity)
+    private fun clickSettings(settingsEntity: SettingsEntity)
     {
-
+        DatabaseHelper.getInstance(context!!).getSettingsDao().update(settingsEntity.SettingsKey,settingsEntity.State)
+        SettingsHelper.setSettingsState(settingsEntity.SettingsKey,settingsEntity.State)
     }
 
     private fun initSearchBox()
@@ -79,10 +83,10 @@ class SettingsFragment(val callback: IFragmentCommunication) : Fragment() ,Swipe
 
     private fun setupRecyclerView()
     {
-        adapter = NotificationHistoryAdapter(
+        adapter = SettingsAdapter(
             context!!,
-            notificationList,
-            ::clickNotification
+            settingsList,
+            ::clickSettings
         )
         recycleView.layoutManager = LinearLayoutManager(
             context,
@@ -111,8 +115,8 @@ class SettingsFragment(val callback: IFragmentCommunication) : Fragment() ,Swipe
                 if (constraint.isNullOrEmpty())
                 {
 
-                    val resultList = ArrayList<NotificationEntity>()
-                    for (d in notificationList)
+                    val resultList = ArrayList<SettingsEntity>()
+                    for (d in settingsList)
                     {
                         resultList.add(d)
                     }
@@ -122,10 +126,10 @@ class SettingsFragment(val callback: IFragmentCommunication) : Fragment() ,Swipe
                 }
                 else
                 {
-                    val resultList = ArrayList<NotificationEntity>()
-                    for (d in notificationList)
+                    val resultList = ArrayList<SettingsEntity>()
+                    for (d in settingsList)
                     {
-                        if (d.ApplicationName.toLowerCase().contains(constraint.toString().toLowerCase()))
+                        if (d.SettingsDescription.toLowerCase().contains(constraint.toString().toLowerCase()))
                             resultList.add(d)
 
                     }
@@ -142,9 +146,9 @@ class SettingsFragment(val callback: IFragmentCommunication) : Fragment() ,Swipe
             {
                 @Suppress("UNCHECKED_CAST")
                 if(results?.values != null)
-                    adapter = NotificationHistoryAdapter(context!!,results.values as List<NotificationEntity>,::clickNotification)
+                    adapter = SettingsAdapter(context!!,results.values as List<SettingsEntity>,::clickSettings)
                 else
-                    adapter = NotificationHistoryAdapter(context!!, arrayListOf(),::clickNotification)
+                    adapter = SettingsAdapter(context!!, arrayListOf(),::clickSettings)
 
                 recycleView.adapter = adapter
             }

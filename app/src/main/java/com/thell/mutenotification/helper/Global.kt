@@ -2,11 +2,11 @@ package com.thell.mutenotification.helper
 
 import android.content.Context
 import com.thell.mutenotification.helper.mutestate.IMuteStateAction
-import com.thell.mutenotification.helper.mutestate.MuteStateMemoryAction
 import com.thell.mutenotification.helper.mutestate.MuteStateSharedPrefAction
 
 class Global
 {
+
     companion object
     {
 
@@ -16,11 +16,9 @@ class Global
         const  val  NotificationServiceBroadcastReceiver = "broadcastreceiver.NotificationServiceBroadcastReceiver"
         const val   FILE_NAME = "PREF_FILE"
         const val   MUTE_STATE_KEY = "STATE"
-        const val   VERSION = "1.0.8"
+        const val   VERSION = "1.1.0"
         const val   DATABASE_NAME = "AppDatabase"
         const val   DEBUG = true
-
-
 
 
         private var MuteStateAction : IMuteStateAction? = null
@@ -33,7 +31,6 @@ class Global
             }
             return MuteStateAction!!
         }
-
 
     }
 }
