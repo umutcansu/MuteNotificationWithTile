@@ -7,7 +7,7 @@ import com.thell.mutenotification.database.dao.SettingsDao
 import com.thell.mutenotification.database.entity.NotificationEntity
 import com.thell.mutenotification.database.entity.SettingsEntity
 
-@Database(entities = [NotificationEntity::class,SettingsEntity::class], version = 10)
+@Database(entities = [NotificationEntity::class,SettingsEntity::class], version = 11)
 abstract class AppDatabase: RoomDatabase() {
 
     abstract fun  getNotificationDao():NotificationDao
