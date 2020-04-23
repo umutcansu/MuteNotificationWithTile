@@ -15,11 +15,9 @@ import com.thell.mutenotification.R
 import com.thell.mutenotification.adapter.SettingsAdapter
 import com.thell.mutenotification.database.entity.SettingsEntity
 import com.thell.mutenotification.helper.database.DatabaseHelper
-import com.thell.mutenotification.helper.Global
-import com.thell.mutenotification.helper.NavigationMenuHelper
+import com.thell.mutenotification.helper.navigation.NavigationMenuHelper
 import com.thell.mutenotification.helper.callback.IFragmentCommunication
 import com.thell.mutenotification.helper.settings.SettingsHelper
-import com.thell.mutenotification.model.NavigationDrawerItem
 import kotlinx.android.synthetic.main.fragment_settings.view.*
 
 

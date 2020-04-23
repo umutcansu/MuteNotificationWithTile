@@ -18,10 +18,10 @@ import com.thell.mutenotification.R
 import com.thell.mutenotification.broadcastreceiver.NotificationServiceBroadcastReceiver
 import com.thell.mutenotification.helper.Global
 import com.thell.mutenotification.helper.GuiHelper
-import com.thell.mutenotification.helper.NavigationMenuHelper
+import com.thell.mutenotification.helper.navigation.NavigationMenuHelper
 import com.thell.mutenotification.helper.callback.IFragmentCommunication
 import com.thell.mutenotification.helper.mutestate.IMuteStateAction
-import com.thell.mutenotification.model.NavigationDrawerItem
+import com.thell.mutenotification.helper.mutestate.MuteStateActionHelper
 import kotlinx.android.synthetic.main.fragment_main.view.*
 
 
@@ -83,7 +83,7 @@ class MainFragment(val callback: IFragmentCommunication) : Fragment()
     {
         val filter = IntentFilter(Global.NotificationServiceBroadcastReceiver)
         context?.registerReceiver(receiver, filter)
-        muteStateAction = Global.getMuteStateAction(context!!)
+        muteStateAction = MuteStateActionHelper.getMuteStateAction(context!!)
     }
 
 
@@ -108,7 +108,7 @@ class MainFragment(val callback: IFragmentCommunication) : Fragment()
 
     private  fun setStateInit()
     {
-        val state = Global.getMuteStateAction(context!!).getMuteState()
+        val state = MuteStateActionHelper.getMuteStateAction(context!!).getMuteState()
         checkNotificationState(state)
     }
 

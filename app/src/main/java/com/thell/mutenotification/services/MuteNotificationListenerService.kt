@@ -12,6 +12,7 @@ import com.thell.mutenotification.database.entity.SettingsEntity
 import com.thell.mutenotification.helper.database.DatabaseHelper
 import com.thell.mutenotification.helper.Global
 import com.thell.mutenotification.helper.GuiHelper
+import com.thell.mutenotification.helper.mutestate.MuteStateActionHelper
 import com.thell.mutenotification.helper.settings.SettingsHelper
 import com.thell.mutenotification.helper.settings.SettingsStateType
 
@@ -46,7 +47,7 @@ class MuteNotificationListenerService : NotificationListenerService()
 
 
             )
-            MuteState = Global.getMuteStateAction(this@MuteNotificationListenerService).getMuteState()
+            MuteState = MuteStateActionHelper.getMuteStateAction(this@MuteNotificationListenerService).getMuteState()
             Category = notification.category ?: ""
             PostTime = sbn.postTime
             NotificationID = sbn.id
@@ -90,7 +91,7 @@ class MuteNotificationListenerService : NotificationListenerService()
 
     override fun onNotificationPosted(sbn: StatusBarNotification)
     {
-        if(Global.getMuteStateAction(this).getMuteState())
+        if(MuteStateActionHelper.getMuteStateAction(this).getMuteState())
         {
            muteAction(sbn)
         }

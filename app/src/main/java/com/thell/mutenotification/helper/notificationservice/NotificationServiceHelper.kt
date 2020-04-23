@@ -5,7 +5,7 @@ import android.content.Intent
 import com.thell.mutenotification.MainActivity
 import com.thell.mutenotification.helper.permission.PermissionHelper
 
-class NotificationServiceHelper
+class NotificationServiceHelper private constructor()
 {
     companion object
     {

@@ -10,7 +10,6 @@ import android.view.ViewGroup
 import android.widget.Filter
 import android.widget.ImageButton
 import android.widget.SearchView
-import androidx.core.text.HtmlCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
@@ -18,12 +17,10 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.thell.mutenotification.R
 import com.thell.mutenotification.adapter.NotificationHistoryAdapter
 import com.thell.mutenotification.database.entity.NotificationEntity
-import com.thell.mutenotification.helper.Global
 import com.thell.mutenotification.helper.GuiHelper
-import com.thell.mutenotification.helper.NavigationMenuHelper
+import com.thell.mutenotification.helper.navigation.NavigationMenuHelper
 import com.thell.mutenotification.helper.database.DatabaseHelper
 import com.thell.mutenotification.helper.callback.IFragmentCommunication
-import com.thell.mutenotification.model.NavigationDrawerItem
 import kotlinx.android.synthetic.main.fragment_history.view.*
 
 class HistoryFragment(val callback:IFragmentCommunication) : Fragment() ,SwipeRefreshLayout.OnRefreshListener{

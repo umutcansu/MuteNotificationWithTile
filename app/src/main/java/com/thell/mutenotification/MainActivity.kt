@@ -22,7 +22,7 @@ import androidx.fragment.app.FragmentManager
 import com.thell.mutenotification.fragment.*
 import com.thell.mutenotification.helper.Global
 import com.thell.mutenotification.helper.GuiHelper
-import com.thell.mutenotification.helper.NavigationMenuHelper
+import com.thell.mutenotification.helper.navigation.NavigationMenuHelper
 import com.thell.mutenotification.helper.notificationservice.NotificationServiceHelper
 import com.thell.mutenotification.helper.permission.PermissionHelper
 import com.thell.mutenotification.helper.bootreceiver.BootReceiverHelper

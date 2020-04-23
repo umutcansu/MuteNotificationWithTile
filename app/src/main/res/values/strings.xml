@@ -23,4 +23,7 @@
     <string name="search_hint_history">Application Name</string>
     <string name="search_hint_search">Settings Name</string>
     <string name="clearAllHistory">Clear All History?</string>
+    <string name="second">Second</string>
+    <string name="minute">Minute</string>
+    <string name="hour">Hour</string>
 </resources>

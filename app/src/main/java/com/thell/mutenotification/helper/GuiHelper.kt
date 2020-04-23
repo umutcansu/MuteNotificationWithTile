@@ -9,7 +9,6 @@ import android.graphics.BitmapFactory
 import android.graphics.BitmapShader
 import android.graphics.Shader
 import android.graphics.drawable.Drawable
-import android.os.Build
 import android.view.View
 import android.view.animation.Animation
 import android.view.animation.AnimationSet
@@ -17,15 +16,10 @@ import android.view.animation.DecelerateInterpolator
 import android.view.animation.RotateAnimation
 import android.widget.TextView
 import com.thell.mutenotification.database.entity.NotificationEntity
-import java.text.SimpleDateFormat
-import java.time.Instant
-import java.time.LocalDateTime
-import java.time.ZoneId
-import java.time.format.DateTimeFormatter
 import java.util.*
 
 
-class GuiHelper
+class GuiHelper private constructor()
 {
 
 

@@ -1,8 +1,10 @@
 package com.thell.mutenotification.helper.settings
 
+import android.content.Context
 import com.thell.mutenotification.database.entity.SettingsEntity
+import com.thell.mutenotification.helper.database.DatabaseHelper
 
-class SettingsHelper
+class SettingsHelper private constructor()
 {
     companion object
     {
@@ -43,6 +45,39 @@ class SettingsHelper
         fun getMuteSettingsState(): SettingsEntity
         {
             return getSettingsState(Companion::SETTINGS_KEY_IS_MUTE_NOTIFICATION_TOAST.name)
+        }
+
+        fun seedDatabaseValue(context: Context)
+        {
+            val settingsDao =  DatabaseHelper.getInstance(context).getSettingsDao()
+
+            val muteToastSettingsKey = SettingsHelper.Companion::SETTINGS_KEY_IS_MUTE_NOTIFICATION_TOAST.name
+            val alwaysSaveSettingsKey = SettingsHelper.Companion::SETTINGS_KEY_IS_NOTIFICATION_SAVED_ALWAYS.name
+
+            val muteToast = settingsDao.getBySettingsKey(muteToastSettingsKey)
+            val alwaysSave = settingsDao.getBySettingsKey(alwaysSaveSettingsKey)
+
+            if(muteToast == null)
+            {
+                settingsDao.insert(
+                    allSettingsList.first { it.SettingsKey == muteToastSettingsKey }
+                )
+            }
+            else
+            {
+                setSettingsState(muteToastSettingsKey,muteToast.State)
+            }
+
+            if(alwaysSave == null)
+            {
+                settingsDao.insert(
+                    allSettingsList.first { it.SettingsKey == alwaysSaveSettingsKey }
+                )
+            }
+            else
+            {
+                setSettingsState(alwaysSaveSettingsKey,alwaysSave.State)
+            }
         }
 
     }

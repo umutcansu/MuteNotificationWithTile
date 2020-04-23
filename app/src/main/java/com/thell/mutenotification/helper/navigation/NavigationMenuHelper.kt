@@ -1,9 +1,9 @@
-package com.thell.mutenotification.helper
+package com.thell.mutenotification.helper.navigation
 
 import com.thell.mutenotification.R
 import com.thell.mutenotification.model.NavigationDrawerItem
 
-class NavigationMenuHelper
+class NavigationMenuHelper private constructor()
 {
     companion object
     {

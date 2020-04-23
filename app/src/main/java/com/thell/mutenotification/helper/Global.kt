@@ -1,10 +1,16 @@
 package com.thell.mutenotification.helper
 
 import android.content.Context
+import android.content.Intent
 import com.thell.mutenotification.helper.mutestate.IMuteStateAction
 import com.thell.mutenotification.helper.mutestate.MuteStateSharedPrefAction
+import com.thell.mutenotification.helper.notificationservice.NotificationServiceHelper
+import com.thell.mutenotification.helper.settings.SettingsHelper
+import com.thell.mutenotification.helper.timer.TimerHelper
+import com.thell.mutenotification.services.MuteNotificationListenerService
+import com.thell.mutenotification.services.MuteNotificationTileService
 
-class Global
+class Global private constructor()
 {
 
     companion object
@@ -20,16 +26,13 @@ class Global
         const val   DATABASE_NAME = "AppDatabase"
         const val   DEBUG = true
 
-
-        private var MuteStateAction : IMuteStateAction? = null
-
-        fun getMuteStateAction(context: Context): IMuteStateAction
+        fun startApplication(context: Context)
         {
-            if(MuteStateAction == null)
-            {
-                MuteStateAction = MuteStateSharedPrefAction(context)
-            }
-            return MuteStateAction!!
+            NotificationServiceHelper.muteNotificationService = Intent(context, MuteNotificationListenerService::class.java)
+            val muteNotificationTileService = Intent(context, MuteNotificationTileService::class.java)
+            context.startService(muteNotificationTileService)
+            SettingsHelper.seedDatabaseValue(context)
+            TimerHelper.loadTimer(context)
         }
 
     }

@@ -8,7 +8,6 @@ import com.thell.mutenotification.database.entity.NotificationEntity
 
 @Dao
 interface NotificationDao {
-
     @Insert
     fun insert(value:NotificationEntity)
 

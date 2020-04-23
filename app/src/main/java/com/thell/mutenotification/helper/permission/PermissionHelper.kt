@@ -13,7 +13,7 @@ import com.thell.mutenotification.R
 import com.thell.mutenotification.helper.Global
 import com.thell.mutenotification.helper.bootreceiver.BootReceiverHelper
 
-class PermissionHelper {
+class PermissionHelper private constructor(){
 
     companion object
     {

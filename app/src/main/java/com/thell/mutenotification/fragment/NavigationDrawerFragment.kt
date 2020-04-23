@@ -14,7 +14,7 @@ import com.thell.mutenotification.model.NavigationDrawerItem
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.fragment_navigation_drawer.view.*
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.thell.mutenotification.helper.NavigationMenuHelper
+import com.thell.mutenotification.helper.navigation.NavigationMenuHelper
 
 
 class NavigationDrawerFragment() : Fragment()

@@ -2,7 +2,7 @@ package com.thell.mutenotification.helper.bootreceiver
 
 import android.content.Context
 
-class BootReceiverPrefHelper
+class BootReceiverPrefHelper private constructor()
 {
     companion object
     {

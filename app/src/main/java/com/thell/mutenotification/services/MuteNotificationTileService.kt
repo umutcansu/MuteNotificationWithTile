@@ -15,15 +15,16 @@ import com.thell.mutenotification.helper.Global
 import com.thell.mutenotification.helper.notificationservice.NotificationServiceHelper
 import com.thell.mutenotification.helper.permission.PermissionHelper
 import com.thell.mutenotification.helper.mutestate.IMuteStateAction
+import com.thell.mutenotification.helper.mutestate.MuteStateActionHelper
 
 class MuteNotificationTileService: TileService()
 {
 
-    private lateinit var MuteStateAction : IMuteStateAction
+    private lateinit var muteStateAction : IMuteStateAction
 
     override fun onCreate() {
         super.onCreate()
-        MuteStateAction = Global.getMuteStateAction(this)
+        muteStateAction = MuteStateActionHelper.getMuteStateAction(this)
     }
 
     override fun onClick()
@@ -39,15 +40,15 @@ class MuteNotificationTileService: TileService()
         else
         {
 
-            val state = MuteStateAction.getMuteState()
+            val state = muteStateAction.getMuteState()
 
             if(state)
                 NotificationServiceHelper.stopNotificationListenerService(this)
             else
                 NotificationServiceHelper.start(this)
 
-            if (::MuteStateAction.isInitialized)
-                MuteStateAction.switchMuteState()
+            if (::muteStateAction.isInitialized)
+                muteStateAction.switchMuteState()
 
             setTile()
 
@@ -117,7 +118,7 @@ class MuteNotificationTileService: TileService()
         val tile = qsTile
 
         tile.apply {
-            if(Global.getMuteStateAction(this@MuteNotificationTileService).getMuteState())
+            if(MuteStateActionHelper.getMuteStateAction(this@MuteNotificationTileService).getMuteState())
             {
                 label = getString(R.string.mute)
                 state = Tile.STATE_ACTIVE
