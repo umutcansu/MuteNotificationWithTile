@@ -230,7 +230,7 @@ class TimerFragment(private val callback: IFragmentCommunication) : Fragment()
         visibleStartTimerButton()
         visibleNumberPicker()
         setMaxMinNumberPickerValue()
-        TimerHelper.updateTimer(context!!)
+        TimerHelper.updateTimerAll(context!!)
         controlSwitchEnable()
     }
 

@@ -41,6 +41,9 @@ class MuteNotificationListenerService : NotificationListenerService()
             else
                 notification.tickerText.toString()
 
+
+            Ticket += " ${notification.extras.getCharSequence(Notification.EXTRA_TEXT).toString()}"
+
             ApplicationName = GuiHelper.getAppNameFromPackageName(
                 this@MuteNotificationListenerService,
                 PackageName
@@ -57,10 +60,10 @@ class MuteNotificationListenerService : NotificationListenerService()
 
     private fun saveNotification(notificationEntity: NotificationEntity)
     {
-
-        val db = DatabaseHelper.getInstance(applicationContext)
-        db.getNotificationDao().insert(notificationEntity)
-
+        Thread{
+            val db = DatabaseHelper.getInstance(applicationContext)
+            db.getNotificationDao().insert(notificationEntity)
+        }.start()
     }
 
     private fun muteAction(sbn: StatusBarNotification)

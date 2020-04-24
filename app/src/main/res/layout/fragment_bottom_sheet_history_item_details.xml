@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <ImageView
+        android:id="@+id/notification_history_detail_mutestate_imageview"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:tint="@color/colorMuteSetState"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:srcCompat="@drawable/ic_notifications_off_black_24dp" />
+
+    <TextView
+        android:id="@+id/notification_history_detail_posttime_textview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/notification_history_detail_mutestate_imageview"
+        app:layout_constraintEnd_toStartOf="@+id/notification_history_detail_mutestate_imageview"
+        app:layout_constraintTop_toTopOf="@+id/notification_history_detail_mutestate_imageview"
+        tools:text="2020.04.21 21.36" />
+
+    <ImageView
+        android:id="@+id/notification_history_detail_icon_imageview"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:background="@android:color/transparent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:srcCompat="@drawable/ic_launcher" />
+
+    <TextView
+        android:id="@+id/notification_history_detail_package_name_textview"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/notification_history_detail_icon_imageview"
+        app:layout_constraintTop_toTopOf="@+id/notification_history_detail_icon_imageview"
+        tools:text="Message" />
+
+    <TextView
+        android:id="@+id/notification_history_detail_content_textview"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/notification_history_detail_mutestate_imageview"
+        app:layout_constraintEnd_toEndOf="@+id/notification_history_detail_mutestate_imageview"
+        app:layout_constraintStart_toEndOf="@+id/notification_history_detail_icon_imageview"
+        app:layout_constraintTop_toBottomOf="@+id/notification_history_detail_package_name_textview"
+        tools:text="
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam ultricies quam lacinia tristique ultricies. Aliquam posuere elit id turpis rhoncus tincidunt. Nulla neque turpis, pellentesque id hendrerit nec, porttitor id nibh. Interdum et malesuada fames ac ante ipsum primis in faucibus. Sed pharetra dignissim orci, at tincidunt sapien lacinia et. Phasellus commodo velit id pharetra vulputate. Phasellus viverra leo eu diam lobortis, eu tincidunt tellus convallis. Nunc laoreet, ipsum finibus posuere semper, metus quam efficitur dolor, faucibus varius ex odio at lorem. Vivamus quis metus imperdiet, imperdiet enim finibus, commodo erat. Ut fermentum tempor metus, sit amet molestie purus pulvinar sagittis. Cras consequat eleifend mi quis sollicitudin. Vestibulum mauris dolor, efficitur quis erat eu, sagittis sagittis purus." />
+</androidx.constraintlayout.widget.ConstraintLayout>

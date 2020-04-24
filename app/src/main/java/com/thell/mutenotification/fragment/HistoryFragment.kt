@@ -13,6 +13,7 @@ import android.widget.SearchView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
 import com.thell.mutenotification.R
 import com.thell.mutenotification.adapter.NotificationHistoryAdapter
@@ -32,6 +33,7 @@ class HistoryFragment(val callback:IFragmentCommunication) : Fragment() ,SwipeRe
     private lateinit var swipeRefresh: SwipeRefreshLayout
     private lateinit var clearButton: ImageButton
     private lateinit var filter: Filter
+    private lateinit var bottomSheetDialogFragment :BottomSheetDialogFragment
 
 
     private val clearOnClick = object :View.OnClickListener
@@ -46,6 +48,9 @@ class HistoryFragment(val callback:IFragmentCommunication) : Fragment() ,SwipeRe
 
         private fun coreClick()
         {
+            if(!::notificationList.isInitialized || notificationList.isEmpty())
+                return
+
             if(!::alertDialogBuilder.isInitialized)
             {
                 val message = getString(R.string.clearAllHistory)
@@ -87,7 +92,6 @@ class HistoryFragment(val callback:IFragmentCommunication) : Fragment() ,SwipeRe
     Bundle?): View? {
 
         val view = inflater.inflate(R.layout.fragment_history, container, false)
-
         initUI(view)
         init()
 
@@ -108,6 +112,7 @@ class HistoryFragment(val callback:IFragmentCommunication) : Fragment() ,SwipeRe
 
     private fun init()
     {
+
         initFilter()
         initSearchBox()
         notificationList = DatabaseHelper.getInstance(context!!).getNotificationDao().getAll()
@@ -116,7 +121,8 @@ class HistoryFragment(val callback:IFragmentCommunication) : Fragment() ,SwipeRe
 
     private fun clickNotification(notificationEntity: NotificationEntity)
     {
-
+        bottomSheetDialogFragment = HistoryDetailBottomSheetDialogFragment(notificationEntity)
+        bottomSheetDialogFragment.show(fragmentManager!!,"frag")
     }
 
     private fun initSearchBox()

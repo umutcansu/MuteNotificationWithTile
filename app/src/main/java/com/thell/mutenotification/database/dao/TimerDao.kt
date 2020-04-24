@@ -14,6 +14,9 @@ interface TimerDao
     @Query("update Timer set  IsFinish = :isFinish where ID = :id ")
     fun update(id:Int,isFinish:Boolean)
 
+    @Query("update Timer set  IsFinish = :isFinish ")
+    fun updateAll(isFinish:Boolean)
+
     @Query("select * from Timer")
     fun getAll():List<TimerEntity>
 
