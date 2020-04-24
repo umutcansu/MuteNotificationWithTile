@@ -207,17 +207,31 @@ class TimerFragment(private val callback: IFragmentCommunication) : Fragment()
     private fun updateTimer()
     {
         stopTimer()
+        setMaxMinNumberPickerValue()
+        setStateInit()
+        setButtonState()
+
+        if(TimerHelper.CurrentTimer == null)
+        {
+            visibleNumberPicker()
+        }
+        else
+        {
+            visibleCountDown()
+            setTimer()
+        }
     }
 
     private fun stopTimer()
     {
-        TimerHelper.updateTimer(context!!)
-        controlSwitchEnable()
+
         if(::timer.isInitialized)
             timer.cancel()
         visibleStartTimerButton()
         visibleNumberPicker()
         setMaxMinNumberPickerValue()
+        TimerHelper.updateTimer(context!!)
+        controlSwitchEnable()
     }
 
     private fun writeCountDownValue(value:Long)

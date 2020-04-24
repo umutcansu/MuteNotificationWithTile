@@ -17,16 +17,22 @@ class TimerHelper private constructor()
 
         fun updateTimer(context: Context)
         {
+            val id = CurrentTimer!!.ID
             if(CurrentTimer != null)
             {
-                DatabaseHelper.getInstance(context).getTimerDao().update(CurrentTimer!!.ID,true)
+                Thread{
+                    DatabaseHelper.getInstance(context).getTimerDao().update(id,true)
+                }.start()
+
             }
             CurrentTimer = null
         }
 
         fun insertTimer(context: Context,timerEntity: TimerEntity)
         {
-            DatabaseHelper.getInstance(context).getTimerDao().insert(timerEntity)
+            Thread{
+                DatabaseHelper.getInstance(context).getTimerDao().insert(timerEntity)
+            }.start()
             CurrentTimer = timerEntity
         }
     }
