@@ -8,6 +8,13 @@ class TimerHelper private constructor()
 {
     companion object
     {
+
+        const val   TimerCreatedFlag = "TimerCreated"
+        const val   TimerSetFlag = "TimerSetFlag"
+        const val   TimerFinishedFlag = "TimerFinishedFlag"
+        const val   TimerCanceledFlag = "TimerCanceledFlag"
+        const val   TimerEntity = "TimerEntity"
+
         var CurrentTimer : TimerEntity? = null
 
         fun loadTimer(context: Context)

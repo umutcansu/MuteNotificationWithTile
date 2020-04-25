@@ -15,7 +15,7 @@ abstract class MuteStateAction(val context: Context):IMuteStateAction
     override fun sendBroadcast()
     {
         val intent =  Intent(Global.NotificationServiceBroadcastReceiver)
-        intent.putExtra(Global.MUTE_STATE_KEY,getMuteState())
+        intent.putExtra(MuteStateSharedPrefAction.MUTE_STATE_KEY,getMuteState())
         context.sendBroadcast(intent)
     }
 

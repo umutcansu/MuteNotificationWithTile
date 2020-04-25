@@ -20,7 +20,6 @@ class MuteStateMemoryAction(context: Context): MuteStateAction(context)
         sendBroadcast()
     }
 
-
 }
 
 

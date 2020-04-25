@@ -22,6 +22,7 @@ import com.thell.mutenotification.helper.navigation.NavigationMenuHelper
 import com.thell.mutenotification.helper.callback.IFragmentCommunication
 import com.thell.mutenotification.helper.mutestate.IMuteStateAction
 import com.thell.mutenotification.helper.mutestate.MuteStateActionHelper
+import com.thell.mutenotification.helper.mutestate.MuteStateSharedPrefAction
 import kotlinx.android.synthetic.main.fragment_main.view.*
 
 
@@ -52,7 +53,7 @@ class MainFragment(val callback: IFragmentCommunication) : Fragment()
         override fun onReceive(p0: Context?, p1: Intent?)
         {
             super.onReceive(p0, p1)
-            val state = p1!!.getBooleanExtra(Global.MUTE_STATE_KEY,false)
+            val state = p1!!.getBooleanExtra(MuteStateSharedPrefAction.MUTE_STATE_KEY,false)
             checkNotificationState(state)
         }
     }

@@ -6,15 +6,22 @@ import com.thell.mutenotification.helper.Global
 class MuteStateSharedPrefAction(context: Context): MuteStateAction(context)
 {
 
+    companion object
+    {
+        const val   FILE_NAME = "PREF_FILE"
+        const val   MUTE_STATE_KEY = "STATE"
+    }
+
+
     override fun getMuteState(): Boolean {
-        val sharedPref = context.getSharedPreferences(Global.FILE_NAME,Context.MODE_PRIVATE)
-        return sharedPref.getBoolean(Global.MUTE_STATE_KEY,false)
+        val sharedPref = context.getSharedPreferences(FILE_NAME,Context.MODE_PRIVATE)
+        return sharedPref.getBoolean(MUTE_STATE_KEY,false)
     }
 
     override fun setMuteState(value: Boolean) {
-        val sharedPref = context.getSharedPreferences(Global.FILE_NAME,Context.MODE_PRIVATE)
+        val sharedPref = context.getSharedPreferences(FILE_NAME,Context.MODE_PRIVATE)
         val  editor = sharedPref.edit()
-        editor.putBoolean(Global.MUTE_STATE_KEY,value)
+        editor.putBoolean(MUTE_STATE_KEY,value)
         editor.commit()
 
         sendBroadcast()

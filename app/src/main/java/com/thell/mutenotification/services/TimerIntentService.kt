@@ -27,7 +27,7 @@ class TimerIntentService : IntentService("TimerIntentService")
 
     private fun createdTimer(context: Context,intent: Intent)
     {
-        val timer = intent.getSerializableExtra(Global.TimerEntity) as TimerEntity
+        val timer = intent.getSerializableExtra(TimerHelper.TimerEntity) as TimerEntity
         TimerHelper.insertTimer(context,timer)
         startTimer()
         setTimerSendBroadcast()
@@ -45,13 +45,13 @@ class TimerIntentService : IntentService("TimerIntentService")
         {
             if(p1 != null)
             {
-                val isCreated = p1.getBooleanExtra(Global.TimerCreatedFlag,false)
+                val isCreated = p1.getBooleanExtra(TimerHelper.TimerCreatedFlag,false)
                 if(isCreated)
                 {
                    createdTimer(p0!!,p1)
                 }
 
-                val isCanceled = p1.getBooleanExtra(Global.TimerCanceledFlag,false)
+                val isCanceled = p1.getBooleanExtra(TimerHelper.TimerCanceledFlag,false)
                 if(isCanceled)
                 {
                    canceledTimer()
@@ -80,14 +80,14 @@ class TimerIntentService : IntentService("TimerIntentService")
     private fun finishedTimerSendBroadcast()
     {
         val intent =  Intent(Global.TimerBroadcastReceiver)
-        intent.putExtra(Global.TimerFinishedFlag,true)
+        intent.putExtra(TimerHelper.TimerFinishedFlag,true)
         sendBroadcast(intent)
     }
 
     private fun setTimerSendBroadcast()
     {
         val intent =  Intent(Global.TimerBroadcastReceiver)
-        intent.putExtra(Global.TimerSetFlag,true)
+        intent.putExtra(TimerHelper.TimerSetFlag,true)
         sendBroadcast(intent)
     }
 

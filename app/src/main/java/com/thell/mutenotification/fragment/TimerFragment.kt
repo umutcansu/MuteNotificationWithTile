@@ -61,14 +61,14 @@ class TimerFragment(private val callback: IFragmentCommunication) : Fragment()
             if(p1 != null)
             {
 
-                val isFinishedID = p1.getBooleanExtra(Global.TimerFinishedFlag,false)
+                val isFinishedID = p1.getBooleanExtra(TimerHelper.TimerFinishedFlag,false)
                 if(isFinishedID)
                 {
                     clearTimer()
                     controlSwitchEnable()
                 }
 
-                val isSetTimer = p1.getBooleanExtra(Global.TimerSetFlag,false)
+                val isSetTimer = p1.getBooleanExtra(TimerHelper.TimerSetFlag,false)
                 if(isSetTimer)
                 {
                     setTimer()
@@ -294,7 +294,7 @@ class TimerFragment(private val callback: IFragmentCommunication) : Fragment()
 
     private fun calculateTime():Long
     {
-        var milisecond = 0L
+
 
         var totalSecond: Long
 
@@ -304,7 +304,7 @@ class TimerFragment(private val callback: IFragmentCommunication) : Fragment()
 
         totalSecond = (((hour*60)*60) + (minute*60) + second).toLong()
 
-        milisecond = totalSecond * 1_000
+        val milisecond = totalSecond * 1_000
 
         return milisecond
     }
@@ -400,8 +400,8 @@ class TimerFragment(private val callback: IFragmentCommunication) : Fragment()
     {
         val intent =  Intent(Global.TimerBroadcastReceiver)
 
-        intent.putExtra(Global.TimerCreatedFlag,true)
-        intent.putExtra(Global.TimerEntity,timerEntity)
+        intent.putExtra(TimerHelper.TimerCreatedFlag,true)
+        intent.putExtra(TimerHelper.TimerEntity,timerEntity)
 
         context!!.sendBroadcast(intent)
     }
@@ -409,7 +409,7 @@ class TimerFragment(private val callback: IFragmentCommunication) : Fragment()
     private fun canceledTimerSendBroadcast()
     {
         val intent =  Intent(Global.TimerBroadcastReceiver)
-        intent.putExtra(Global.TimerCanceledFlag,true)
+        intent.putExtra(TimerHelper.TimerCanceledFlag,true)
         context!!.sendBroadcast(intent)
     }
 

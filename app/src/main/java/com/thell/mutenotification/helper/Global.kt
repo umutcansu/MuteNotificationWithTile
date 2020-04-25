@@ -18,7 +18,6 @@ class Global private constructor()
     companion object
     {
 
-
         const  val  NOTIFICATION_PERMISSION_REQUEST_CODE = 100
         const  val  BOOT_PERMISSION_REQUEST_CODE = 200
         const  val  SYSTEM_ALERT_REQUEST_CODE = 300
@@ -26,28 +25,35 @@ class Global private constructor()
         const  val  NotificationServiceBroadcastReceiver = "broadcastreceiver.NotificationServiceBroadcastReceiver"
         const  val  TimerBroadcastReceiver = "broadcastreceiver.TimerBroadcastReceiver"
 
-        const val   TimerCreatedFlag = "TimerCreated"
-        const val   TimerSetFlag = "TimerSetFlag"
-        const val   TimerFinishedFlag = "TimerFinishedFlag"
-        const val   TimerCanceledFlag = "TimerCanceledFlag"
-
-        const val   TimerEntity = "TimerEntity"
-
-        const val   FILE_NAME = "PREF_FILE"
-        const val   MUTE_STATE_KEY = "STATE"
-
         const val   VERSION = "1.1.2"
         const val   DATABASE_NAME = "AppDatabase"
         const val   DATABASE_VERSION = 14
-        const val   DEBUG = true
 
-        fun startApplication(context: Context)
+        const val   DEBUG = true
+        var START = false
+
+        private fun startTimerService(context: Context)
         {
             var service = Intent(context,TimerIntentService::class.java)
             context.startService(service)
-            NotificationServiceHelper.muteNotificationService = Intent(context, MuteNotificationListenerService::class.java)
+        }
+
+        private fun startTileService(context: Context)
+        {
             val muteNotificationTileService = Intent(context, MuteNotificationTileService::class.java)
             context.startService(muteNotificationTileService)
+        }
+
+        fun startApplication(context: Context)
+        {
+            if(START)
+                return
+
+            START = false
+
+            startTimerService(context)
+            NotificationServiceHelper.muteNotificationService = Intent(context, MuteNotificationListenerService::class.java)
+            startTileService(context)
             SettingsHelper.seedDatabaseValue(context)
             TimerHelper.loadTimer(context)
         }
