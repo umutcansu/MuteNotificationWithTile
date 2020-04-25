@@ -3,9 +3,11 @@ package com.thell.mutenotification.services
 import android.app.Notification
 import android.content.Intent
 import android.os.Bundle
+import android.os.CountDownTimer
 import android.os.IBinder
 import android.service.notification.NotificationListenerService
 import android.service.notification.StatusBarNotification
+import android.util.Log
 import android.widget.Toast
 import com.thell.mutenotification.database.entity.NotificationEntity
 import com.thell.mutenotification.database.entity.SettingsEntity
@@ -19,6 +21,8 @@ import com.thell.mutenotification.helper.settings.SettingsStateType
 
 class MuteNotificationListenerService : NotificationListenerService()
 {
+
+
 
     override fun onBind(intent: Intent?): IBinder?
     {
@@ -80,8 +84,6 @@ class MuteNotificationListenerService : NotificationListenerService()
                     Toast.LENGTH_SHORT
             ).show()
     }
-
-
 
     private fun notificationAction(sbn: StatusBarNotification)
     {

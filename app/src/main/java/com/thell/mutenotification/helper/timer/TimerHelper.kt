@@ -17,7 +17,6 @@ class TimerHelper private constructor()
 
         fun updateTimer(context: Context)
         {
-
             if(CurrentTimer != null)
             {
                 DatabaseHelper.getInstance(context).getTimerDao().update(CurrentTimer!!.ID,true)
@@ -27,7 +26,6 @@ class TimerHelper private constructor()
 
         fun updateTimerAll(context: Context)
         {
-
             if(CurrentTimer != null)
             {
                 DatabaseHelper.getInstance(context).getTimerDao().updateAll(true)

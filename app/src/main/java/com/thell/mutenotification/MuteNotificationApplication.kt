@@ -10,7 +10,7 @@ class MuteNotificationApplication : Application()
 
     override fun onCreate() {
         super.onCreate()
-        Thread.setDefaultUncaughtExceptionHandler(handler)
+        //Thread.setDefaultUncaughtExceptionHandler(handler)
         init()
     }
 

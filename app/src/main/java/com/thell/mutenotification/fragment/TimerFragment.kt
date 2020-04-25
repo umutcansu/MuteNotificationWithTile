@@ -1,5 +1,8 @@
 package com.thell.mutenotification.fragment
 
+import android.content.Context
+import android.content.Intent
+import android.content.IntentFilter
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.text.Spanned
@@ -11,14 +14,14 @@ import androidx.core.content.ContextCompat
 import androidx.core.text.HtmlCompat
 import androidx.fragment.app.Fragment
 import com.thell.mutenotification.R
+import com.thell.mutenotification.broadcastreceiver.TimerBroadcastReceiver
 import com.thell.mutenotification.database.entity.TimerEntity
+import com.thell.mutenotification.helper.Global
 import com.thell.mutenotification.helper.navigation.NavigationMenuHelper
 import com.thell.mutenotification.helper.callback.IFragmentCommunication
-import com.thell.mutenotification.helper.database.DatabaseHelper
 import com.thell.mutenotification.helper.mutestate.MuteStateActionHelper
 import com.thell.mutenotification.helper.timer.TimerHelper
 import kotlinx.android.synthetic.main.fragment_timer.view.*
-import java.util.*
 import java.util.concurrent.TimeUnit
 
 
@@ -50,6 +53,33 @@ class TimerFragment(private val callback: IFragmentCommunication) : Fragment()
     private var isValid  = false
     private lateinit var timer:CountDownTimer
 
+    private val receiver = object : TimerBroadcastReceiver()
+    {
+        override fun onReceive(p0: Context?, p1: Intent?)
+        {
+
+            if(p1 != null)
+            {
+
+                val isFinishedID = p1.getBooleanExtra(Global.TimerFinishedFlag,false)
+                if(isFinishedID)
+                {
+                    clearTimer()
+                    controlSwitchEnable()
+                }
+
+                val isSetTimer = p1.getBooleanExtra(Global.TimerSetFlag,false)
+                if(isSetTimer)
+                {
+                    setTimer()
+                    controlSwitchEnable()
+                }
+            }
+
+            super.onReceive(p0, p1)
+        }
+    }
+
 //------------------------------------LISTENER------------------------------------------------------
 
     private val startTimerOnClick = object :View.OnClickListener
@@ -67,7 +97,7 @@ class TimerFragment(private val callback: IFragmentCommunication) : Fragment()
 
         override fun onClick(p0: View)
         {
-            updateTimer()
+            canceledTimerSendBroadcast()
         }
 
     }
@@ -98,6 +128,14 @@ class TimerFragment(private val callback: IFragmentCommunication) : Fragment()
         initUI(view)
         init()
         return view
+    }
+
+
+    override fun onDetach() {
+        super.onDetach()
+
+        if(context != null)
+            context!!.unregisterReceiver(receiver)
     }
 
     private  fun initUI(view:View)
@@ -134,12 +172,19 @@ class TimerFragment(private val callback: IFragmentCommunication) : Fragment()
 
     private  fun init()
     {
-       TimerHelper.loadTimer(context!!)
+        registerReceiver()
 
         setMaxMinNumberPickerValue()
         setStateInit()
         setButtonState()
 
+        timerState()
+    }
+
+//----------------------------------------BUSSINES--------------------------------------------------
+
+    private fun timerState()
+    {
         if(TimerHelper.CurrentTimer == null)
         {
             visibleNumberPicker()
@@ -148,11 +193,9 @@ class TimerFragment(private val callback: IFragmentCommunication) : Fragment()
         {
             visibleCountDown()
             setTimer()
+            controlSwitchEnable()
         }
-
     }
-
-//----------------------------------------BUSSINES--------------------------------------------------
 
     private fun saveTimer()
     {
@@ -167,8 +210,8 @@ class TimerFragment(private val callback: IFragmentCommunication) : Fragment()
            currentDate + calculateTime(),
            timerFragmentMuteSwitch.isChecked
        )
-       TimerHelper.insertTimer(context!!,timer)
-       setTimer()
+
+       createTimerSendBroadcast(timer)
     }
 
     private fun setTimer()
@@ -182,7 +225,7 @@ class TimerFragment(private val callback: IFragmentCommunication) : Fragment()
             {
                 override fun onFinish()
                 {
-                    updateTimer()
+                    clearTimer()
                 }
 
                 override fun onTick(p0: Long)
@@ -193,23 +236,19 @@ class TimerFragment(private val callback: IFragmentCommunication) : Fragment()
             }
 
             timer.start()
-            controlSwitchEnable()
-            visibleStopTimerButton()
             visibleCountDown()
-        }
-        else
-        {
-            updateTimer()
-            timerFragmentMuteSwitch.isEnabled = true
+            visibleStopTimerButton()
         }
     }
 
-    private fun updateTimer()
+    private fun clearTimer()
     {
         stopTimer()
+
         setMaxMinNumberPickerValue()
         setStateInit()
         setButtonState()
+
 
         if(TimerHelper.CurrentTimer == null)
         {
@@ -218,21 +257,20 @@ class TimerFragment(private val callback: IFragmentCommunication) : Fragment()
         else
         {
             visibleCountDown()
-            setTimer()
         }
     }
 
     private fun stopTimer()
     {
-
         if(::timer.isInitialized)
             timer.cancel()
+
         visibleStartTimerButton()
         visibleNumberPicker()
         setMaxMinNumberPickerValue()
-        TimerHelper.updateTimerAll(context!!)
-        controlSwitchEnable()
     }
+
+
 
     private fun writeCountDownValue(value:Long)
     {
@@ -273,6 +311,8 @@ class TimerFragment(private val callback: IFragmentCommunication) : Fragment()
 
     private fun setButtonState()
     {
+        if(context == null)
+            return
         if(hourNumberPicker.value == 0 && minuteNumberPicker.value == 0 && secondNumberPicker.value == 0)
         {
             isValid = false
@@ -287,6 +327,9 @@ class TimerFragment(private val callback: IFragmentCommunication) : Fragment()
 
     private  fun setState(state:Boolean)
     {
+        if(context == null)
+            return
+
         timerFragmentMuteStateTextView.apply {
             if(state)
             {
@@ -317,6 +360,9 @@ class TimerFragment(private val callback: IFragmentCommunication) : Fragment()
 
     private  fun setStateInit()
     {
+        if(context == null)
+            return
+
         val state = !MuteStateActionHelper.getMuteStateAction(context!!).getMuteState()
         timerFragmentMuteSwitch.setOnCheckedChangeListener(null)
         timerFragmentMuteSwitch.isChecked = state
@@ -340,6 +386,31 @@ class TimerFragment(private val callback: IFragmentCommunication) : Fragment()
         secondNumberPicker.minValue = 0
         secondNumberPicker.maxValue = 59
         secondNumberPicker.value = 0
+    }
+
+
+
+    private fun registerReceiver()
+    {
+        val filter = IntentFilter(Global.TimerBroadcastReceiver)
+        context!!.registerReceiver(receiver, filter)
+    }
+
+    private fun createTimerSendBroadcast(timerEntity: TimerEntity)
+    {
+        val intent =  Intent(Global.TimerBroadcastReceiver)
+
+        intent.putExtra(Global.TimerCreatedFlag,true)
+        intent.putExtra(Global.TimerEntity,timerEntity)
+
+        context!!.sendBroadcast(intent)
+    }
+
+    private fun canceledTimerSendBroadcast()
+    {
+        val intent =  Intent(Global.TimerBroadcastReceiver)
+        intent.putExtra(Global.TimerCanceledFlag,true)
+        context!!.sendBroadcast(intent)
     }
 
 //--------------------------------------VISIBLE/GONE------------------------------------------------
