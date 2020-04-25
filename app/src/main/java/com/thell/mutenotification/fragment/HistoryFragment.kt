@@ -10,9 +10,12 @@ import android.view.ViewGroup
 import android.widget.Filter
 import android.widget.ImageButton
 import android.widget.SearchView
+import androidx.cardview.widget.CardView
+import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
 import com.thell.mutenotification.R
@@ -22,6 +25,7 @@ import com.thell.mutenotification.helper.GuiHelper
 import com.thell.mutenotification.helper.navigation.NavigationMenuHelper
 import com.thell.mutenotification.helper.database.DatabaseHelper
 import com.thell.mutenotification.helper.callback.IFragmentCommunication
+import kotlinx.android.synthetic.main.fragment_bottom_sheet_history_item_details.view.*
 import kotlinx.android.synthetic.main.fragment_history.view.*
 
 class HistoryFragment(val callback:IFragmentCommunication) : Fragment() ,SwipeRefreshLayout.OnRefreshListener{
@@ -107,7 +111,6 @@ class HistoryFragment(val callback:IFragmentCommunication) : Fragment() ,SwipeRe
         clearButton.setOnClickListener(clearOnClick)
         swipeRefresh.setOnRefreshListener(this)
         callback.changeHeader(NavigationMenuHelper.HISTORY)
-
     }
 
     private fun init()

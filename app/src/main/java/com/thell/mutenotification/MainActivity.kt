@@ -148,7 +148,6 @@ class MainActivity : AppCompatActivity()
 
     override fun onStop()
     {
-        Log.e("mainActivity","onStop")
         super.onStop()
 
         if(this::dialog.isInitialized)

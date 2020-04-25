@@ -7,6 +7,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".fragment.HistoryFragment">
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout2"
         android:layout_width="match_parent"
@@ -62,9 +63,9 @@
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/fragment_notification_history_RecycleView"
-                tools:listitem="@layout/notification_history_item_layout"
                 android:layout_width="match_parent"
-                android:layout_height="0dp" />
+                android:layout_height="0dp"
+                tools:listitem="@layout/notification_history_item_layout" />
         </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>

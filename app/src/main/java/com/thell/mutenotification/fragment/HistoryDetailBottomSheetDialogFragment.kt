@@ -1,5 +1,6 @@
 package com.thell.mutenotification.fragment
 
+import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -17,13 +18,16 @@ import kotlinx.android.synthetic.main.notification_history_item_layout.view.*
 class HistoryDetailBottomSheetDialogFragment(var notificationEntity: NotificationEntity): BottomSheetDialogFragment()
 {
 
-
-
     lateinit var historyDetailFragmentIcon:ImageView
     lateinit var historyDetailFragmentPackageName:TextView
     lateinit var historyDetailFragmentDetailContent:TextView
     lateinit var historyDetailFragmentPostTime:TextView
     lateinit var historyDetailFragmentMuteStateIcon:ImageView
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        (view?.parent as View).setBackgroundColor(Color.TRANSPARENT)
+    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View
     {
