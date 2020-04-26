@@ -22,6 +22,7 @@ import com.thell.mutenotification.helper.callback.IFragmentCommunication
 import com.thell.mutenotification.helper.mutestate.MuteStateActionHelper
 import com.thell.mutenotification.helper.timer.TimerHelper
 import kotlinx.android.synthetic.main.fragment_timer.view.*
+import java.util.*
 import java.util.concurrent.TimeUnit
 
 
@@ -362,8 +363,13 @@ class TimerFragment(private val callback: IFragmentCommunication) : Fragment()
     {
         if(context == null)
             return
+        var state = false
 
-        val state = !MuteStateActionHelper.getMuteStateAction(context!!).getMuteState()
+        if(TimerHelper.CurrentTimer == null)
+            state = !MuteStateActionHelper.getMuteStateAction(context!!).getMuteState()
+        else
+           state =TimerHelper.CurrentTimer!!.State
+
         timerFragmentMuteSwitch.setOnCheckedChangeListener(null)
         timerFragmentMuteSwitch.isChecked = state
         timerFragmentMuteSwitch.setOnCheckedChangeListener(switchChange)

@@ -235,9 +235,9 @@ class MainActivity : AppCompatActivity()
 
     private fun changeFragment(fragment: Fragment)
     {
-
-        var transaction = manager.beginTransaction()
+        val transaction = manager.beginTransaction()
         transaction.replace(R.id.mainActivityFragmentContainer, fragment)
+
         transaction.addToBackStack("addFrag")
         transaction.commit()
         Runtime.getRuntime().gc()
@@ -253,13 +253,6 @@ class MainActivity : AppCompatActivity()
             {
                 finish()
                 return
-            }
-            else
-            {
-                if(manager.backStackEntryCount > 1)
-                    manager.popBackStack()
-                else
-                    Toast.makeText(this, R.string.quitAppContent, Toast.LENGTH_SHORT).show()
             }
             backPressedTime = System.currentTimeMillis()
         }

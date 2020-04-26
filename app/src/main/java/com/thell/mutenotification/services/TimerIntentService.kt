@@ -137,6 +137,7 @@ class TimerIntentService : IntentService("TimerIntentService")
         handler.post {
             Toast.makeText(this,"Timer Bitti.",Toast.LENGTH_LONG).show()
         }
+        MuteStateActionHelper.getMuteStateAction(this).setMuteState(!TimerHelper.CurrentTimer!!.State)
     }
 
 
