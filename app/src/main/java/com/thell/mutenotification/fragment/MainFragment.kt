@@ -74,11 +74,16 @@ class MainFragment(val callback: IFragmentCommunication) : Fragment()
         return view
     }
 
-    override fun onDestroy() {
+
+    override fun onDestroyView() {
+        super.onDestroyView()
         context!!.unregisterReceiver(receiver)
-        super.onDestroy()
     }
 
+    override fun onResume() {
+        super.onResume()
+        setStateInit()
+    }
 
     private fun init()
     {
@@ -96,7 +101,7 @@ class MainFragment(val callback: IFragmentCommunication) : Fragment()
         mainFragmentMuteSwitch = view.mainFragmentMuteSwitch
         callback.changeHeader(NavigationMenuHelper.HOME)
         GuiHelper.setTextViewPatternBackground(resources,R.drawable.pattern,mainFragmentHeaderTextView)
-        setStateInit()
+
     }
 
     private fun checkNotificationState(state:Boolean)

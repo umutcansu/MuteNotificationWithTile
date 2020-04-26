@@ -117,6 +117,8 @@ class MuteNotificationTileService: TileService()
     {
         val tile = qsTile
 
+
+
         tile.apply {
             if(MuteStateActionHelper.getMuteStateAction(this@MuteNotificationTileService).getMuteState())
             {

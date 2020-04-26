@@ -8,6 +8,7 @@ import android.os.Handler
 import android.os.Looper
 import android.util.Log
 import android.widget.Toast
+import com.thell.mutenotification.R
 import com.thell.mutenotification.broadcastreceiver.TimerBroadcastReceiver
 import com.thell.mutenotification.database.entity.TimerEntity
 import com.thell.mutenotification.helper.Global
@@ -36,8 +37,10 @@ class TimerIntentService : IntentService("TimerIntentService")
 
     private fun canceledTimer()
     {
+        var state = !TimerHelper.CurrentTimer!!.State
         stopTimer()
         finishedTimerSendBroadcast()
+        MuteStateActionHelper.getMuteStateAction(this).setMuteState(state)
     }
 
     private val receiver = object : TimerBroadcastReceiver()
@@ -135,9 +138,9 @@ class TimerIntentService : IntentService("TimerIntentService")
     private fun doProcess()
     {
         handler.post {
-            Toast.makeText(this,"Timer Bitti.",Toast.LENGTH_LONG).show()
+            Toast.makeText(this,getString(R.string.finishTimer),Toast.LENGTH_LONG).show()
         }
-        MuteStateActionHelper.getMuteStateAction(this).setMuteState(!TimerHelper.CurrentTimer!!.State)
+
     }
 
 

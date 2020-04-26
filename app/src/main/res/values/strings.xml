@@ -26,4 +26,5 @@
     <string name="second">Second</string>
     <string name="minute">Minute</string>
     <string name="hour">Hour</string>
+    <string name="finishTimer">Timer Finished</string>
 </resources>
