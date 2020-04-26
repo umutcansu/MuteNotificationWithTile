@@ -24,7 +24,7 @@ abstract class MuteStateAction(val context: Context):IMuteStateAction
         val currentState = getMuteState()
         val newState = !currentState
         setMuteState(newState)
-        sendBroadcast()
+        //sendBroadcast()
         return  newState
     }
 

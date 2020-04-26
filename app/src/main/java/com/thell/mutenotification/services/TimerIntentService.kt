@@ -11,6 +11,7 @@ import android.widget.Toast
 import com.thell.mutenotification.broadcastreceiver.TimerBroadcastReceiver
 import com.thell.mutenotification.database.entity.TimerEntity
 import com.thell.mutenotification.helper.Global
+import com.thell.mutenotification.helper.mutestate.MuteStateActionHelper
 import com.thell.mutenotification.helper.timer.TimerHelper
 import java.util.*
 
@@ -49,6 +50,7 @@ class TimerIntentService : IntentService("TimerIntentService")
                 if(isCreated)
                 {
                    createdTimer(p0!!,p1)
+                   MuteStateActionHelper.getMuteStateAction(p0).setMuteState(TimerHelper.CurrentTimer!!.State)
                 }
 
                 val isCanceled = p1.getBooleanExtra(TimerHelper.TimerCanceledFlag,false)
