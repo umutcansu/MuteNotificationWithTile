@@ -32,6 +32,9 @@ class TimerFragment(private val callback: IFragmentCommunication) : Fragment()
 
     private val formatter = NumberPicker.Formatter { value -> String.format("%02d", value) }
 
+    private val formatterSecond =  NumberPicker.Formatter() { value -> String.format("%02d", value*Global.PERIOD) }
+
+
     private lateinit var hourNumberPicker:NumberPicker
     private lateinit var minuteNumberPicker:NumberPicker
     private lateinit var secondNumberPicker:NumberPicker
@@ -62,18 +65,25 @@ class TimerFragment(private val callback: IFragmentCommunication) : Fragment()
             if(p1 != null)
             {
 
+                val isListening = p1.getBooleanExtra(TimerHelper.ListenerTimerFlag,false)
+                if(isListening)
+                {
+                    saveTimer()
+                }
+
                 val isFinishedID = p1.getBooleanExtra(TimerHelper.TimerFinishedFlag,false)
                 if(isFinishedID)
                 {
                     clearTimer()
-                    controlSwitchEnable()
+                    controlSwitchEnable(true)
+
                 }
 
                 val isSetTimer = p1.getBooleanExtra(TimerHelper.TimerSetFlag,false)
                 if(isSetTimer)
                 {
                     setTimer()
-                    controlSwitchEnable()
+                    controlSwitchEnable(false)
                 }
             }
 
@@ -88,7 +98,14 @@ class TimerFragment(private val callback: IFragmentCommunication) : Fragment()
 
         override fun onClick(p0: View)
         {
-            saveTimer()
+            if(!Global.SERVICE_IS_RUNNIG)
+            {
+                Global.startTimerService(p0.context)
+            }
+            else
+            {
+                saveTimer()
+            }
         }
 
     }
@@ -127,17 +144,23 @@ class TimerFragment(private val callback: IFragmentCommunication) : Fragment()
 
         var view = inflater.inflate(R.layout.fragment_timer, container, false)
         initUI(view)
-        init()
+
         return view
     }
 
-
-    override fun onDetach() {
-        super.onDetach()
-
+    override fun onDestroyView() {
+        super.onDestroyView()
         if(context != null)
             context!!.unregisterReceiver(receiver)
+        if(::timer.isInitialized)
+            timer.cancel()
     }
+
+    override fun onResume() {
+        super.onResume()
+        init()
+    }
+
 
     private  fun initUI(view:View)
     {
@@ -194,7 +217,7 @@ class TimerFragment(private val callback: IFragmentCommunication) : Fragment()
         {
             visibleCountDown()
             setTimer()
-            controlSwitchEnable()
+            controlSwitchEnable(false)
         }
     }
 
@@ -226,7 +249,12 @@ class TimerFragment(private val callback: IFragmentCommunication) : Fragment()
             {
                 override fun onFinish()
                 {
+                    var state = !TimerHelper.CurrentTimer!!.State
+                    MuteStateActionHelper.getMuteStateAction(this@TimerFragment.context!!).setMuteState(state)
+                    TimerHelper.updateTimerAll(this@TimerFragment.context!!)
                     clearTimer()
+                    controlSwitchEnable(true)
+
                 }
 
                 override fun onTick(p0: Long)
@@ -301,7 +329,7 @@ class TimerFragment(private val callback: IFragmentCommunication) : Fragment()
 
         val hour =   hourNumberPicker.value
         val minute = minuteNumberPicker.value
-        val second = secondNumberPicker.value
+        val second = secondNumberPicker.value * Global.PERIOD
 
         totalSecond = (((hour*60)*60) + (minute*60) + second).toLong()
 
@@ -388,9 +416,9 @@ class TimerFragment(private val callback: IFragmentCommunication) : Fragment()
         minuteNumberPicker.maxValue = 59
         minuteNumberPicker.value = 0
 
-        secondNumberPicker.setFormatter(formatter)
+        secondNumberPicker.setFormatter(formatterSecond)
         secondNumberPicker.minValue = 0
-        secondNumberPicker.maxValue = 59
+        secondNumberPicker.maxValue = (60/Global.PERIOD).toInt()-1
         secondNumberPicker.value = 0
     }
 
@@ -445,9 +473,9 @@ class TimerFragment(private val callback: IFragmentCommunication) : Fragment()
         timerFragmentNumberPickerLinearLayout.visibility = View.GONE
     }
 
-    private fun controlSwitchEnable()
+    private fun controlSwitchEnable(state:Boolean)
     {
-        timerFragmentMuteSwitch.isEnabled = !timerFragmentMuteSwitch.isEnabled
+        timerFragmentMuteSwitch.isEnabled = state
     }
 
 }

@@ -18,6 +18,8 @@ class Global private constructor()
     companion object
     {
 
+        var SERVICE_IS_RUNNIG = false
+        const  val  PERIOD = 10L
         const  val  NOTIFICATION_PERMISSION_REQUEST_CODE = 100
         const  val  BOOT_PERMISSION_REQUEST_CODE = 200
         const  val  SYSTEM_ALERT_REQUEST_CODE = 300
@@ -25,14 +27,14 @@ class Global private constructor()
         const  val  NotificationServiceBroadcastReceiver = "broadcastreceiver.NotificationServiceBroadcastReceiver"
         const  val  TimerBroadcastReceiver = "broadcastreceiver.TimerBroadcastReceiver"
 
-        const val   VERSION = "1.1.2"
+        const val   VERSION = "1.1.5"
         const val   DATABASE_NAME = "AppDatabase"
         const val   DATABASE_VERSION = 14
 
         const val   DEBUG = true
         var START = false
 
-        private fun startTimerService(context: Context)
+        fun startTimerService(context: Context)
         {
             var service = Intent(context,TimerIntentService::class.java)
             context.startService(service)

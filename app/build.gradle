@@ -11,8 +11,8 @@ android {
         applicationId "com.thell.mutenotification"
         minSdkVersion 24
         targetSdkVersion 29
-        versionCode 12
-        versionName "1.1.2"
+        versionCode 15
+        versionName "1.1.5"
         ndk.abiFilters 'armeabi-v7a', 'arm64-v8a', 'x86', 'x86_64'
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }

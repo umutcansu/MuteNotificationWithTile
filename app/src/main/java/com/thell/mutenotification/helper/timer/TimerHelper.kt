@@ -2,6 +2,7 @@ package com.thell.mutenotification.helper.timer
 
 import android.content.Context
 import com.thell.mutenotification.database.entity.TimerEntity
+import com.thell.mutenotification.helper.Global
 import com.thell.mutenotification.helper.database.DatabaseHelper
 
 class TimerHelper private constructor()
@@ -12,6 +13,7 @@ class TimerHelper private constructor()
         const val   TimerCreatedFlag = "TimerCreated"
         const val   TimerSetFlag = "TimerSetFlag"
         const val   TimerFinishedFlag = "TimerFinishedFlag"
+        const val   ListenerTimerFlag = "ListenerTimerFlag"
         const val   TimerCanceledFlag = "TimerCanceledFlag"
         const val   TimerEntity = "TimerEntity"
 
@@ -44,6 +46,7 @@ class TimerHelper private constructor()
         {
             DatabaseHelper.getInstance(context).getTimerDao().insert(timerEntity)
             CurrentTimer = timerEntity
+            Global.startTimerService(context)
         }
     }
 }

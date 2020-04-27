@@ -20,7 +20,7 @@ import java.util.*
 class TimerIntentService : IntentService("TimerIntentService")
 {
 
-    val period = 1000L
+    var period :Long = 0
     val delay = 0L
     var IS_RUNNIG = true
     lateinit var timer : Timer
@@ -80,12 +80,23 @@ class TimerIntentService : IntentService("TimerIntentService")
             }
             timer.scheduleAtFixedRate(timerTask, delay, period)
         }
+        else
+        {
+            IS_RUNNIG = false
+        }
     }
 
     private fun finishedTimerSendBroadcast()
     {
         val intent =  Intent(Global.TimerBroadcastReceiver)
         intent.putExtra(TimerHelper.TimerFinishedFlag,true)
+        sendBroadcast(intent)
+    }
+
+    private fun listenerTimerSendBroadcast()
+    {
+        val intent =  Intent(Global.TimerBroadcastReceiver)
+        intent.putExtra(TimerHelper.ListenerTimerFlag,true)
         sendBroadcast(intent)
     }
 
@@ -99,21 +110,26 @@ class TimerIntentService : IntentService("TimerIntentService")
     private fun stopTimer()
     {
         TimerHelper.updateTimerAll(this)
-        timer.cancel()
-        timerTask.cancel()
+        if(::timer.isInitialized)
+            timer.cancel()
+        if(::timerTask.isInitialized)
+            timerTask.cancel()
     }
 
     private fun registerReceiver()
     {
         val filter = IntentFilter(Global.TimerBroadcastReceiver)
         registerReceiver(receiver, filter)
+        listenerTimerSendBroadcast()
     }
 
 
     override fun onHandleIntent(intent: Intent?)
     {
         Log.e("TimerIntentService","onHandleIntent")
+        period =  1000*Global.PERIOD
         registerReceiver()
+        Global.SERVICE_IS_RUNNIG = true
         while (IS_RUNNIG)
         {
 
@@ -133,6 +149,10 @@ class TimerIntentService : IntentService("TimerIntentService")
                 canceledTimer()
             }
         }
+        else
+        {
+            IS_RUNNIG = false
+        }
     }
 
     private fun doProcess()
@@ -147,6 +167,7 @@ class TimerIntentService : IntentService("TimerIntentService")
     override fun onDestroy()
     {
         super.onDestroy()
+        Global.SERVICE_IS_RUNNIG = false
         unregisterReceiver(receiver)
         Log.e("TimerIntentService","onDestroy")
 
