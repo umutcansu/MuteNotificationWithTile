@@ -1,7 +1,9 @@
 package com.thell.mutenotification.services
 
 import android.app.Notification
+import android.content.Context
 import android.content.Intent
+import android.content.IntentFilter
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.os.IBinder
@@ -9,12 +11,15 @@ import android.service.notification.NotificationListenerService
 import android.service.notification.StatusBarNotification
 import android.util.Log
 import android.widget.Toast
+import com.thell.mutenotification.broadcastreceiver.NotificationServiceBroadcastReceiver
 import com.thell.mutenotification.database.entity.NotificationEntity
 import com.thell.mutenotification.database.entity.SettingsEntity
 import com.thell.mutenotification.helper.database.DatabaseHelper
 import com.thell.mutenotification.helper.Global
 import com.thell.mutenotification.helper.GuiHelper
 import com.thell.mutenotification.helper.mutestate.MuteStateActionHelper
+import com.thell.mutenotification.helper.mutestate.MuteStateSharedPrefAction
+import com.thell.mutenotification.helper.notificationservice.NotificationServiceHelper
 import com.thell.mutenotification.helper.settings.SettingsHelper
 import com.thell.mutenotification.helper.settings.SettingsStateType
 
@@ -22,7 +27,51 @@ import com.thell.mutenotification.helper.settings.SettingsStateType
 class MuteNotificationListenerService : NotificationListenerService()
 {
 
+    val TAG = "MuteNotificationListenerService"
 
+
+
+    override fun onStart(intent: Intent?, startId: Int) {
+        super.onStart(intent, startId)
+        NotificationServiceHelper.SERVICE_IS_RUNNIG = true
+        registerMuteStateReceiver()
+        Log.e(TAG,"onStart")
+    }
+
+
+    override fun onDestroy() {
+        super.onDestroy()
+        NotificationServiceHelper.SERVICE_IS_RUNNIG = false
+        try {
+            unregisterReceiver(receiverMuteState)
+        } catch (e: Exception) {
+        }
+        Log.e(TAG,"onDestroy")
+    }
+
+    private val receiverMuteState = object : NotificationServiceBroadcastReceiver()
+    {
+        override fun onReceive(p0: Context?, p1: Intent?)
+        {
+            super.onReceive(p0, p1)
+            val state = p1!!.getBooleanExtra(MuteStateSharedPrefAction.MUTE_STATE_KEY,false)
+            if(!state)
+            {
+                if(SettingsHelper.getSaveAlwaysSettingsState().State != SettingsStateType.OK.state)
+                {
+                    if(NotificationServiceHelper.SERVICE_IS_RUNNIG)
+                        onDestroy()
+                }
+            }
+
+        }
+    }
+
+    private fun registerMuteStateReceiver()
+    {
+        val filter = IntentFilter(Global.NotificationServiceBroadcastReceiver)
+        registerReceiver(receiverMuteState, filter)
+    }
 
     override fun onBind(intent: Intent?): IBinder?
     {

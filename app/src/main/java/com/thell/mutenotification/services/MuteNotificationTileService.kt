@@ -42,10 +42,7 @@ class MuteNotificationTileService: TileService()
 
             val state = muteStateAction.getMuteState()
 
-            if(state)
-                NotificationServiceHelper.stopNotificationListenerService(this)
-            else
-                NotificationServiceHelper.start(this)
+            NotificationServiceHelper.setStateService(this,state)
 
             if (::muteStateAction.isInitialized)
                 muteStateAction.switchMuteState()

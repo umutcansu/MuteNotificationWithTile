@@ -126,8 +126,6 @@ class MainActivity : AppCompatActivity()
     override fun onCreate(savedInstanceState: Bundle?)
     {
         super.onCreate(savedInstanceState)
-        NotificationServiceHelper.muteNotificationService =
-            Intent(this, MuteNotificationListenerService::class.java)
         setupFullScreen()
         setContentView(R.layout.activity_main)
         initUI()
@@ -318,7 +316,8 @@ class MainActivity : AppCompatActivity()
 
     private fun start()
     {
-        NotificationServiceHelper.start(this)
+        //NotificationServiceHelper.setStateService(this,true)
+
     }
 
     private fun stop()

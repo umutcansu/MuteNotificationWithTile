@@ -18,7 +18,6 @@ class Global private constructor()
     companion object
     {
 
-        var SERVICE_IS_RUNNIG = false
         const  val  PERIOD = 10L
         const  val  NOTIFICATION_PERMISSION_REQUEST_CODE = 100
         const  val  BOOT_PERMISSION_REQUEST_CODE = 200
@@ -53,8 +52,10 @@ class Global private constructor()
 
             START = false
 
+
             startTimerService(context)
             NotificationServiceHelper.muteNotificationService = Intent(context, MuteNotificationListenerService::class.java)
+            NotificationServiceHelper.setStateService(context!!,true)
             startTileService(context)
             SettingsHelper.seedDatabaseValue(context)
             TimerHelper.loadTimer(context)

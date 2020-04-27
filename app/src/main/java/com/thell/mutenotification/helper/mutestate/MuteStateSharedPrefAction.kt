@@ -2,6 +2,7 @@ package com.thell.mutenotification.helper.mutestate
 
 import android.content.Context
 import com.thell.mutenotification.helper.Global
+import com.thell.mutenotification.helper.notificationservice.NotificationServiceHelper
 
 class MuteStateSharedPrefAction(context: Context): MuteStateAction(context)
 {
@@ -23,8 +24,8 @@ class MuteStateSharedPrefAction(context: Context): MuteStateAction(context)
         val  editor = sharedPref.edit()
         editor.putBoolean(MUTE_STATE_KEY,value)
         editor.commit()
-
         sendBroadcast()
+        NotificationServiceHelper.setStateService(context,value)
     }
 
 }

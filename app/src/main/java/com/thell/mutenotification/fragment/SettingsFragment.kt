@@ -17,8 +17,12 @@ import com.thell.mutenotification.database.entity.SettingsEntity
 import com.thell.mutenotification.helper.database.DatabaseHelper
 import com.thell.mutenotification.helper.navigation.NavigationMenuHelper
 import com.thell.mutenotification.helper.callback.IFragmentCommunication
+import com.thell.mutenotification.helper.notificationservice.NotificationServiceHelper
+import com.thell.mutenotification.helper.permission.PermissionHelper
 import com.thell.mutenotification.helper.settings.SettingsHelper
+import com.thell.mutenotification.helper.settings.SettingsStateType
 import kotlinx.android.synthetic.main.fragment_settings.view.*
+import java.security.Permission
 
 
 class SettingsFragment(val callback: IFragmentCommunication) : Fragment() ,SwipeRefreshLayout.OnRefreshListener
@@ -61,6 +65,14 @@ class SettingsFragment(val callback: IFragmentCommunication) : Fragment() ,Swipe
     {
         DatabaseHelper.getInstance(context!!).getSettingsDao().update(settingsEntity.SettingsKey,settingsEntity.State)
         SettingsHelper.setSettingsState(settingsEntity.SettingsKey,settingsEntity.State)
+
+       /* if(settingsEntity.SettingsKey == SettingsHelper.Companion::SETTINGS_KEY_IS_NOTIFICATION_SAVED_ALWAYS.name)
+        {
+            if(settingsEntity.State == SettingsStateType.OK.state)
+            {
+                NotificationServiceHelper.setStateService(context!!,true)
+            }
+        }*/
     }
 
     private fun initSearchBox()

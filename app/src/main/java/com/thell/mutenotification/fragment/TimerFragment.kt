@@ -98,13 +98,14 @@ class TimerFragment(private val callback: IFragmentCommunication) : Fragment()
 
         override fun onClick(p0: View)
         {
-            if(!Global.SERVICE_IS_RUNNIG)
+
+            if(!TimerHelper.SERVICE_IS_RUNNIG)
             {
                 Global.startTimerService(p0.context)
             }
             else
             {
-                saveTimer()
+                saveTimerAndStart()
             }
         }
 
@@ -234,8 +235,24 @@ class TimerFragment(private val callback: IFragmentCommunication) : Fragment()
            currentDate + calculateTime(),
            timerFragmentMuteSwitch.isChecked
        )
+        TimerHelper.insertTimer(context!!,timer)
+    }
 
-       createTimerSendBroadcast(timer)
+    private fun saveTimerAndStart()
+    {
+        if(!isValid)
+            return
+
+        val currentDate = System.currentTimeMillis()
+
+        val timer = TimerEntity(
+            0,
+            currentDate,
+            currentDate + calculateTime(),
+            timerFragmentMuteSwitch.isChecked
+        )
+
+        createTimerSendBroadcast(timer)
     }
 
     private fun setTimer()

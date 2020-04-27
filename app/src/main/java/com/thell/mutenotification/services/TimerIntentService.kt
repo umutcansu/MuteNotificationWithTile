@@ -118,9 +118,9 @@ class TimerIntentService : IntentService("TimerIntentService")
 
     private fun registerReceiver()
     {
+        listenerTimerSendBroadcast()
         val filter = IntentFilter(Global.TimerBroadcastReceiver)
         registerReceiver(receiver, filter)
-        listenerTimerSendBroadcast()
     }
 
 
@@ -129,11 +129,13 @@ class TimerIntentService : IntentService("TimerIntentService")
         Log.e("TimerIntentService","onHandleIntent")
         period =  1000*Global.PERIOD
         registerReceiver()
-        Global.SERVICE_IS_RUNNIG = true
+        TimerHelper.SERVICE_IS_RUNNIG = true
         while (IS_RUNNIG)
         {
 
         }
+        onDestroy()
+
     }
 
     private fun checkTimerState()
@@ -167,8 +169,14 @@ class TimerIntentService : IntentService("TimerIntentService")
     override fun onDestroy()
     {
         super.onDestroy()
-        Global.SERVICE_IS_RUNNIG = false
-        unregisterReceiver(receiver)
+        TimerHelper.SERVICE_IS_RUNNIG = false
+        try
+        {
+            unregisterReceiver(receiver)
+        }
+        catch (e: Exception)
+        {
+        }
         Log.e("TimerIntentService","onDestroy")
 
     }

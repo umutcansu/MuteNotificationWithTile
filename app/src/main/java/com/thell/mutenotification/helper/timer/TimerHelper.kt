@@ -10,6 +10,8 @@ class TimerHelper private constructor()
     companion object
     {
 
+        var SERVICE_IS_RUNNIG = false
+
         const val   TimerCreatedFlag = "TimerCreated"
         const val   TimerSetFlag = "TimerSetFlag"
         const val   TimerFinishedFlag = "TimerFinishedFlag"

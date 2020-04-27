@@ -11,7 +11,7 @@ class SettingsHelper private constructor()
         var   IS_NOTIFICATION_SAVED_ALWAYS = SettingsStateType.NOK
         var   IS_MUTE_NOTIFICATION_TOAST  = SettingsStateType.OK
 
-        const val   SETTINGS_KEY_IS_NOTIFICATION_SAVED_ALWAYS = "Would you like to save notifications to history  while notifications are allowed?"
+        const val   SETTINGS_KEY_IS_NOTIFICATION_SAVED_ALWAYS = "Would you like to save notifications to history  while notifications are allowed?\nWarning : it may drain your phone battery"
         const val   SETTINGS_KEY_IS_MUTE_NOTIFICATION_TOAST = "Would you like to receive toast messages?"
 
         val allSettingsList = arrayListOf(
